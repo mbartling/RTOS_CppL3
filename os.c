@@ -50,6 +50,8 @@ typedef struct _periodicThread{
   int priority;
   int period;
   int counter;
+	float msTime;
+	float msTimeDiff;
   void(*task)() ;
 } periodicThread;
 
@@ -66,7 +68,7 @@ inline void Schedule_and_Context_Switch(void){
   NVIC_INT_CTRL_R = NVIC_INT_CTRL_PEND_SV;
 }
 
-int Timer1APeriod = TIME_1MS/1000; // .1us 
+int Timer1APeriod = TIME_1MS/10000; // .1us 
 typedef void (*func)();
 List<func, MAXNUMTHREADS> periodicTaskList[NUMPRIORITIES];
 
@@ -271,6 +273,7 @@ int OS_AddPeriodicThread(void(*task)(void),
     newPeriodicThread->priority = priority;
     newPeriodicThread->period = period;
     newPeriodicThread->counter = period;
+		newPeriodicThread->msTime = 0.0;
     newPeriodicThread->task = task;
     //add to the list
     // if there is no element in the list, then set up the one shot timer 
@@ -414,7 +417,9 @@ void OS_ClearMsTime(void) {
 unsigned long OS_MsTime(void) {
     return  (systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R)/TIME_1MS;
 }
-
+float OS_MsTimeF(void) {
+    return  (float)(systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R)/((float)TIME_1MS);
+}
  /********* OS_Fifo_Init ************
  * Initialize the Fifo to be empty
  * Inputs: size
@@ -553,6 +558,9 @@ void Timer2A_Handler(void) {
      if (periodicThreadList[i].counter <= 0) {
        periodicTaskList[periodicThreadList[i].priority].push_back(periodicThreadList[i].task);
         periodicThreadList[i].counter = periodicThreadList[i].period; //reset the counter if zero
+			  float cTime = OS_MsTimeF();
+			  periodicThreadList[i].msTimeDiff = cTime - periodicThreadList[i].msTime;
+			  periodicThreadList[i].msTime = cTime;
      }
     
      //update minCounter 

@@ -19,7 +19,7 @@
 // #define Task6 //testing the fft filter
 //#define mainTaskLab2
 //#define Testmain5
-#define Testmain5
+#define Testmain6
 //*********Prototype for FFT in cr4_fft_64_stm32.s, STMicroelectronics
 #ifdef __cplusplus
 extern "C" {
