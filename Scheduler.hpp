@@ -2,6 +2,18 @@
 #define __SCHEDULER_HPP__
 #include "TCB_List.hpp"
 #include "sleepList.hpp"
+#include "TCB.h"
+
+//Tcb_t* idleThread = NULL;
+uint32_t idleTime = 0;
+void (*idleTask)(void);
+
+void Idle(void){
+  while(1){
+    //Idle
+    idleTime++;
+  }
+}
 
 //#include 
 template <int NUM_PRIORITIES, int MAX_NUM_THREADS>
@@ -9,9 +21,19 @@ class Scheduler{
 private:
   Tcb_List PriorityList[NUM_PRIORITIES+1];
   List<Tcb_t*, MAXNUMTHREADS> SleepingList;
-  idleThread;
+  Tcb_t* idleThread;
 public:
 
+Scheduler(void){
+  idleTask = Idle;
+  idleThread = TCB_GetNewThread();
+  TCB_SetInitialStack(idleThread);
+  idleThread->stack[STACKSIZE-2] = (int32_t) (Idle); //return to IDLE
+  //ThreadList.head = idleThread;
+  idleThread->priority = IDLE_THREAD_PRIORITY - 1;
+  idleThread->next = idleThread;
+  PriorityList[NUM_PRIORITIES].push_back(idleThread);
+}
 /**
  * @brief Get the next scheduled thread
  * @details [long description]

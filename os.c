@@ -56,10 +56,7 @@ typedef struct _periodicThread{
 Sema4Type* semaList[50];
 int semaLoc = 0;
 periodicThread periodicThreadList[MaxNumberOfPeriodicThreads];  
-//void (*f)(void), MAXNUMTHREADS> periodicTaskList[NUM_PRIORITIES];
 
-// Tcb_t idleThreadMem;
-// Tcb_t* idleThread = &idleThreadMem;
 
 inline void Schedule_and_Context_Switch(void){
   long status = StartCritical();
@@ -68,15 +65,19 @@ inline void Schedule_and_Context_Switch(void){
   EndCritical(status);
   NVIC_INT_CTRL_R = NVIC_INT_CTRL_PEND_SV;
 }
+
+int Timer1APeriod = TIME_1MS/1000; // .1us 
+typedef void (*func)();
+List<func, MAXNUMTHREADS> periodicTaskList[NUM_PRIORITIES];
+
+
 /********* OS_Init ************
  * initialize operating system, disable interrupts until OS_Launch
  * initialize OS controlled I/O: serial, ADC, systick, LaunchPad I/O and timers 
  * @param  input:  none
  * @return output: none
  */
-int Timer1APeriod = TIME_1MS/1000; // .1us 
-typedef void (*func)();
-List<func, MAXNUMTHREADS> periodicTaskList[NUM_PRIORITIES];
+
 void OS_Init(void)
 {
   DisableInterrupts();
@@ -107,6 +108,7 @@ void OS_Wait(Sema4Type *semaPt) {
   if(semaPt->Value < 0){
     Tcb_t * runningThread = TCB_GetRunningThread();
     runningThread->state_blocked = 1;
+    TCB_RemoveThread(runningThread);
     semaPt->waitList.push_back(runningThread);
     EndCritical(status);
     Schedule_and_Context_Switch();
@@ -138,7 +140,7 @@ void OS_Signal(Sema4Type *semaPt) {
       Tcb_t* thread = semaPt->waitList.pop_front();
       thread->state_blocked = 0;
       TCB_PushBackThread(thread);
-      TCB_PushBackRunning();
+      // TCB_PushBackRunning();
       EndCritical(status);
       Schedule_and_Context_Switch();
     }
@@ -225,29 +227,6 @@ int OS_AddThread(void(*task)(void),
   return 1;
 }
 
-// int AddIdleThread(void){
-
-//   long status;
-//   status = StartCritical();
-//   // if(ThreadCount > (MAXNUMTHREADS - 1)){
-//   if(!TCB_Available())
-//   {
-//     EndCritical(status);
-//     return 0;
-//   }
-
-//   // Tcb_t* thread = &TcbTable[ThreadCount];
-//   Tcb_t* thread = TCB_GetNewThread();
-//   TCB_SetInitialStack(thread);  //Set thumb bit and dummy regs
-//   thread->stack[STACKSIZE-2] = (int32_t) (task); //return to task
-//   thread->priority = priority;
-//   TCB_InsertNodeBeforeRoot(thread);
-
-//   ThreadCount++;
-//   EndCritical(status);
-//   return 1;
-// }
-
 
 //******** OS_Id *************** 
 // returns the thread ID for the currently running thread
@@ -333,17 +312,9 @@ void OS_Kill(void) {
     long status = StartCritical();
     add_trace(TRACE_KILL);
     TCB_RemoveRunningThread();
-		ThreadCount--;
-    //if TCB_ThreadList is not empty after removing the current thread, context switch
-    // if(TCB_threadListEmpty != 0) {
-        // OS_Suspend(); 
-    // }
-	
-	
+		ThreadCount--;	
     EndCritical(status); 
     Schedule_and_Context_Switch();
-
-    // NVIC_INT_CTRL_R = NVIC_INT_CTRL_PEND_SV;
 
 }
 
@@ -357,20 +328,8 @@ void OS_Kill(void) {
 // output: none
 void OS_Suspend(void)
 {
-		
-//    long status = StartCritical();
-// //    Tcb_t * runningThread = TCB_GetRunningThread();
-// //    runningThread-> state_sleep = 0;
-// //    TCB_RemoveRunningAndSleep();
-//     //If running list empty then insert idle task
-// //	  
-//   //This is where we would do any scheduling
-// 	TCB_PushBackRunning();  
-//   Schedule_and_Context_Switch();
-
-// 	EndCritical(status);
   OS_Sleep(0);
-  // NVIC_INT_CTRL_R = NVIC_INT_CTRL_PEND_SV;
+
 }
 
 //******** OS_Launch *************** 
@@ -627,9 +586,9 @@ void SysTick_Handler(void){
     long status;
     status = StartCritical();
     add_trace(TRACE_SYSTICK);
-    TCB_PromotePriority();
+    // TCB_PromotePriority();
     TCB_UpdateSleeping();
-    TCB_PushBackRunning();
+    // TCB_PushBackRunning();
 
     Schedule_and_Context_Switch();
     

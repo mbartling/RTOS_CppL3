@@ -21,45 +21,19 @@ typedef struct _Tcb {
   int32_t stack[STACKSIZE]; //!<Thread stack: OFFSET 32
 } Tcb_t;
 
-typedef struct _sleepElem{
-  struct _sleepElem* next;
-  Tcb_t* elem;
-} sleepElem_t;
-/**
- * @brief Doubly circular list
- * @details Modified from Martin Broadhursts online method
- * 
- */
-typedef struct _TcbListC
-{
-  Tcb_t* head;
-  uint32_t count;  
-} TcbListC_t;
-
-typedef struct _sleepListS
-{
-  sleepElem_t* head;
-  uint32_t count;
-} sleepListS_t;
-
-//Tcb_t TcbTable[MAXNUMTHREADS];
 
 void TCB_SetInitialStack(Tcb_t* pTcb);
-Tcb_t* TCB_InsertNode(Tcb_t* root);
 int TCB_Available(void);
 Tcb_t* TCB_GetNewThread(void);
 void TCB_InsertNodeBeforeRoot(Tcb_t* node);
 Tcb_t* TCB_GetRunningThread(void);
-int TCB_threadListEmpty(void);
 void TCB_RemoveRunningThread(void);
 void TCB_UpdateSleeping(void);
-void TCB_RemoveSleepingNode(Tcb_t* thread);
 void TCB_RemoveRunningAndSleep(void);
 void TCB_Configure_IdleThread(void);
-void TCB_CheckSleeping(void) ;
 void TCB_PushBackRunning(void);
 void TCB_Scheduler(void);
-void TCB_PromotePriority(void);
+// void TCB_PromotePriority(void);
 void TCB_PushBackThread(Tcb_t* thread);
 //void dummy(void); // Tests if function pointer set properly
 #endif /*__TCB_H__*/

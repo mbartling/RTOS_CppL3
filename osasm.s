@@ -31,6 +31,7 @@
         PRESERVE8
 
         EXTERN  RunningThread            ; currently running thread
+        EXTERN  RunningThreadNext        ; Next Running thread
         EXPORT  OS_DisableInterrupts
         EXPORT  OS_EnableInterrupts
         EXPORT  StartOS
@@ -55,7 +56,8 @@ ContextSwitch                  ; 1) Saves R0-R3,R12,LR,PC,PSR
     LDR     R0, =RunningThread ; 4) R0=pointer to RunningThread, old thread
     LDR     R1, [R0]           ;    R1 = RunningThread
     STR     SP, [R1]           ; 5) Save SP into TCB
-    LDR     R1, [R1,#4]        ; 6) R1 = RunningThread->next
+;    LDR     R1, [R1,#4]        ; 6) R1 = RunningThread->next
+    LDR     R1, =RunningThreadNext;
     STR     R1, [R0]           ;    RunningThread = R1
     LDR     SP, [R1]           ; 7) new thread SP; SP = RunningThread->sp;
 ;    ADR     R4, FAKELR
@@ -64,26 +66,14 @@ ContextSwitch                  ; 1) Saves R0-R3,R12,LR,PC,PSR
     CPSIE   I                  ; 9) tasks run with interrupts enabled
     BX      LR                 ; 10) restore R0-R3,R12,LR,PC,PSR
 
-;SysTick_Handler                ; 1) Saves R0-R3,R12,LR,PC,PSR
-    ;CPSID   I                  ; 2) Prevent interrupt during switch
-    ;PUSH    {R4-R11}           ; 3) Save remaining regs r4-11
-    ;LDR     R0, =RunningThread ; 4) R0=pointer to RunningThread, old thread
-    ;LDR     R1, [R0]           ;    R1 = RunningThread
-    ;STR     SP, [R1]           ; 5) Save SP into TCB
-    ;LDR     R1, [R1,#4]        ; 6) R1 = RunningThread->next
-    ;STR     R1, [R0]           ;    RunningThread = R1
-    ;LDR     SP, [R1]           ; 7) new thread SP; SP = RunningThread->sp;
-    ;POP     {R4-R11}           ; 8) restore regs r4-11
-    ;CPSIE   I                  ; 9) tasks run with interrupts enabled
-    ;BX      LR                 ; 10) restore R0-R3,R12,LR,PC,PSR
-
 PendSV_Handler                 ; 1) Saves R0-R3,R12,LR,PC,PSR
     CPSID   I                  ; 2) Prevent interrupt during switch
     PUSH    {R4-R11}           ; 3) Save remaining regs r4-11
     LDR     R0, =RunningThread ; 4) R0=pointer to RunningThread, old thread
     LDR     R1, [R0]           ;    R1 = RunningThread
     STR     SP, [R1]           ; 5) Save SP into TCB
-    LDR     R1, [R1,#4]        ; 6) R1 = RunningThread->next
+;    LDR     R1, [R1,#4]        ; 6) R1 = RunningThread->next
+    LDR     R1, =RunningThreadNext;
     STR     R1, [R0]           ;    RunningThread = R1
     LDR     SP, [R1]           ; 7) new thread SP; SP = RunningThread->sp;
     POP     {R4-R11}           ; 8) restore regs r4-11
