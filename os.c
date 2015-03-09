@@ -68,7 +68,7 @@ inline void Schedule_and_Context_Switch(void){
 
 int Timer1APeriod = TIME_1MS/1000; // .1us 
 typedef void (*func)();
-List<func, MAXNUMTHREADS> periodicTaskList[NUM_PRIORITIES];
+List<func, MAXNUMTHREADS> periodicTaskList[NUMPRIORITIES];
 
 
 /********* OS_Init ************
@@ -562,7 +562,7 @@ void Timer2A_Handler(void) {
    }
     
    //calling all the functions 
-   for(int i = 0; i < NUM_PRIORITIES; ++i){
+   for(int i = 0; i < NUMPRIORITIES; ++i){
      while(!periodicTaskList[i].isEmpty()){
       GlobalPeriodicThread = periodicTaskList[i].pop_front();
       GlobalPeriodicThread();

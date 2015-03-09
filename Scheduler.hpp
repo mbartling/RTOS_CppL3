@@ -4,7 +4,7 @@
 #include "sleepList.hpp"
 #include "TCB.h"
 
-//Tcb_t* idleThread = NULL;
+Tcb_t* idleThread = NULL;
 uint32_t idleTime = 0;
 void (*idleTask)(void);
 
@@ -16,12 +16,11 @@ void Idle(void){
 }
 
 //#include 
-template <int NUM_PRIORITIES, int MAX_NUM_THREADS>
-class Scheduler{
+template <int NUM_PRIORITIES, int MAX_NUM_THREADS> class Scheduler {
 private:
   Tcb_List PriorityList[NUM_PRIORITIES+1];
-  List<Tcb_t*, MAXNUMTHREADS> SleepingList;
-  Tcb_t* idleThread;
+  List<Tcb_t*, MAX_NUM_THREADS> SleepingList;
+  // Tcb_t* idleThread;
 public:
 
 Scheduler(void){
@@ -30,7 +29,7 @@ Scheduler(void){
   TCB_SetInitialStack(idleThread);
   idleThread->stack[STACKSIZE-2] = (int32_t) (Idle); //return to IDLE
   //ThreadList.head = idleThread;
-  idleThread->priority = IDLE_THREAD_PRIORITY - 1;
+  idleThread->priority = NUM_PRIORITIES;
   idleThread->next = idleThread;
   PriorityList[NUM_PRIORITIES].push_back(idleThread);
 }
@@ -45,11 +44,12 @@ Tcb_t* GetNext(void){
   for(i = 0; i <= NUM_PRIORITIES; i++){
     if(!(PriorityList[i].isEmpty())){
       thread = PriorityList[i].Head();
-      PriorityList.MoveHead();
+      PriorityList[i].MoveHead();
       return thread;
     }
   }
   /*Should not get here*/
+	return thread;
 }
 
 /**
@@ -74,8 +74,8 @@ void push_back(Tcb_t* thread){
   PriorityList[thread->priority].push_back(thread);
 }
 
-void UpdateSleeping(void){
-    List<Tcb_t*, MAXNUMTHREADS>::iterator iter;
+void UpdateSleeping(void) {
+  typename List<Tcb_t*, MAX_NUM_THREADS>::iterator iter;
   Tcb_t* thread;
   for(iter = SleepingList.begin(); iter != SleepingList.end(); ++iter){
     ((*iter)->state_sleep)--;
@@ -94,5 +94,7 @@ void UpdateSleeping(void){
   SleepingList.clean();      /// Update the sleeping lists, remove entries marked 
                               /// for deletion
   }
+
+
 };
 #endif /*__SCHEDULER_HPP__*/

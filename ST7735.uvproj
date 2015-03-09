@@ -416,11 +416,6 @@
               <FilePath>.\PLL.c</FilePath>
             </File>
             <File>
-              <FileName>FIFO.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\FIFO.c</FilePath>
-            </File>
-            <File>
               <FileName>Retarget.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Retarget.c</FilePath>

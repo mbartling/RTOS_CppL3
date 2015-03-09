@@ -18,6 +18,7 @@
 //#define Task5
 // #define Task6 //testing the fft filter
 //#define mainTaskLab2
+//#define Testmain5
 #define Testmain5
 //*********Prototype for FFT in cr4_fft_64_stm32.s, STMicroelectronics
 #ifdef __cplusplus
@@ -787,6 +788,7 @@ void Thread7(void){  // foreground thread
  UART_OutString("\n\rEE345M/EE380L, Lab 3 Preparation 2\n\r");
  OS_Sleep(5000);   // 10 seconds        
  Jitter();         // print jitter information
+ printf("Done!\n");
  UART_OutString("\n\r\n\r");
  OS_Kill();
 }
@@ -811,7 +813,8 @@ int main(void){       // Testmain5 Lab 3
  OS_Init();           // initialize, disable interrupts
  NumCreated = 0 ;
  NumCreated += OS_AddThread(&Thread6,128,2); 
- NumCreated += OS_AddThread(&Thread7,128,1); 
+ NumCreated += OS_AddThread(&Thread7,128,1);
+ NumCreated += OS_AddThread(&Interpreter,128,2);	
  OS_AddPeriodicThread(&TaskA,TIME_1MS,0);           // 1 ms, higher priority
  OS_AddPeriodicThread(&TaskB,2*TIME_1MS,1);         // 2 ms, lower priority
 

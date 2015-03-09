@@ -4,10 +4,10 @@
 #include "sleepList.hpp"
 #include "Exception.hpp"
 #include "Perf.h"
+#include "Scheduler.hpp"
 // #include <iostream>
 #define DEBUGprintf(...) /**/
 
-#define NUMPRIORITIES 7
 // #define IDLE_THREAD_PRIORITY ((NUM_PRIORITIES)+ 1)
 
 Pool<Tcb_t, MAXNUMTHREADS> ThreadPool;
@@ -18,7 +18,7 @@ int totalThreadCount;
 
 
 // List<Tcb_t*, MAXNUMTHREADS> PriorityList[IDLE_THREAD_PRIORITY];
-Scheduler<NUMPRIORITIES, MAXNUMTHREADS>
+Scheduler<NUMPRIORITIES, MAXNUMTHREADS> mScheduler;
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,23 +45,24 @@ void WaitForInterrupt(void);  // low power mode
 
   // RunningThread = idleThread;
   // RunningThreadNext = idleThread;
-  RunningThread = Scheduler.GetNext();
+  RunningThread = mScheduler.GetNext();
 }
 
 
 void TCB_PushBackRunning(void){
-  Scheduler.push_back(RunningThread); 
+  mScheduler.push_back(RunningThread); 
 }
 void TCB_PushBackThread(Tcb_t* thread){
-  Scheduler.push_back(thread); 
+  mScheduler.push_back(thread); 
 }
 /**
- * @brief The scheduler just picks the next thread to run
+ * @brief The mscheduler just picks the next thread to run
  * @details nothing more, nothing less
  */
 void TCB_Scheduler(void){
   add_trace(TRACE_SCHEDULER);
-  RunningThreadNext = Scheduler.GetNext();
+	RunningThreadNext = RunningThread->next;
+  RunningThreadNext = mScheduler.GetNext();
   return;
 }
 
@@ -80,17 +81,17 @@ Tcb_t* TCB_GetNewThread(void){
 
 void TCB_InsertNodeBeforeRoot(Tcb_t* node)
 {
-  Scheduler.push_back(node);
+  mScheduler.push_back(node);
 }
 
 Tcb_t* TCB_RemoveThread(Tcb_t* thread){
-  return Scheduler.Remove(thread);
+  return mScheduler.Remove(thread);
 }
 
 void TCB_RemoveRunningThread(void) {
   // long status;
   // status = StartCritical();
-  RunningThread = Scheduler.Remove(RunningThread);
+  RunningThread = mScheduler.Remove(RunningThread);
   totalThreadCount--; 
   ThreadPool.free(RunningThread); // Free the thread in memory
   // EndCritical(status);
@@ -101,7 +102,7 @@ void TCB_RemoveRunningThread(void) {
  * @details Assumes Idle thread never sleeps
  */
 void TCB_RemoveRunningAndSleep(void) {
-  Scheduler.Sleep(RunningThread);
+  mScheduler.Sleep(RunningThread);
 }
 
 Tcb_t* TCB_GetRunningThread(void){
@@ -109,7 +110,7 @@ Tcb_t* TCB_GetRunningThread(void){
 }
 
 void TCB_UpdateSleeping(void) {
-  Scheduler.UpdateSleeping();
+  mScheduler.UpdateSleeping();
 }
 
 void TCB_SetInitialStack(Tcb_t* pTcb)
@@ -134,3 +135,4 @@ void TCB_SetInitialStack(Tcb_t* pTcb)
   stack[STACKSIZE - 16] = 0x04040404;  //<! R04 Dummy Value for Debugging
 
 }
+

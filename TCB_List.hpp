@@ -1,6 +1,7 @@
 #ifndef __TCB_LIST_HPP__
 #define __TCB_LIST_HPP__
 #include "TCB.h"
+#include <cstddef>
 
 class Tcb_List {
 
@@ -59,11 +60,7 @@ public:
     if(isEmpty()){
       return NULL;
     }
-    ret = node;
-    node->next->prev = node->prev;
-    node->prev->next = node->next;
-    node->prev = node;
-    if(node == Head()){
+		if(node == Head()){
       head = head->next;
     }
     // if(num_entries == 1){
@@ -71,6 +68,11 @@ public:
       //Clear the Head Pointer
       head = NULL;
     }
+    ret = node;
+    node->next->prev = node->prev;
+    node->prev->next = node->next;
+    node->prev = node;
+
     num_entries--;
     return ret;
   }

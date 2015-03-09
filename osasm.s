@@ -74,6 +74,7 @@ PendSV_Handler                 ; 1) Saves R0-R3,R12,LR,PC,PSR
     STR     SP, [R1]           ; 5) Save SP into TCB
 ;    LDR     R1, [R1,#4]        ; 6) R1 = RunningThread->next
     LDR     R1, =RunningThreadNext;
+    LDR     R1, [R1]
     STR     R1, [R0]           ;    RunningThread = R1
     LDR     SP, [R1]           ; 7) new thread SP; SP = RunningThread->sp;
     POP     {R4-R11}           ; 8) restore regs r4-11

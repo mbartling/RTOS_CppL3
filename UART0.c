@@ -31,7 +31,6 @@
 #include "inc/tm4c123gh6pm.h"
 //#include <stdio.h>
 
-#include "FIFO.h"
 #include "FIFO.hpp"
 #include "UART0.h"
 #include "priority.h"

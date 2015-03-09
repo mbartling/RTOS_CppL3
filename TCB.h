@@ -6,7 +6,9 @@
 #define MAXNUMTHREADS 10  /** Maximum number of threads*/
 #define STACKSIZE 100 /** number of 32bit words in stack */
 
-#define NUM_PRIORITIES 7
+//#define NUM_PRIORITIES 7
+#define NUMPRIORITIES 7
+
 /*Note: use 16 words per context switch*/
 
 typedef struct _Tcb {
@@ -33,6 +35,7 @@ void TCB_RemoveRunningAndSleep(void);
 void TCB_Configure_IdleThread(void);
 void TCB_PushBackRunning(void);
 void TCB_Scheduler(void);
+Tcb_t* TCB_RemoveThread(Tcb_t* thread);
 // void TCB_PromotePriority(void);
 void TCB_PushBackThread(Tcb_t* thread);
 //void dummy(void); // Tests if function pointer set properly
