@@ -72,6 +72,7 @@ public:
     node->next->prev = node->prev;
     node->prev->next = node->next;
     node->prev = node;
+		//node->next = node;
 
     num_entries--;
     return ret;

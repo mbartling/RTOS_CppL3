@@ -19,7 +19,8 @@ void Idle(void){
 template <int NUM_PRIORITIES, int MAX_NUM_THREADS> class Scheduler {
 private:
   Tcb_List PriorityList[NUM_PRIORITIES+1];
-  List<Tcb_t*, MAX_NUM_THREADS> SleepingList;
+  //List<Tcb_t*, MAX_NUM_THREADS> SleepingList;
+  Tcb_List SleepingList;
   // Tcb_t* idleThread;
 public:
 
@@ -49,7 +50,10 @@ Tcb_t* GetNext(void){
     }
   }
   /*Should not get here*/
-	return thread;
+	//Recover
+	push_back(idleThread);
+	return idleThread;
+	//return thread;
 }
 
 /**
@@ -75,6 +79,7 @@ void push_back(Tcb_t* thread){
 }
 
 void UpdateSleeping(void) {
+/*
   typename List<Tcb_t*, MAX_NUM_THREADS>::iterator iter;
   Tcb_t* thread;
   for(iter = SleepingList.begin(); iter != SleepingList.end(); ++iter){
@@ -93,8 +98,21 @@ void UpdateSleeping(void) {
   }
   SleepingList.clean();      /// Update the sleeping lists, remove entries marked 
                               /// for deletion
+	*/
+	if(SleepingList.isEmpty()){
+		return;
+	}
+	Tcb_t* thread = SleepingList.Head();
+	while(thread->next != SleepingList.Head()){
+		(thread->state_sleep)--;
+		if(thread->state_sleep < 1){
+			thread = SleepingList.remove_node(thread);
+			thread->state_sleep = 0;
+			push_back(thread);
+		}
+		thread = thread->next;
   }
-
+}
 
 };
 #endif /*__SCHEDULER_HPP__*/

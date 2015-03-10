@@ -17,9 +17,9 @@
 //#define Task4
 //#define Task5
 // #define Task6 //testing the fft filter
-//#define mainTaskLab2
+#define mainTaskLab2
 //#define Testmain5
-#define Testmain6
+//#define Testmain6
 //*********Prototype for FFT in cr4_fft_64_stm32.s, STMicroelectronics
 #ifdef __cplusplus
 extern "C" {
@@ -345,10 +345,12 @@ int main(void){
 
   NumCreated = 0 ;
 // create initial foreground threads
+//  NumCreated += OS_AddThread(&Interpreter,128,2); 
+//  NumCreated += OS_AddThread(&Consumer,128,1); 
+//  NumCreated += OS_AddThread(&PID,128,3);  // Lab 3, make this lowest priority
   NumCreated += OS_AddThread(&Interpreter,128,2); 
   NumCreated += OS_AddThread(&Consumer,128,1); 
   NumCreated += OS_AddThread(&PID,128,3);  // Lab 3, make this lowest priority
- 
   OS_Launch(TIME_2MS); // doesn't return, interrupts enabled in here
   return 0;            // this never executes
 }

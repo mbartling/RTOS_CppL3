@@ -199,7 +199,7 @@ void OS_InitSemaphore(Sema4Type *semaPt, long value) {
 // In Lab 3, you can ignore the stackSize fields
 int OS_AddThread(void(*task)(void), 
   unsigned long stackSize, unsigned long priority){
-  if(priority > 5){
+  if(priority > 6){
     return 0;
   }
   long status;
