@@ -19,7 +19,7 @@
 // #define Task6 //testing the fft filter
 #define mainTaskLab2
 //#define Testmain5
-//#define Testmain6
+//#define Testmain7
 //*********Prototype for FFT in cr4_fft_64_stm32.s, STMicroelectronics
 #ifdef __cplusplus
 extern "C" {
@@ -172,10 +172,12 @@ void SW1Push(void){
   }
 }
 void print_hist(void){
+	printf("\n====================\n");
 	printf("Jitter Histogram\n");
 	for(int i = 0; i < 64; i++){
 		printf("%ld\t", JitterHistogram[i]);
 	}
+	printf("\n====================\n");
 	OS_Kill();
 }
 //************SW2Push*************
@@ -183,14 +185,18 @@ void print_hist(void){
  //Called when SW2 Button pushed, Lab 3 only
  //Adds another foreground task
  //background threads execute once and return
+unsigned long lastMsTime = 0;
 void SW2Push(void){
-   fputc('c', stdout); 
-    if(OS_MsTime() > 20){ // debounce
-    if(OS_AddThread(&print_hist,100,5)){
+   //fputc('c', stdout);
+		unsigned long currentMsTime = OS_MsTime();
+    if(currentMsTime - lastMsTime > 20){ // debounce
+    if(OS_AddThread(&print_hist,100,1)){
       NumCreated++; 
     }
-    OS_ClearMsTime();  // at least 20ms between touches
+    //OS_ClearMsTime();  // at least 20ms between touches
+		lastMsTime = currentMsTime;
   }
+		
 }
 //--------------end of Task 2-----------------------------
 

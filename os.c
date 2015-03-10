@@ -68,7 +68,7 @@ inline void Schedule_and_Context_Switch(void){
   NVIC_INT_CTRL_R = NVIC_INT_CTRL_PEND_SV;
 }
 
-int Timer1APeriod = TIME_1MS/10000; // .1us 
+int Timer1APeriod = TIME_1MS/1000; // .1us 
 typedef void (*func)();
 List<func, MAXNUMTHREADS> periodicTaskList[NUMPRIORITIES];
 
@@ -547,8 +547,8 @@ void GPIOPortF_Handler(void) {
 
 
 void Timer2A_Handler(void) {
-   //long status;
-   //status = StartCritical();
+//   long status;
+//   status = StartCritical();
    lastPeriod = thisPeriod;
    
    //update counters  
@@ -578,6 +578,7 @@ void Timer2A_Handler(void) {
    } 
    thisPeriod = minCounter;
    TIMER2_ICR_R = TIMER_ICR_TATOCINT ;   //clearing the interrupt 
+	// TIMER2_TAILR_R = minCounter- 1;       // timer start value (when ever timer gets to zero, it reloads this value)
 
    Timer2A_Init((uint32_t)minCounter);
    //EndCritical(status);
