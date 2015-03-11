@@ -61,14 +61,14 @@ periodicThread periodicThreadList[MaxNumberOfPeriodicThreads];
 
 
 inline void Schedule_and_Context_Switch(void){
-  long status = StartCritical();
   add_trace(TRACE_CS);
+//  long status = StartCritical();
   TCB_Scheduler();
-  EndCritical(status);
+//  EndCritical(status);
   NVIC_INT_CTRL_R = NVIC_INT_CTRL_PEND_SV;
 }
 
-int Timer1APeriod = TIME_1MS/1000; // .1us 
+int Timer1APeriod = TIME_1MS; // .1us 
 typedef void (*func)();
 List<func, MAXNUMTHREADS> periodicTaskList[NUMPRIORITIES];
 
@@ -88,7 +88,7 @@ void OS_Init(void)
 #ifdef SYSTICK_EN
   SysTick_Init(160000); //2 Ms period default
 #endif
-//  Timer1A_Init((uint32_t)Timer1APeriod);
+  Timer1A_Init((uint32_t)Timer1APeriod);
   UART0_Init();
   //EnableInterrupts(); 
   TCB_Configure_IdleThread(); //Set up the idle thread
@@ -203,12 +203,12 @@ int OS_AddThread(void(*task)(void),
     return 0;
   }
   long status;
-  status = StartCritical();
+
   add_trace(TRACE_ADD_THREAD);
   // if(ThreadCount > (MAXNUMTHREADS - 1)){
   if(!TCB_Available())
 	{
-    EndCritical(status);
+//    EndCritical(status);
     return 0;
   }
 
@@ -222,6 +222,7 @@ int OS_AddThread(void(*task)(void),
 #else
   thread->priority = priority;
 #endif
+	status = StartCritical();
   TCB_InsertNodeBeforeRoot(thread);
 
   ThreadCount++;
@@ -389,10 +390,15 @@ int OS_AddSW2Task(void(*task)(void), unsigned long priority) {
 }
 
 unsigned long OS_Time() {
-    return systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R;
+    //return systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R;
+		return systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R;
    // return systemTime* (Timer1APeriod);
 }
-
+float OS_TimeF() {
+    //return systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R;
+		return (float)(systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R);
+   // return systemTime* (Timer1APeriod);
+}
 unsigned long OS_TimeDifference(unsigned long start, unsigned long stop) {
     return stop - start;
 }
@@ -415,10 +421,12 @@ void OS_ClearMsTime(void) {
  * It is ok to make the resolution to match the first call to OS_AddPeriodicThread
  */
 unsigned long OS_MsTime(void) {
-    return  (systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R)/TIME_1MS;
+    //return  (systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R)/TIME_1MS;
+	return (systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R)/TIME_1MS;
 }
 float OS_MsTimeF(void) {
-    return  (float)(systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R)/((float)TIME_1MS);
+    //return  (float)(systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R)/((float)TIME_1MS);
+	return (float)(systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R)/((float)TIME_1MS);
 }
  /********* OS_Fifo_Init ************
  * Initialize the Fifo to be empty
@@ -430,8 +438,9 @@ float OS_MsTimeF(void) {
  *    e.g., 4 to 64 elements
  *    e.g., must be a power of 2,4,8,16,32,64,128
  */
-#define FIFOSIZE 32 
+#define FIFOSIZE 128 
 FifoP<unsigned long , FIFOSIZE> OS_Fifo;
+//FifoP_SP2MC<unsigned long , FIFOSIZE> OS_Fifo;
 void OS_Fifo_Init(unsigned long size) {
 }
 
@@ -522,10 +531,14 @@ void OS_setupTest(void)
  * specific implementation for Lab2: calls that function that is was request once the osADDSW1Task was called
  */
 void GPIOPortF_Handler(void) {
+		//unsigned int boardres = Board_Input();
     if (GPIO_PORTF_RIS_R&0x10) {
+	  //if(boardres & 0x10){
       GPIO_PORTF_ICR_R = 0x10; //acknowlegement
       SW1GlobalTask();
-    }else if (GPIO_PORTF_RIS_R&0x1){
+    } 
+		else if (GPIO_PORTF_RIS_R&0x1){
+		//if(boardres & 0x1){
       GPIO_PORTF_ICR_R = 0x1; //acknowlegement
       SW2GlobalTask();
     }
@@ -550,7 +563,8 @@ void Timer2A_Handler(void) {
 //   long status;
 //   status = StartCritical();
    lastPeriod = thisPeriod;
-   
+   TIMER2_ICR_R = TIMER_ICR_TATOCINT ;   //clearing the interrupt 
+
    //update counters  
    for (int i = 0; i < numberOfPeriodicCounters; i++) {
      periodicThreadList[i].counter -= lastPeriod;
@@ -577,7 +591,7 @@ void Timer2A_Handler(void) {
     }
    } 
    thisPeriod = minCounter;
-   TIMER2_ICR_R = TIMER_ICR_TATOCINT ;   //clearing the interrupt 
+//   TIMER2_ICR_R = TIMER_ICR_TATOCINT ;   //clearing the interrupt 
 	// TIMER2_TAILR_R = minCounter- 1;       // timer start value (when ever timer gets to zero, it reloads this value)
 
    Timer2A_Init((uint32_t)minCounter);
@@ -592,19 +606,23 @@ void Timer1A_Handler(void) {
 }
 
 void SysTick_Handler(void){
-    long status;
-    status = StartCritical();
+    //long status;
     add_trace(TRACE_SYSTICK);
     // TCB_PromotePriority();
+		unsigned long now = OS_Time();
+
     TCB_UpdateSleeping();
+		//status = StartCritical();
+
     // TCB_PushBackRunning();
+		//EndCritical(status);
+		unsigned long end = OS_Time();
 
     Schedule_and_Context_Switch();
     
-
     //NVIC_INT_CTRL_R = NVIC_INT_CTRL_PEND_SV;
     systemTime3++;
-    EndCritical(status);
+   
 }
 
 

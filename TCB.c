@@ -61,8 +61,11 @@ void TCB_PushBackThread(Tcb_t* thread){
  */
 void TCB_Scheduler(void){
   add_trace(TRACE_SCHEDULER);
+	RunningThread->endTime = OS_TimeF();
+	RunningThread->timeDiff = (RunningThread->endTime - RunningThread->startTime)*0.0000000125;
 	RunningThreadNext = RunningThread->next;
   RunningThreadNext = mScheduler.GetNext();
+	RunningThreadNext->startTime = OS_TimeF();
   return;
 }
 

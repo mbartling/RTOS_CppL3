@@ -20,6 +20,9 @@ typedef struct _Tcb {
   int32_t state_sleep;//!< used to suspend execution: OFFSET 20
   uint32_t priority;   //!< Thread priority: OFFSET 24
   int32_t state_blocked; //!<Used in lab 3: OFFSET 28
+	float startTime;
+	float endTime;
+	float timeDiff;
   int32_t stack[STACKSIZE]; //!<Thread stack: OFFSET 32
 } Tcb_t;
 

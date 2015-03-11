@@ -497,7 +497,9 @@ int ADC_Collect(unsigned int channelNum, unsigned int fs, void (*task)(unsigned 
   ADC0_SAC_R = 0x02;  // 4x Hardware Oversample
 
   ADC0_SSMUX2_R = (channelNum << 4) | channelNum;
-  ADC0_SSCTL2_R = 0x064;          // set flag and end, 2 samples at a time                      
+  //ADC0_SSCTL2_R = 0x064;          // set flag and end, 2 samples at a time                      
+	ADC0_SSCTL2_R = 0x060;          // set flag and end, 2 samples at a time                      
+
   ADC0_IM_R |= 0x04;             // enable SS2 interrupts
   ADC0_ACTSS_R |= 0x04;          // enable sample sequencer 2
   NVIC_PRI4_R = (NVIC_PRI4_R & 0xFFFF00FF)|0x00004000; //priority 2

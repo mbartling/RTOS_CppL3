@@ -1599,7 +1599,6 @@ void ST7735_LCD_Init() {
 void ST7735_Message(IN int device, IN int line, IN char* string, IN long value)
 {
   char str_buff[32];
-  OS_Wait(&LCDFree); 
   if(line < 0 || line > 3){
     DEBUG_ST7735_PRINTF("Invalid Line, returning%c", '\n');
     return;
@@ -1614,18 +1613,21 @@ void ST7735_Message(IN int device, IN int line, IN char* string, IN long value)
 //  uint32_t StX_save = StX;
 
   // Set cursor Position
-  StY = device*8 + line;
-  StX = 0;
-  ST7735_DrawString(0,StY,"                     ",StTextColor);
+
+  ST7735_DrawString(0,device*8 + line,"                     ",StTextColor);
   sprintf(str_buff, "%s %d", string, value);
   // ST7735_OutString(string);
-	ST7735_OutString(str_buff);
+	OS_Wait(&LCDFree); 
 
+  StY = device*8 + line;
+  StX = 0;
+	ST7735_OutString(str_buff);
+  OS_Signal(&LCDFree); 
 	// Get a white line
 	uint16_t color = ST7735_Color565(255, 255, 255);
 	//79 = 160/2 - 1 = _height/2 - 1
   ST7735_DrawFastHLine(0, 79, _width, color);
 
-  OS_Signal(&LCDFree); 
+
   return;
 }

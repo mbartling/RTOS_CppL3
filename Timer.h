@@ -37,7 +37,7 @@
 
 #ifndef __TIMER_H__// do not include more than once
 #define __TIMER_H__
-
+#include <stdint.h>
 void Timer0A_Init(uint32_t period);
 // high is number of clock cycles output is high ((1/clockfreq) units)
 // duty cycle = high/period

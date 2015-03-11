@@ -163,13 +163,18 @@ unsigned long myId = OS_Id();
 // Called when SW1 Button pushed
 // Adds another foreground task
 // background threads execute once and return
+unsigned long lastMsTime1 = 0;
 void SW1Push(void){
-    if(OS_MsTime() > 20){ // debounce
+	unsigned long currentMsTime = OS_MsTime();
+    if(currentMsTime - lastMsTime1 > 20){ // debounce
+    //if(OS_MsTime() > 20){ // debounce
     if(OS_AddThread(&ButtonWork,100,4)){
       NumCreated++; 
     }
     OS_ClearMsTime();  // at least 20ms between touches
   }
+	lastMsTime1 = currentMsTime;
+
 }
 void print_hist(void){
 	printf("\n====================\n");
@@ -190,7 +195,7 @@ void SW2Push(void){
    //fputc('c', stdout);
 		unsigned long currentMsTime = OS_MsTime();
     if(currentMsTime - lastMsTime > 20){ // debounce
-    if(OS_AddThread(&print_hist,100,1)){
+    if(OS_AddThread(&print_hist,100,3)){
       NumCreated++; 
     }
     //OS_ClearMsTime();  // at least 20ms between touches
@@ -259,7 +264,7 @@ unsigned long myId = OS_Id();
 // outputs: none
 void Display(void){ 
 unsigned long data,voltage;
-  //ST7735_Message(0,1,"Run length = ",(RUNLENGTH)/FS);   // top half used for Display
+  ST7735_Message(0,1,"Run length = ",(RUNLENGTH)/FS);   // top half used for Display
   while(NumSamples < RUNLENGTH) { 
     data = OS_MailBox_Recv();
     voltage = 3000*data/4095;               // calibrate your device so voltage is in mV
@@ -302,7 +307,8 @@ unsigned long myId = OS_Id();
     }
     PIDWork++;        // calculation finished
   }
-  for(;;){ }          // done
+  //for(;;){ }          // done
+	OS_Kill();
 }
 //--------------end of Task 4-----------------------------
 
@@ -341,7 +347,7 @@ int main(void){
   ST7735_LCD_Init();
 //********initialize communication channels
   OS_MailBox_Init();
-  OS_Fifo_Init(32);    // ***note*** 4 is not big enough*****
+  OS_Fifo_Init(64);    // ***note*** 4 is not big enough*****
 
 //*******attach background tasks***********
   OS_AddSW1Task(&SW1Push,2);

@@ -298,7 +298,8 @@ void OS_ClearMsTime(void);
  */
 
 unsigned long OS_MsTime(void);
-
+float OS_TimeF(void);
+float OS_MsTimeF(void);
 /********* OS_Launch *************** 
  * start the scheduler, enable interrupts
  * Inputs: number of 12.5ns clock cycles for each time slice
