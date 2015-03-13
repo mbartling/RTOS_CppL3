@@ -18,12 +18,12 @@ volatile int traceLoc = 0;
 trace_t sys_trace[TRACE_DEPTH];
 
 void add_trace(traceName trName){
-  if(traceLoc == TRACE_DEPTH){
-    traceLoc = 0;
-  }
-  trace_t *trace = &sys_trace[traceLoc];
-  trace->trName = trName;
-  trace->tid = OS_Id();
-  trace->time = OS_Time(); 
-  traceLoc++;
+//  if(traceLoc == TRACE_DEPTH){
+//    traceLoc = 0;
+//  }
+//  trace_t *trace = &sys_trace[traceLoc];
+//  trace->trName = trName;
+//  trace->tid = OS_Id();
+//  trace->time = OS_Time(); 
+//  traceLoc++;
 } 

@@ -62,9 +62,9 @@ periodicThread periodicThreadList[MaxNumberOfPeriodicThreads];
 
 inline void Schedule_and_Context_Switch(void){
   add_trace(TRACE_CS);
-//  long status = StartCritical();
+  long status = StartCritical();
   TCB_Scheduler();
-//  EndCritical(status);
+  EndCritical(status);
   NVIC_INT_CTRL_R = NVIC_INT_CTRL_PEND_SV;
 }
 
@@ -606,18 +606,18 @@ void Timer1A_Handler(void) {
 }
 
 void SysTick_Handler(void){
-    //long status;
+    long status;
+		status = StartCritical();
     add_trace(TRACE_SYSTICK);
     // TCB_PromotePriority();
 		unsigned long now = OS_Time();
 
     TCB_UpdateSleeping();
-		//status = StartCritical();
+		//
 
     // TCB_PushBackRunning();
-		//EndCritical(status);
 		unsigned long end = OS_Time();
-
+		EndCritical(status);
     Schedule_and_Context_Switch();
     
     //NVIC_INT_CTRL_R = NVIC_INT_CTRL_PEND_SV;

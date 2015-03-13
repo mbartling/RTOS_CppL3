@@ -79,7 +79,7 @@ void Timer2A_Init(uint32_t period){
   //TIMER0_TAMATCHR_R = period-high-1; // duty cycle = high/period
   TIMER2_CTL_R |= TIMER_CTL_TAEN;  // enable timer0A 16-b (this step is needed to enable the timer (do right before wanting the timer 
   TIMER2_IMR_R  = 0x1;
-  NVIC_PRI4_R = Timer2APriority;
+  NVIC_PRI5_R = Timer2APriority;
   NVIC_EN0_R =  1 <<23;
 }
 void Timer1A_Init(uint32_t period){
