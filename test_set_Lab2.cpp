@@ -8,7 +8,7 @@
 #include "Timer.h"
 #include "interpreter.h"
 #include "Perf.h"
-
+#include <math.h>
 //#define TESTMAIN 4
 //#define Task1
 //#define Task1_5 // to be able to run this task properly, make sure to comment out the taks run in Timer2A_Handler
@@ -17,9 +17,9 @@
 //#define Task4
 //#define Task5
 // #define Task6 //testing the fft filter
-#define mainTaskLab2
+//#define mainTaskLab2
 //#define Testmain6
-//#define Testmain7
+#define Testmain8
 //*********Prototype for FFT in cr4_fft_64_stm32.s, STMicroelectronics
 #ifdef __cplusplus
 extern "C" {
@@ -102,9 +102,9 @@ int RandomDelay;
 int JitterValues[100];
 unsigned long DASoutput;
 void DAS(void){ 
-unsigned long input;  
-unsigned static long LastTime;  // time at previous ADC sample
-unsigned long thisTime;         // time at current ADC sample
+	unsigned long input;  
+	unsigned static long LastTime;  // time at previous ADC sample
+	unsigned long thisTime;         // time at current ADC sample
 //long jitter;                    // time between measured and expected, in us
     if(NumSamples < RUNLENGTH){   // finite time run
     PE0 ^= 0x01;
@@ -307,8 +307,8 @@ unsigned long myId = OS_Id();
     }
     PIDWork++;        // calculation finished
   }
-  //for(;;){ }          // done
-	OS_Kill();
+  for(;;){ }          // done
+	//OS_Kill();
 }
 //--------------end of Task 4-----------------------------
 
@@ -363,7 +363,7 @@ int main(void){
   NumCreated += OS_AddThread(&Interpreter,128,2); 
   NumCreated += OS_AddThread(&Consumer,128,1); 
   NumCreated += OS_AddThread(&PID,128,3);  // Lab 3, make this lowest priority
-  OS_Launch(TIME_2MS); // doesn't return, interrupts enabled in here
+  OS_Launch(TIME_1MS*10); // doesn't return, interrupts enabled in here
   return 0;            // this never executes
 }
 #endif
@@ -961,6 +961,95 @@ int main(void){
  NumCreated = 0 ;
  NumCreated += OS_AddThread(&Thread8,128,2); 
  OS_Launch(TIME_1MS/10); // 100us, doesn't return, interrupts enabled in here
+ return 0;             // this never executes
+}
+#endif
+
+#ifdef Testmain8
+// int Testmain7(void){       // Testmain7
+void produceCrap(void){
+	unsigned long data = 0;
+	while(1){
+		//OS_MailBox_Send(data);
+		if(OS_Fifo_Put(data) == 0){ // send to consumer
+      DataLost++;
+    } 
+		//OS_Sleep(1);
+		data++;
+	}
+}
+void produceCrap2(void){
+	unsigned long data = 0;
+	while(1){
+		OS_MailBox_Send(data);
+		//if(OS_Fifo_Put(data) == 0){ // send to consumer
+    //  DataLost++;
+    //} 
+		//OS_Sleep(1);
+		data++;
+	}
+}
+int numPlaces(int n){
+	if(n == 0){
+		return 1;
+	}
+	return (int) floor(log10(abs((float)n))) + 1;
+}
+unsigned long crapData1;
+unsigned long crapData2;
+void consumeCrap(void){
+	unsigned long data = 0;
+	int numBS = 0;
+	while(1){
+		//data = OS_MailBox_Recv();
+		crapData1 = OS_Fifo_Get();
+		numBS = numPlaces(crapData1);
+//		for(int i = 0; i < numBS; i++){
+//			putchar('\b');
+//		}
+//		printf("%d", crapData1);
+	}
+}
+void consumeCrap2(void){
+	unsigned long data = 0;
+	int numBS = 0;
+	while(1){
+		crapData2 = OS_MailBox_Recv();
+		//data = OS_Fifo_Get();
+		numBS = numPlaces(crapData2);
+//		for(int i = 0; i < numBS; i++){
+//			putchar('\b');
+//		}
+//		printf("%d", data);
+	}
+}
+void doCrap(void){
+	int numBS = numPlaces(crapData1);
+		for(int i = 0; i < numBS; i++){
+			putchar('\b');
+		}
+		putchar('\b');
+		numBS = numPlaces(crapData2);
+		for(int i = 0; i < numBS; i++){
+			putchar('\b');
+		}
+		printf("%d\t%d", crapData1, crapData2);
+
+}
+int main(void){
+ PortE_Init();
+ OS_Init();           // initialize, disable interrupts
+ OS_MailBox_Init();
+ OS_Fifo_Init(64);    // ***note*** 4 is not big enough*****
+
+ NumCreated = 0 ;
+ NumCreated += OS_AddThread(&produceCrap,128,2); 
+ NumCreated += OS_AddThread(&consumeCrap,128,2); 
+ NumCreated += OS_AddThread(&produceCrap,128,3); 
+ NumCreated += OS_AddThread(&consumeCrap,128,3); 
+ OS_AddPeriodicThread(&doCrap,(100*TIME_1MS),0);   // 10 ms, higher priority
+
+ OS_Launch(TIME_1MS); // 100us, doesn't return, interrupts enabled in here
  return 0;             // this never executes
 }
 #endif

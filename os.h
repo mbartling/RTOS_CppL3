@@ -39,6 +39,7 @@ void OS_Init(void);
  * output: none
  */
 
+uint32_t OS_GetPriority(void);
 void OS_InitSemaphore(Sema4Type *semaPt, long value); 
 
  /********* OS_Wait ************

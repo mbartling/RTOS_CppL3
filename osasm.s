@@ -32,13 +32,19 @@
 
         EXTERN  RunningThread            ; currently running thread
         EXTERN  RunningThreadNext        ; Next Running thread
+		;EXTERN  dump_trace            	 ; When we crash
+
         EXPORT  OS_DisableInterrupts
         EXPORT  OS_EnableInterrupts
         EXPORT  StartOS
         EXPORT  ContextSwitch
         ;EXPORT  SysTick_Handler
         EXPORT  PendSV_Handler
+		;EXPORT  HardFault_Handler
 
+;HardFault_Handler
+;	BL dump_trace
+	
 OS_DisableInterrupts
         CPSID   I
         BX      LR

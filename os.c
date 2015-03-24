@@ -15,6 +15,8 @@
 #define STACKSIZE 100
 #define SYSTICK_EN 1  
 #define MaxNumberOfPeriodicThreads 10
+#define FIFOSIZE 32 
+
 //------------------------------------
 //------------------------------------
 //#define HACK 1
@@ -117,7 +119,6 @@ void OS_Wait(Sema4Type *semaPt) {
   }
   EndCritical(status);
   //   DisableInterrupts();
-  //   //while(__ldrex(&(semaPt->Value)) <= 0){
 		// while(semaPt->Value <= 0){
   //       EnableInterrupts();
   //       OS_Suspend();
@@ -144,7 +145,9 @@ void OS_Signal(Sema4Type *semaPt) {
       TCB_PushBackThread(thread);
       // TCB_PushBackRunning();
       EndCritical(status);
-      Schedule_and_Context_Switch();
+      if(OS_GetPriority() > thread->priority){
+        Schedule_and_Context_Switch();
+      }
     }
     EndCritical(status);
 }
@@ -238,6 +241,12 @@ int OS_AddThread(void(*task)(void),
 unsigned long OS_Id(void) {
 	Tcb_t * runningThread = TCB_GetRunningThread();
 	return runningThread->id;
+}
+
+uint32_t OS_GetPriority(void){
+  Tcb_t * runningThread = TCB_GetRunningThread();
+  return runningThread->priority;
+
 }
 
 //******** OS_AddPeriodicThread *************** 
@@ -438,7 +447,6 @@ float OS_MsTimeF(void) {
  *    e.g., 4 to 64 elements
  *    e.g., must be a power of 2,4,8,16,32,64,128
  */
-#define FIFOSIZE 128 
 FifoP<unsigned long , FIFOSIZE> OS_Fifo;
 //FifoP_SP2MC<unsigned long , FIFOSIZE> OS_Fifo;
 void OS_Fifo_Init(unsigned long size) {
