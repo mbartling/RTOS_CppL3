@@ -2,7 +2,7 @@
 #define __PERF_H__
 #include <stdint.h>
 #include <stdio.h>
-#include "os.h"
+#include "../os/os.h"
 extern unsigned long NumCreated;   // number of foreground threads created
 extern unsigned long PIDWork;      // current number of PID calculations finished
 extern unsigned long FilterWork;   // number of digital filter calculations finished

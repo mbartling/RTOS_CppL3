@@ -34,7 +34,7 @@
 #include <stdio.h>
 #include "inc/tm4c123gh6pm.h"
 #include "Timer.h"
-#include "Priority.h"
+#include "priority.h"
 //#define TIMER_MR_TACDIR                  0x1         //determining the direction of the counter (in this case up)
 #define TIMER_MR_MR                      0x2 //timer mode (periodic)
 #define TIMER_CFG_16_BIT        0x00000004  // 16-bit timer configuration,

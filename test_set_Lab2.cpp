@@ -1,4 +1,4 @@
-#include "OS.h"
+#include "os.h"
 #include "inc/tm4c123gh6pm.h"
 #include "ST7735.h"
 #include "ADC.h"
