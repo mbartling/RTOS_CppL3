@@ -137,7 +137,7 @@ void OS_Wait(Sema4Type *semaPt) {
 // output: none
 void OS_Signal(Sema4Type *semaPt) {
     long status = StartCritical();
-    add_trace(TRACE_SIGNAL);
+//    add_trace(TRACE_SIGNAL);
     (semaPt->Value) = (semaPt->Value) + 1;
     if(semaPt->Value <= 0){
       Tcb_t* thread = semaPt->waitList.pop_front();

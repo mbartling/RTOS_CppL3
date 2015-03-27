@@ -56,12 +56,14 @@ void add_trace(traceName trName){
   traceLoc++;
 } 
 
+char buff[64];
+
 void dump_trace(){
 	int i = 0;
 	for(i = 0; i < TRACE_DEPTH; i++){
 		sys_trace[i].print();
 	}
-	printf("\n=============\n");
+	sprintf(buff, "\n=============\n");
 	printf("Trace Loc: %d", traceLoc);
 }
 

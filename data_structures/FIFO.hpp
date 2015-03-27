@@ -248,14 +248,14 @@ public:
 
   bool Put(T data){
     T volatile *nextPutPt;
+    this->Wait_s2();
+    this->Wait_s1();
     nextPutPt = PutPt + 1;
 
     if(nextPutPt == &FifoData[FifoSize]){
       nextPutPt = &FifoData[0];
     }
 
-      this->Wait_s2();
-      this->Wait_s1();
       *(PutPt) = data;
       PutPt = nextPutPt;
       this->Signal_s1();
@@ -263,7 +263,9 @@ public:
   }
 
   bool Get(T *data){
-
+		if(GetPt == PutPt){
+			return FAIL;
+		}
     *data = *(GetPt++);
     if(GetPt == &FifoData[FifoSize]){
       GetPt = &FifoData[0];

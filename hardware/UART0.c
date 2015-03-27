@@ -135,7 +135,8 @@ void static copyHardwareToSoftware(void){
 void static copySoftwareToHardware(void){
   char letter;
   // while(((UART0_FR_R&UART_FR_TXFF) == 0) && (Tx0Fifo_Size() > 0)){
-  while(((UART0_FR_R&UART_FR_TXFF) == 0) && (Tx0Fifo.getSize() > 0)){
+  //while(((UART0_FR_R&UART_FR_TXFF) == 0) && (Tx0Fifo.getSize() > 0)){
+	while(((UART0_FR_R&UART_FR_TXFF) == 0) && (Tx0Fifo.getSize() > 0)){
     // Tx0Fifo_Get(&letter);
     add_trace(TRACE_TX_GET);
     Tx0Fifo.Get(&letter);
