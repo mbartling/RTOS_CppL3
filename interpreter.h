@@ -101,7 +101,7 @@ int Command_disp_message(char * args)
   sscanf(args, "%d %d %[^\t\r\n]", &disp, &line, str);
 	//str = args + n;
 	printf("\n Got disp=%d\tline=%d, %s\n", disp, line, str);
-  ST7735_Message(disp, line, str, 0);    
+//  ST7735_Message(disp, line, str, 0);    
 
   return -1;
 }
