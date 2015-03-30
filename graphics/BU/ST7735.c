@@ -1596,7 +1596,6 @@ Sema4Type LCDFree;
 void ST7735_LCD_Init() {
     OS_InitSemaphore(&LCDFree, 1);
 }
-/*
 void ST7735_Message(IN int device, IN int line, IN char* string, IN long value)
 {
   char str_buff[32];
@@ -1630,70 +1629,5 @@ void ST7735_Message(IN int device, IN int line, IN char* string, IN long value)
   ST7735_DrawFastHLine(0, 79, _width, color);
 
 
-  return;
-}
-
-*/
-
-// full scaled defined as 3V
-// Input is 0 to 511, 0 => 159 and 511 => 32
-
-void ST7735_PlotPoint(long y){long j;
-  if(y<Ymin) y=Ymin;
-  if(y>Ymax) y=Ymax;
-  // X goes from 0 to 127
-  // j goes from 159 to 32
-  // y=Ymax maps to j=32
-  // y=Ymin maps to j=159
-  j = 32+(127*(Ymax-y))/Yrange;
-  if(j<32) j = 32;
-  if(j>159) j = 159;
-  ST7735_DrawPixel(X, j, ST7735_BLUE) ;
-}
-// *************** ST7735_PlotdBfs ********************
-// Used in the amplitude versus frequency plot, plot bar point at y
-// 0 to 0.625V scaled on a log plot from min to max
-// It does output to display 
-// Inputs: y is the y ADC value of the bar plotted
-// Outputs: none
-void ST7735_PlotdBfs(long y){
-long j;
-   y = y/2; // 0 to 2047
-  if(y<0) y=0;
-  if(y>511) y=511;
-  // X goes from 0 to 127
-  // j goes from 159 to 32
-  // y=511 maps to j=32
-  // y=0 maps to j=159
-  j = dBfs[y];
-  ST7735_DrawFastVLine(X, j, 159-j, ST7735_BLACK);
-
-}
-Sema4Type mutex;
-void grapics_init(void){
-  OS_InitSemaphore(&mutex, 1);
-}
-
-long data[64];
-void plot(long* y, int mode){
-  //static int lastmode;
-//OS_Wait(&mutex);
-int count = 0;
-for(int i = 0; i < count; i++){
-  data[i] = y[i];
-}
-//  OS_Wait(printingSem);
-  while(count < 64){
-  if(mode == 1){
-    ST7735_PlotdBfs(y[count]);
-  }
-  else{
-    ST7735_PlotPoint(y[count]);
-  }
-  count++;
-  ST7735_PlotNext();
-}
-count = 0;
-//OS_Signal(&mutex);
   return;
 }
