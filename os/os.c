@@ -447,8 +447,10 @@ float OS_MsTimeF(void) {
  *    e.g., 4 to 64 elements
  *    e.g., must be a power of 2,4,8,16,32,64,128
  */
-FifoP<unsigned long , FIFOSIZE> OS_Fifo;
+//FifoP<unsigned long , FIFOSIZE> OS_Fifo;
 //FifoP_SP2MC<unsigned long , FIFOSIZE> OS_Fifo;
+
+FifoP_loose<unsigned long , FIFOSIZE> OS_Fifo;
 void OS_Fifo_Init(unsigned long size) {
 }
 

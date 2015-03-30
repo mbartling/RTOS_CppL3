@@ -26,11 +26,16 @@ void EndCritical(long sr);    // restore I bit to previous value
 //template <typename T>
  class Fifo{
  	// enum Status {FAIL=-1, SUCCESS=0};
-  Sema4Type s1;
-  Sema4Type s2;
+
 
  public:
-	Fifo(void){
+     Sema4Type s1;
+     Sema4Type s2;
+     Sema4Type dataAvailable;
+     Sema4Type roomLeft;
+     Sema4Type internalMutex;
+
+     Fifo(void){
     OS_InitSemaphore(&s1, 1);
 		OS_InitSemaphore(&s2, 0);
 	 }
@@ -38,6 +43,15 @@ void EndCritical(long sr);    // restore I bit to previous value
     OS_InitSemaphore(&s1, bW);
     OS_InitSemaphore(&s2, W);
    }
+  
+  //for the complete case of fifo where 3 (or 4 mutex are required) 
+  Fifo(int dataAvailableValue, int roomLeftValue, int internalMutexValue){
+    OS_InitSemaphore(&dataAvailable, dataAvailableValue);
+    OS_InitSemaphore(&roomLeft, roomLeftValue);
+    OS_InitSemaphore(&internalMutex, internalMutexValue);
+  }
+
+
   //using SUCCESS = true;
   //using FAIL = false;
 
@@ -312,7 +326,7 @@ public:
     return SUCCESS;
   }
 
-  bool Get(T* data){
+  bool Get(T* data
     if(PutI == GetI){
       return(FAIL);
     }
@@ -327,4 +341,72 @@ public:
 
 };
 */
+
+template <typename T, int Size>
+class FifoP_loose: public Fifo{
+  T volatile * PutPt;
+  T volatile * GetPt;
+  T volatile FifoData[Size];
+  unsigned long FifoSize;
+  uint32_t LostData;
+  // enum Status {FAIL=-1, SUCCESS=0};
+
+public:
+  FifoP_loose() : Fifo(0, Size, 1) {
+    long sr;
+    sr = StartCritical();
+    FifoSize = Size;
+    PutPt = GetPt = &FifoData[0];
+    EndCritical(sr);
+  }
+
+  bool Put(T data){
+    T volatile *nextPutPt;
+    //OS_Wait(&roomLeft); 
+    //OS_Wait(&internalMutex); 
+    nextPutPt = PutPt + 1;
+
+    if(nextPutPt == &FifoData[FifoSize]){
+      nextPutPt = &FifoData[0];
+    }
+
+      *(PutPt) = data;
+      PutPt = nextPutPt;
+     // OS_Signal(&internalMutex);
+     // OS_Signal(&dataAvailable);
+      return(SUCCESS);
+  }
+
+  bool Get(T *data){
+	//OS_Wait(&dataAvailable);
+	//OS_Wait(&internalMutex);
+    
+    if(GetPt == PutPt){
+        return FAIL;
+    }
+    *data = *(GetPt++);
+    if(GetPt == &FifoData[FifoSize]){
+      GetPt = &FifoData[0];
+    }
+    //OS_Signal(&internalMutex); 
+   // OS_Signal(&roomLeft); 
+    return SUCCESS;
+  }
+  void setSize(unsigned long newSize){
+    FifoSize = newSize;
+  }
+  unsigned long getSize(void){
+    if(PutPt < GetPt){
+      return (unsigned long) (PutPt - GetPt + FifoSize*sizeof(T))/sizeof(T);
+    } 
+    return (unsigned long)(PutPt - GetPt)/sizeof(T);
+  } 
+  void Flush(void){
+    PutPt = GetPt = &FifoData[0];
+  }
+};
+
+
+
+
 #endif /*__FIFO_HPP__*/

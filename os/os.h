@@ -25,7 +25,7 @@ struct  Sema4{
 };
 typedef struct Sema4 Sema4Type;
 
- /********* OS_Init ************
+ /****har	***** OS_Init ************
  * initialize operating system, disable interrupts until OS_Launch
  * initialize OS controlled I/O: serial, ADC, systick, LaunchPad I/O and timers 
  * @param  input:  none
