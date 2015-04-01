@@ -124,7 +124,7 @@ unsigned long ST7735_OutString(unsigned short x, unsigned short y, unsigned char
 //        line    row from top, 0 to 7 for each device
 //        pt      pointer to a null terminated string to be printed
 //        value   signed integer to be printed
-void ST7735_Message (unsigned long d, unsigned long l, unsigned char *pt, long value);
+void ST7735_Message (unsigned long d, unsigned long l,const char *pt, long value);
 
 void ST7735_SetRotation(unsigned char m);
 
@@ -135,8 +135,8 @@ void ST7735_InvertDisplay(int i);
 // This routine clears the display 
 // Inputs: ymin and ymax are range of the plot
 // Outputs: none
-void ST7735_PlotClear(long ymin, long ymax);
 
+void ST7735_PlotClear(int32_t ymin, int32_t ymax);
 // *************** ST7735_PlotPoint ********************
 // Used in the voltage versus time plot, plot one point at y
 // It does output to display 
@@ -170,4 +170,7 @@ void ST7735_PlotNext(void);
 void grapics_init(void);
 void plot(long* y, int mode);
 void ST7735_SetCursor(uint32_t newX, uint32_t newY);
+void ST7735_LCD_Init();
+
+
 #endif

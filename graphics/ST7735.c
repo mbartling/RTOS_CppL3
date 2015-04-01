@@ -1286,6 +1286,8 @@ void ST7735_PlotPoint(int32_t y){int32_t j;
   // y=Ymax maps to j=32
   // y=Ymin maps to j=159
   j = 32+(127*(Ymax-y))/Yrange;
+//  j = 32+(127*(Ymax-y))/64;
+  
   if(j<32) j = 32;
   if(j>159) j = 159;
   ST7735_DrawPixel(X,   j,   ST7735_BLUE);
@@ -1366,8 +1368,8 @@ int32_t j;
   // y=Ymax maps to j=32
   // y=Ymin maps to j=159
   j = 32+(127*(Ymax-y))/Yrange;
-  ST7735_DrawFastVLine(X, j, 159-j, ST7735_BLACK);
-
+//  ST7735_DrawFastVLine(X, j, 159-j, ST7735_BLACK);
+  ST7735_DrawFastVLine(2*X, j, 20, ST7735_BLACK);
 }
 
 // full scaled defined as 3V
@@ -1415,7 +1417,7 @@ int32_t j;
   // y=511 maps to j=32
   // y=0 maps to j=159
   j = dBfs[y];
-  ST7735_DrawFastVLine(X, j, 159-j, ST7735_BLACK);
+  ST7735_DrawFastVLine(X, j, 159-j, ST7735_BLUE);
 
 }
 
@@ -1593,9 +1595,13 @@ void Output_Color(uint32_t newColor){ // Set color of future output
 // Input: value to display
 
 Sema4Type LCDFree;
-void ST7735_LCD_Init() {
-    OS_InitSemaphore(&LCDFree, 1);
-}
+//void ST7735_LCD_Init() {
+//    OS_InitSemaphore(&LCDFree, 1);
+//}
+
+//void ST7735_Message (unsigned long d, unsigned long l,const char *pt, long value);
+//    ;
+//}
 /*
 void ST7735_Message(IN int device, IN int line, IN char* string, IN long value)
 {
@@ -1648,7 +1654,8 @@ void ST7735_PlotPoint(long y){long j;
   j = 32+(127*(Ymax-y))/Yrange;
   if(j<32) j = 32;
   if(j>159) j = 159;
-  ST7735_DrawPixel(X, j, ST7735_BLUE) ;
+  ST7735_DrawPixel(2*X, j*(2) - 180, ST7735_BLUE) ;
+ //ST7735_PlotNext();
 }
 // *************** ST7735_PlotdBfs ********************
 // Used in the amplitude versus frequency plot, plot bar point at y
@@ -1675,25 +1682,46 @@ void grapics_init(void){
 }
 
 long data[64];
+//void plot(long* y, int mode){
+//int count = 0;
+//for(int i = 0; i < count; i++){
+//  data[i] = y[i];
+//}
+////  OS_Wait(printingSem);
+//  while(count < 64){
+//  if(mode == 1){
+//    printf("%d\n", y[count]);
+//  }
+//  count++;
+//  ST7735_PlotNext();
+//  }
+//}
 void plot(long* y, int mode){
-  //static int lastmode;
-//OS_Wait(&mutex);
-int count = 0;
-for(int i = 0; i < count; i++){
-  data[i] = y[i];
-}
-//  OS_Wait(printingSem);
-  while(count < 64){
-  if(mode == 1){
-    ST7735_PlotdBfs(y[count]);
-  }
-  else{
-    ST7735_PlotPoint(y[count]);
-  }
-  count++;
-  ST7735_PlotNext();
-}
-count = 0;
-//OS_Signal(&mutex);
-  return;
+    //static int lastmode;
+    //OS_Wait(&mutex);
+    int count = 0;
+    for(int i = 0; i < count; i++){
+        data[i] = y[i];
+    }
+    //  OS_Wait(printingSem);
+    while(count < 64){
+        if(mode == 1){
+            //printf("daaata %d\n", y[count]); 
+            ST7735_PlotdBfs(y[count]);
+        }
+        else if (mode == 0){
+            ST7735_PlotPoint(y[count]/100);
+            //printf("daaata %d\n", y[count]); 
+        } else if (mode == 2) {
+            ST7735_PlotBar(((int32_t)y[count]) & 0xFFFC);
+            //ST7735_PlotPoint((y[count] &0xFFFC));
+//            printf("count %d data %d\n",count,  y[count] & 0x0FFF); 
+        }
+        count++;
+        ST7735_PlotNext();
+    }
+//     ST7735_PlotClear(0, 1000);
+    count = 0;
+    //OS_Signal(&mutex);
+    return;
 }

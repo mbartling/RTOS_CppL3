@@ -9,7 +9,7 @@
 #include "interpreter.h"
 #include "Perf.h"
 #include <math.h>
-//#define TESTMAIN 4
+//#define TESTMAIN 2 
 //#define Task1
 //#define Task1_5 // to be able to run this task properly, make sure to comment out the taks run in Timer2A_Handler
 //#define Task2
@@ -19,7 +19,9 @@
 // #define Task6 //testing the fft filter
 //#define mainTaskLab2
 //#define Testmain6
-#define Testmain8
+//#define Testmain9
+
+#define mainTaskLab4
 //*********Prototype for FFT in cr4_fft_64_stm32.s, STMicroelectronics
 #ifdef __cplusplus
 extern "C" {
@@ -46,13 +48,13 @@ void Jitter(void){
 //unsigned long PIDWork;      // current number of PID calculations finished
 //unsigned long FilterWork;   // number of digital filter calculations finished
 //unsigned long NumSamples;   // incremented every ADC sample, in Producer
-#define FS 400            // producer/consumer sampling
+#define FS 1500// producer/consumer sampling
 #define RUNLENGTH (20*FS) // display results and quit when NumSamples==RUNLENGTH
-
+//#define RUNLENGTH (64) // display results and quit when NumSamples==RUNLENGTH
 // 20-sec finite time experiment duration 
 
 #define PERIOD TIME_500US // DAS 2kHz sampling period in system time units
-//long x[64],y[64];         // input and output arrays for FFT
+long inputArray[64],outputArrayBeforeFFT[64], outputArray[64];         // input and output arrays for FFT
 
 //---------------------User debugging-----------------------
 //unsigned long DataLost;     // data sent by Producer, but not received by Consumer
@@ -92,6 +94,28 @@ static unsigned long n=3;   // 3, 4, or 5
   y[n-3] = y[n];         // two copies of filter outputs too
   return y[n];
 } 
+
+const long h[51]={4,-2,-5,-1,5,4,-3,-5,0,6,3,
+     -4,-6,1,8,3,-8,-8,4,14,3,-18,-18,22,78,
+     105,78,22,-18,-18,3,14,4,-8,-8,3,8,1,-6,
+     -4,3,6,0,-5,-3,4,5,-1,-5,-2,4};
+static unsigned int n=50; // 51,52,… 101
+short LPFilter(long data){unsigned int k;
+    static long filterArray[102]; // this MACQ needs twice
+    long y;
+    n++;
+    if(n==102) n=51;
+    filterArray[n] = filterArray[n-51] = data; // two copies of new data
+    y = 0;
+    for(k=0;k<51;k++){
+        y = y + h[k]*filterArray[n-k]; // convolution
+    }
+    y = y/256; // fixed point
+    return y;
+}
+
+
+
 //******** DAS *************** 
 // background thread, calculates 60Hz notch filter
 // runs 2000 times/sec
@@ -149,12 +173,12 @@ void DAS(void){
 void ButtonWork(void){
 unsigned long myId = OS_Id(); 
   PE1 ^= 0x02;
-  ST7735_Message(1,0,"NumCreated =",NumCreated); 
+  //ST7735_Message(1,0,"NumCreated =",NumCreated); 
   PE1 ^= 0x02;
   OS_Sleep(50);     // set this to sleep for 50msec
-  ST7735_Message(1,1,"PIDWork     =",PIDWork);
-  ST7735_Message(1,2,"DataLost    =",DataLost);
-  ST7735_Message(1,3,"Jitter 0.1us=",MaxJitter);
+  //ST7735_Message(1,1,"PIDWork     =",PIDWork);
+  //ST7735_Message(1,2,"DataLost    =",DataLost);
+  //ST7735_Message(1,3,"Jitter 0.1us=",MaxJitter);
   PE1 ^= 0x02;
   OS_Kill();  // done, OS does not return from a Kill
 } 
@@ -225,14 +249,13 @@ void SW2Push(void){
 // outputs: none
 void Producer(unsigned long data){  
     if(NumSamples < RUNLENGTH){   // finite time run
-    NumSamples++;               // number of samples
-    if(OS_Fifo_Put(data) == 0){ // send to consumer
-        DataLost++;
+        //NumSamples++;               // number of samples
+        if(OS_Fifo_Put(data) == 0){ // send to consumer
+            DataLost++;
+        } 
     } 
-  } 
 }
 void Display(void); 
-
 //******** Consumer *************** 
 // foreground thread, accepts data from producer
 // calculates FFT, sends DC component to Display
@@ -241,45 +264,77 @@ void Display(void);
 void Consumer(void){ 
 unsigned long data,DCcomponent;   // 12-bit raw ADC sample, 0 to 4095
 unsigned long t;                  // time in 2.5 ms
-unsigned long myId = OS_Id(); 
+//unsigned long myId = OS_Id(); 
   ADC_Collect(5, FS, &Producer); // start ADC sampling, channel 5, PD2, 400 Hz
-  NumCreated += OS_AddThread(&Display,128,0); 
+  int mode = 0; 
   while(NumSamples < RUNLENGTH) { 
     PE2 = 0x04;
     for(t = 0; t < 64; t++){   // collect 64 ADC samples
       data = OS_Fifo_Get();    // get from producer
-      x[t] = data;             // real part is 0 to 4095, imaginary part is 0
+      inputArray[t] = data;             // real part is 0 to 4095, imaginary part is 0
     }
     PE2 = 0x00;
-    cr4_fft_64_stm32(y,x,64);  // complex FFT of last 64 ADC values
-    DCcomponent = y[0]&0xFFFF; // Real part at frequency 0, imaginary part should be zero
-    OS_MailBox_Send(DCcomponent); // called every 2.5ms*64 = 160ms
+    if (mode == 0 || mode == 1) { 
+        for (int i = 0; i < 64; i++) {
+            outputArray[i]= LPFilter(3000*inputArray[i]/4095); // Real part at frequency 0, imaginary part should be zero
+            //outputArray[i]= (3000*inputArray[i]/4095); // Real part at frequency 0, imaginary part should be zero
+// printf("data %d\n", outputArray[i]); 
+            //printf("%d\n", outputArray[i]); 
+        }
+    }else if(mode == 2) {
+        for (int i = 0; i < 64; i++) {
+            outputArrayBeforeFFT[i]= LPFilter(300*inputArray[i]/4095); // Real part at frequency 0, imaginary part should be zero
+      }
+       cr4_fft_64_stm32(outputArray,outputArrayBeforeFFT,64);  // complex FFT of last 64 ADC values
+//       for (int i = 0; i < 64; i++) {
+//           printf("%d\n", outputArray[i] &0xFFFF); 
+//        }
+   } 
+     
+    plot(outputArray, mode);
+    ST7735_PlotClear(0, 64);
   }
   OS_Kill();  // done
 }
+
+
 //******** Display *************** 
 // foreground thread, accepts data from consumer
 // displays calculated results on the LCD
 // inputs:  none                            
 // outputs: none
+ int index= 0;
 void Display(void){ 
-unsigned long data,voltage;
-  ST7735_Message(0,1,"Run length = ",(RUNLENGTH)/FS);   // top half used for Display
+//unsigned long data,voltage;
+   
+unsigned long data;
+//long voltage[64];
+unsigned long voltage[64];
+//,voltage;
+  
+  //ST7735_Message(0,1,"Run length = ",(RUNLENGTH)/FS);   // top half used for Display
   while(NumSamples < RUNLENGTH) { 
     data = OS_MailBox_Recv();
-    voltage = 3000*data/4095;               // calibrate your device so voltage is in mV
-    PE3 = 0x08;
-    ST7735_Message(0,2,"v(mV) =",voltage);  
-    PE3 = 0x00;
+    index+=1; 
+//    voltage[index] = 3000*data/4095;               // calibrate your device so voltage is in mV
+//    printf("this is the data %d\n", data); 
+//    voltage = 3000*data/4095;               // calibrate your device so voltage is in mV
+    //printf("volate is %ld\n",voltage); 
+//    PE3 = 0x08;
+//    ST7735_Message(0,2,"v(mV) =",voltage);  
+//    PE3 = 0x00;
+  
   } 
+
+    //plot(voltage, 1);
   OS_Kill();  // done
 } 
 
 //--------------end of Task 3-----------------------------
 
-//short PID_stm32(short Error, short *Coeff) {
-//    return 0;
-//}
+short PID_stm32(short Error, short *Coeff) {
+    return 0;
+}
 //------------------Task 4--------------------------------
 // foreground thread that runs without waiting or sleeping
 // it executes a digital controller 
@@ -343,8 +398,8 @@ int main(void){
   DataLost = 0;        // lost data between producer and consumer
   NumSamples = 0;
   MaxJitter = 0;       // in 1us units
-  ST7735_InitR(INITR_REDTAB); 
-  ST7735_LCD_Init();
+  //ST7735_InitR(INITR_REDTAB); 
+  //ST7735_LCD_Init();
 //********initialize communication channels
   OS_MailBox_Init();
   OS_Fifo_Init(64);    // ***note*** 4 is not big enough*****
@@ -643,8 +698,8 @@ void addPrintHistogramToTerminal() {
 int main(void){   
   OS_Init();           // initialize, disable interrupts
   PortE_Init();       // profile user threads
-  ST7735_InitR(INITR_REDTAB); 
-  ST7735_LCD_Init();
+  //ST7735_InitR(INITR_REDTAB); 
+  //ST7735_LCD_Init();
   int channelNumber = 4;
   ADC_Open(channelNumber); 
   OS_AddPeriodicThread(&DAS, PERIOD, 0);
@@ -682,8 +737,8 @@ int main(void){   // Testmain4
   Count4 = 0;          
   OS_Init();           // initialize, disable interrupts
   PortE_Init();       // profile user threads
-  ST7735_InitR(INITR_REDTAB); 
-  ST7735_LCD_Init();
+  //ST7735_InitR(INITR_REDTAB); 
+  //ST7735_LCD_Init();
   OS_AddSW1Task(&SW1Push,2);
   OS_AddSW2Task(&SW2Push,2);
   OS_Launch(TIME_2MS); // doesn't return, interrupts enabled in here
@@ -706,8 +761,8 @@ void addPrintDataLost() {
 int main(void){   // Testmain4
   OS_Init();           // initialize, disable interrupts
   PortE_Init();       // profile user threads
-  ST7735_InitR(INITR_REDTAB); 
-  ST7735_LCD_Init();
+  //ST7735_InitR(INITR_REDTAB); 
+  //ST7735_LCD_Init();
   NumCreated += OS_AddThread(&Consumer,128,2); 
   OS_AddSW1Task(&addPrintDataLost,2);
   OS_Launch(TIME_2MS); // doesn't return, interrupts enabled in here
@@ -1053,3 +1108,105 @@ int main(void){
  return 0;             // this never executes
 }
 #endif
+
+#ifdef Testmain9
+// int Testmain7(void){       // Testmain7
+void printStuff1(void){
+    fputc('b', stdout);
+   
+    //printf("here we go now we are good"); 
+}
+void printStuff2(void){
+    printf("HELLO HOW ARE YOU? ");
+    //fputc('x', stdout);
+}
+void printStuff3(void){
+    fputc('b', stdout);
+}
+
+
+
+int main(void){
+    PortE_Init();
+    OS_Init();           // initialize, disable interrupts
+    OS_MailBox_Init();
+    OS_Fifo_Init(64);    // ***note*** 4 is not big enough*****
+    NumCreated = 0 ;
+
+     OS_AddPeriodicThread(&printStuff2,(TIME_1MS/10),0);   // 10 ms, higher priority
+    OS_AddPeriodicThread(&printStuff1,(TIME_1MS/10),0);   // 10 ms, higher priority
+     
+     OS_Launch(TIME_2MS); // doesn't return, interrupts enabled in here
+}
+#endif
+
+#ifdef Testmain10
+volatile int counter1 = 0;
+volatile int counter2 = 0;
+volatile int counter3 = 0;
+
+void printStuff1(void){
+     counter1 +=1;
+    //fputc('b', stdout);
+     printf("alskdflasjfklasdjflkasjdfkljasdlkfjsad"); 
+}
+void printStuff2(void){
+    counter2 +=1; 
+    fputc('b', stdout);
+}
+void printStuff3(void){
+    counter3 +=1; 
+    fputc('b', stdout);
+}
+
+
+
+int main(void){
+    PortE_Init();
+    OS_Init();           // initialize, disable interrupts
+    OS_MailBox_Init();
+    OS_Fifo_Init(64);    // ***note*** 4 is not big enough*****
+    NumCreated = 0 ;
+
+    OS_AddPeriodicThread(&printStuff1,(TIME_1MS/2),0);   // 10 ms, higher priority
+    OS_AddPeriodicThread(&printStuff2,(TIME_1MS/2),0);   // 10 ms, higher priority
+    OS_AddPeriodicThread(&printStuff3,(TIME_1MS/2),0);   // 10 ms, higher priority
+    OS_Launch(TIME_2MS); // doesn't return, interrupts enabled in here
+}
+
+#endif
+
+#ifdef mainTaskLab4
+int main(void){ 
+  OS_Init();           // initialize, disable interrupts
+  PortE_Init();
+  DataLost = 0;        // lost data between producer and consumer
+  NumSamples = 0;
+  MaxJitter = 0;       // in 1us units
+  ST7735_InitR(INITR_REDTAB); 
+  //ST7735_LCD_Init();
+//********initialize communication channels
+  OS_MailBox_Init();
+  OS_Fifo_Init(64);    // ***note*** 4 is not big enough*****
+
+//*******attach background tasks***********
+//  OS_AddSW1Task(&SW1Push,2);
+//  OS_AddSW2Task(&SW2Push,2);  // add this line in Lab 3
+  ADC_Open(4);  // sequencer 3, channel 4, PD3, sampling in DAS()
+//  OS_AddPeriodicThread(&DAS,PERIOD,1); // 2 kHz real time sampling of PD3
+
+  NumCreated = 0 ;
+// create initial foreground threads
+//  NumCreated += OS_AddThread(&Interpreter,128,2); 
+//  NumCreated += OS_AddThread(&Consumer,128,1); 
+//  NumCreated += OS_AddThread(&PID,128,3);  // Lab 3, make this lowest priority
+//  NumCreated += OS_AddThread(&Interpreter,128,2); 
+  NumCreated += OS_AddThread(&Consumer,128,1); 
+  //NumCreated += OS_AddThread(&PID,128,3);  // Lab 3, make this lowest priority
+  OS_Launch(TIME_1MS*10); // doesn't return, interrupts enabled in here
+  return 0;            // this never executes
+}
+#endif
+
+
+
