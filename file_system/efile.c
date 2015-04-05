@@ -8,6 +8,9 @@ volatile int OUTPUT_redirected = 0;
 uint8_t ResidentSectors[512*NUMRESIDENTSECTORS];
 uint8_t FAT_Table_Sector[512];
 
+DIR_Entry FileCursor;
+DIR_Entry ActiveFile;
+
 void printFATStats(void){
 	printf("FAT32 Bytes per Sector: %u", BPB_BytsPerSec);
   printf("FAT32 Total Sectors: %u", BPB_TotSec32);
@@ -84,11 +87,49 @@ int eFile_WClose(void){
 
 } // close the file for writing
 
+int checkIfFileExists(uint8_t* RootDirCursor, char* DIR_Name){
+    int i = 0;
+  while(RootDirCursor < &ResidentSectors[512]){
+    if(RootDirCursor[0] == 0) {
+      //File Not Found
+      return i;
+    }
+    if(RootDirCursor[0] != 0xE5){
+      if(memcmp(DIR_Name, RootDirCursor, 11)){ //See if names are same
+        readDirEntryFromCursor(ActiveFile, RootDirCursor);
+        return 0;
+      }
+    }
+    i++;
+    RootDirCursor += DIR_Entry_Size;
+  }
+  return i;
+}
 //---------- eFile_ROpen-----------------
 // Open the file, read first block into RAM 
 // Input: file name is a single ASCII letter
 // Output: 0 if successful and 1 on failure (e.g., trouble read to flash)
 int eFile_ROpen( char name[]){
+	uint8_t* RootDirCursor = &ResidentSectors[0];
+  FAT_nameTo(FileCursor->DIR_Name, name);
+  int result;
+  while(1){
+    RootDirCursor = &ResidentSectors[0];
+    result = checkIfFileExists(RootDirCursor, FileCursor->DIR_Name);
+    if(result == 0){
+      //Open the file and do things
+
+      break;
+    }
+    else if(result == 15){
+      //Load next Sector of Root Directory
+      //Be Careful with the boundary condition (exactly 16 directory entries) 
+    } else{
+      //File Not found scan for next free directory entry
+
+      break;
+    }
+  }
 
 }      // open a file for reading 
    
