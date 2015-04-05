@@ -1,6 +1,22 @@
 #include "efile.h"
-
+#include "edisk.h"
+#include "FAT32.h"
+#include <stdio.h>
 volatile int OUTPUT_redirected = 0;
+#define NUMRESIDENTSECTORS 4
+
+uint8_t ResidentSectors[512*NUMRESIDENTSECTORS];
+uint8_t FAT_Table_Sector[512];
+
+void printFATStats(void){
+	printf("FAT32 Bytes per Sector: %u", BPB_BytsPerSec);
+  printf("FAT32 Total Sectors: %u", BPB_TotSec32);
+  printf("FAT32 Reserved Sector Count: %u", BPB_RsvdSecCnt);
+  printf("FAT32 Root Cluster Num: %u", BPB_RootClus);
+  printf("FAT32 Sectors per Cluster: %u", BPB_SecPerClus);
+  printf("FAT32 Fat Size: %u", BPB_FATSz32);
+  printf("FAT32 First Data Sector: %u", FirstDataSector);
+}
 //---------- eFile_Init-----------------
 // Activate the file system, without formating
 // Input: none
@@ -8,7 +24,14 @@ volatile int OUTPUT_redirected = 0;
 // since this program initializes the disk, it must run with 
 //    the disk periodic task operating
 int eFile_Init(void){
-
+  DSTATUS result;
+  
+	result = eDisk_Init(0);  // initialize disk
+  if(result) printf("eDisk_Init %d\n\r",result);
+  eDisk_ReadBlock((BYTE *)ResidentSectors,0);
+  FAT_Init(ResidentSectors);
+  eDisk_ReadBlock((BYTE *)FAT_Table_Sector, FAT_Begin_LBA);
+  printFATStats();
 } // initialize file system
 
 //---------- eFile_Format-----------------

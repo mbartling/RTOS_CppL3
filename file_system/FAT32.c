@@ -1,24 +1,42 @@
 #include "FAT32.h"
+#include "edisk.h"
 
 uint32_t BPB_FSInfo;
 uint32_t BPB_TotSec32;
+uint16_t BPB_BytsPerSec;
 uint16_t BPB_RsvdSecCnt;
 uint32_t BPB_RootClus;
 uint8_t  BPB_SecPerClus;
 uint32_t BPB_FATSz32;
-
+uint32_t Partition1_LBA_Begin;
 uint32_t CountOfClusters;
 uint32_t FirstDataSector;
+uint32_t FAT_Begin_LBA;
+uint32_t Cluster_Begin_LBA;
 
 void FAT_Init(uint8_t* MBRSector){
-  
-  BPB_SecPerClus = (uint8_t)  MBRSector[BPB_SecPerClus_OFFSET];
-  BPB_RsvdSecCnt = (uint16_t) MBRSector[BPB_RsvdSecCnt_OFFSET];
-  BPB_TotSec32   = (uint32_t) MBRSector[BPB_TotSec32_OFFSET];
-  BPB_FATSz32    = (uint32_t) MBRSector[BPB_FATSz32_OFFSET];
-  BPB_RootClus   = (uint32_t) MBRSector[BPB_RootClus_OFFSET];
+  /*
+   * Get the First Partitions logical block number to load the proper volume
+   */
+  Partition1_LBA_Begin = *((uint32_t *) &MBRSector[Partition1_LBA_Begin_OFFSET]);
+  eDisk_ReadBlock((BYTE *)MBRSector, Partition1_LBA_Begin);
 
-  FirstDataSector = BPB_RsvdSecCnt + (BPB_NumFATs*BPB_FATSz32) + RootDirSectors;
+  //Get the Actual Configuration
+  BPB_BytsPerSec = *((uint16_t *) &MBRSector[BPB_BytsPerSec_OFFSET]);
+  BPB_SecPerClus = *((uint8_t  *) &MBRSector[BPB_SecPerClus_OFFSET]);
+  BPB_RsvdSecCnt = *((uint16_t *) &MBRSector[BPB_RsvdSecCnt_OFFSET]);
+  BPB_TotSec32   = *((uint32_t *) &MBRSector[BPB_TotSec32_OFFSET]  );
+  BPB_FATSz32    = *((uint32_t *) &MBRSector[BPB_FATSz32_OFFSET]   );
+  BPB_RootClus   = *((uint32_t *) &MBRSector[BPB_RootClus_OFFSET]  );
+
+  //Go ahead and mark the offsets of our partition/Important locations
+  FirstDataSector = Cluster_Begin_LBA + BPB_RsvdSecCnt + (BPB_NumFATs*BPB_FATSz32) + RootDirSectors;
+  FAT_Begin_LBA = Partition1_LBA_Begin + BPB_RsvdSecCnt;
+  Cluster_Begin_LBA = Partition1_LBA_Begin + BPB_RsvdSecCnt + BPB_NumFATs*BPB_FATSz32;
+
+  //Read the first sector of the Root cluster
+  eDisk_ReadBlock((BYTE *)MBRSector, GetFirstSectorOfCluster(BPB_RootClus) );
+
 }
 
 /** Automatically handles reading FAT table entries for a cluster number
@@ -26,7 +44,7 @@ void FAT_Init(uint8_t* MBRSector){
   */
 
 uint32_t ReadFATEntryForCluster(uint32_t N, uint8_t* SecBuff){
-  uint32_t ThisFATSecNum = BPB_RsvdSecCnt + N*4/BPB_BytsPerSec;
+  uint32_t ThisFATSecNum = FAT_Begin_LBA + N*4/BPB_BytsPerSec;
   /*Check to see if need to load a different sector of FAT Table*/
 
   uint32_t ThisFATEntOffset = (N*4) % BPB_BytsPerSec;
@@ -35,7 +53,7 @@ uint32_t ReadFATEntryForCluster(uint32_t N, uint8_t* SecBuff){
 }
 
 void WriteFATEntryForCluster(uint32_t N, uint32_t FAT32ClusEntryVal, uint8_t* SecBuff){
-  uint32_t ThisFATSecNum = BPB_RsvdSecCnt + N*4/BPB_BytsPerSec;
+  uint32_t ThisFATSecNum = FAT_Begin_LBA + N*4/BPB_BytsPerSec;
   /*Check to see if need to load a different sector of FAT Table*/
 
   uint32_t ThisFATEntOffset = (N*4) % BPB_BytsPerSec;
@@ -87,7 +105,7 @@ current Intel X86 processors, this is largely irrelevant though because the MULT
 instructions are heavily optimized for multiplication and division by powers of 2
 */
 uint32_t GetFirstSectorOfCluster(uint32_t N){
-  return (N-2)*BPB_SecPerClus + FirstDataSector;
+  return (N-2)*BPB_SecPerClus + Cluster_Begin_LBA;
 }
 
 /**

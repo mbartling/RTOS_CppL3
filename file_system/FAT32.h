@@ -15,7 +15,8 @@ because they are the high 2 bits of the entry.
 
 #define EOC 0xFFFFFFFF
 #define FREE_CLUSTER 0x00000000
-#define BPB_BytsPerSec 512
+// #define BPB_BytsPerSec 512
+#define BPB_BytsPerSec_OFFSET 11
 #define BPB_SecPerClus_OFFSET 13
 #define BPB_RsvdSecCnt_OFFSET 14
 
@@ -28,20 +29,23 @@ because they are the high 2 bits of the entry.
 #define BPB_RootClus_OFFSET 44
 #define BPB_FSInfo_OFFSET 48
 
+#define Partition1_LBA_Begin_OFFSET 454
 
 #define RootDirSectors 0 /*0 For FAT 32*/
 
 #define isEOF(x) ( (uint32_t) x >= 0x0FFFFFF8 )
 
+extern uint16_t BPB_BytsPerSec;
 extern uint32_t BPB_FSInfo;
 extern uint32_t BPB_TotSec32;
 extern uint16_t BPB_RsvdSecCnt;
 extern uint32_t BPB_RootClus;
 extern uint8_t  BPB_SecPerClus;
 extern uint32_t BPB_FATSz32;
-
+extern uint32_t Partition1_LBA_Begin;
 extern uint32_t CountOfClusters;
-
+extern uint32_t FAT_Begin_LBA;
+extern uint32_t Cluster_Begin_LBA;
 /**
  This sector number is relative to the first sector of the volume that contains the BPB (the
 sector that contains the BPB is sector number 0). This does not necessarily map directly onto the
@@ -63,7 +67,7 @@ typedef struct _DIR_Entry{
 } DIR_Entry;
 
 
-void FAT_Init(void);
+void FAT_Init(uint8_t* MBRSector);
 uint32_t ReadFATEntryForCluster(uint32_t N, uint8_t* SecBuff);
 void WriteFATEntryForCluster(uint32_t N, uint32_t FAT32ClusEntryVal, uint8_t* SecBuff);
 int isDirFree(DIR_Entry* entry);

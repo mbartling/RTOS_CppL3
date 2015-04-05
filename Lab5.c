@@ -207,6 +207,7 @@ void RunTest(void){
 //******************* test main1 **********
 // SYSTICK interrupts, period established by OS_Launch
 // Timer interrupts, period established by first call to OS_AddPeriodicThread
+#ifdef testmain1
 int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
 
@@ -222,7 +223,7 @@ int main(void){   // testmain1
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
-
+#endif
 void TestFile(void){   int i; char data; 
   printf("\n\rEE345M/EE380L, Lab 5 eFile test\n\r");
   // simple test of eFile
@@ -263,7 +264,30 @@ int testmain2(void){
   NumCreated = 0 ;
 // create initial foreground threads
   NumCreated += OS_AddThread(&TestFile,128,1);  
-  NumCreated += OS_AddThread(&IdleTask,128,3); 
+  //NumCreated += OS_AddThread(&IdleTask,128,3); 
+ 
+  OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
+  return 0;               // this never executes
+}
+void TestFAT(void){
+  // simple test of eDisk
+  eFile_Init();
+  printf("\n\rEE345M/EE380L, Lab 5 eDisk test\n\r");
+
+  printf("Successful test of %u blocks\n\r",MAXBLOCKS);
+  OS_Kill();
+}
+int main(void){   // testmain1
+  OS_Init();           // initialize, disable interrupts
+
+//*******attach background tasks***********
+  OS_AddPeriodicThread(&disk_timerproc,10*TIME_1MS,0);   // time out routines for disk
+//  OS_AddButtonTask(&RunTest,2);
+  
+  NumCreated = 0 ;
+// create initial foreground threads
+  NumCreated += OS_AddThread(&TestFAT,128,1);  
+  //NumCreated += OS_AddThread(&IdleTask,128,3); 
  
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
