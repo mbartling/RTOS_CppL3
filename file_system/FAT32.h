@@ -57,6 +57,7 @@ drive, because sector 0 of the volume is not necessarily sector 0 of the drive d
 #define DIR_FileSize_OFFSET 28
 #define DIR_Name_OFFSET 0
 #define DIR_Entry_Size 32 /*Bytes*/
+#define DIR_UNUSED 0xE5
 extern uint32_t FirstDataSector;
 
 typedef struct _DIR_Entry{
@@ -64,7 +65,11 @@ typedef struct _DIR_Entry{
   uint8_t DIR_Attr; //Unused
   uint32_t DIR_FstClus;
   uint32_t DIR_FileSize;
+  uint32_t currentSector;
+  uint8_t* sectorBasePtr;
+  uint8_t* cursorPtr;
 } DIR_Entry;
+
 
 
 void FAT_Init(uint8_t* MBRSector);
@@ -75,6 +80,6 @@ uint32_t getDirSize(DIR_Entry* entry);
 uint32_t GetFirstSectorOfCluster(uint32_t N);
 void FAT_nameFrom(char* outname, char* FATfilename);
 void FAT_nameTo(char* outname, char* filename);
-
+void readDirEntryFromCursor(DIR_Entry* entry, uint8_t* cursor);
 
 #endif /*__FAT32_H__*/

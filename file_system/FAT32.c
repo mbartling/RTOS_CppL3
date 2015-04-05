@@ -1,5 +1,6 @@
 #include "FAT32.h"
 #include "edisk.h"
+#include <ctype.h>
 
 uint32_t BPB_FSInfo;
 uint32_t BPB_TotSec32;
@@ -67,6 +68,7 @@ int isDirFree(DIR_Entry* entry){
   return (entry->DIR_Name[0] == 0xE5 || entry->DIR_Name[0] == 0x00) ? 1 /*is Free*/ : 0 /*Is not free*/;
 }
 
+
 //uint32_t getDirSize(DIR_Entry* entry){
 //  uint32_t clusterNum = entry->DIR_FstClus;
 //  uint32_t fSize = 0;
@@ -83,26 +85,28 @@ void readDirEntry(DIR_Entry* entry, uint32_t entryNum, uint8_t* sector){
   
   uint8_t* entry_offset = &sector[entryNum*DIR_Entry_Size];
   FAT_nameFrom(entry->DIR_Name, (char *)entry_offset);
-  entry->DIR_FstClus = (*((uint16_t *)entry_offset[DIR_FstClusHI_OFFSET])) << 16;
-  entry->DIR_FstClus |= (*((uint16_t *)entry_offset[DIR_FstClusLO_OFFSET]));
-  entry->DIR_FileSize= (*((uint32_t *)entry_offset[DIR_FileSize_OFFSET]));
+  entry->DIR_FstClus = (*((uint16_t *)&entry_offset[DIR_FstClusHI_OFFSET])) << 16;
+  entry->DIR_FstClus |= (*((uint16_t *)&entry_offset[DIR_FstClusLO_OFFSET]));
+  entry->DIR_FileSize= (*((uint32_t *)&entry_offset[DIR_FileSize_OFFSET]));
 
 }
 void readDirEntryFromCursor(DIR_Entry* entry, uint8_t* cursor){
   
-  FAT_nameFrom(entry->DIR_Name, (char *)cursor);
-  entry->DIR_FstClus = (*((uint16_t *)cursor[DIR_FstClusHI_OFFSET])) << 16;
-  entry->DIR_FstClus |= (*((uint16_t *)cursor[DIR_FstClusLO_OFFSET]));
-  entry->DIR_FileSize= (*((uint32_t *)cursor[DIR_FileSize_OFFSET]));
+  //FAT_nameFrom(entry->DIR_Name, (char *)cursor);
+ 
+	memcpy(entry->DIR_Name, (char *)cursor, 11);
+  entry->DIR_FstClus = (*((uint16_t *)&cursor[DIR_FstClusHI_OFFSET])) << 16;
+  entry->DIR_FstClus |= (*((uint16_t *)&cursor[DIR_FstClusLO_OFFSET]));
+  entry->DIR_FileSize= (*((uint32_t *)&cursor[DIR_FileSize_OFFSET]));
 
 }
 void writeDirEntry(DIR_Entry* entry, uint32_t entryNum, uint8_t* sector){
   
   uint8_t* entry_offset = &sector[entryNum*DIR_Entry_Size];
   FAT_nameTo((char *)entry_offset, entry->DIR_Name);
-  (*((uint16_t *)entry_offset[DIR_FstClusHI_OFFSET])) = (uint16_t)(entry->DIR_FstClus >> 16);
-  (*((uint16_t *)entry_offset[DIR_FstClusLO_OFFSET])) = (uint16_t) entry->DIR_FstClus & 0xFFFF;
-  (*((uint32_t *)entry_offset[DIR_FileSize_OFFSET])) = entry->DIR_FileSize;
+  (*((uint16_t *)&entry_offset[DIR_FstClusHI_OFFSET])) = (uint16_t)(entry->DIR_FstClus >> 16);
+  (*((uint16_t *)&entry_offset[DIR_FstClusLO_OFFSET])) = (uint16_t) entry->DIR_FstClus & 0xFFFF;
+  (*((uint32_t *)&entry_offset[DIR_FileSize_OFFSET])) = entry->DIR_FileSize;
 
 }
 /**
@@ -114,6 +118,9 @@ instructions are heavily optimized for multiplication and division by powers of 
 */
 uint32_t GetFirstSectorOfCluster(uint32_t N){
   return (N-2)*BPB_SecPerClus + Cluster_Begin_LBA;
+}
+uint32_t GetNthSectorOfCluster(uint32_t ClusterNum, uint32_t N){
+  return (ClusterNum-2)*BPB_SecPerClus + Cluster_Begin_LBA + N;
 }
 
 /**
@@ -159,14 +166,14 @@ void FAT_nameTo(char* outname, char* filename){
   //int j = 0;
   memset(buff, 0x20, 11);
   while(*ptr != '.'){
-    buff[i] = *ptr;
+    buff[i] = toupper(*ptr);
     i++; ptr++;
   }
   ptr++;
   i = 8;
   while(i < 11){
     if(*ptr == '\0') break;
-    buff[i] = *ptr;
+    buff[i] = toupper(*ptr);
     i++;
     ptr++;
   }
