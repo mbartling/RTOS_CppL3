@@ -46,20 +46,20 @@ void WriteFATEntryForCluster(uint32_t N, uint32_t FAT32ClusEntryVal, uint8_t* Se
 }
 
 int isDirFree(DIR_Entry* entry){
-  return (entry->DIR_Name[0] == 0xE5 || entry->DIR_Name[0] == 0x00) 1 /*is Free*/ : 0 /*Is not free*/;
+  return (entry->DIR_Name[0] == 0xE5 || entry->DIR_Name[0] == 0x00) ? 1 /*is Free*/ : 0 /*Is not free*/;
 }
 
-uint32_t getDirSize(DIR_Entry* entry){
-  uint32_t clusterNum = entry->DIR_FstClus;
-  uint32_t fSize = 0;
-  
-  //fSize += BPB_BytsPerSec*BPB_SecPerClus;
-  while(clusterNum != EOC){
-    clusterNum = ReadFATEntryForCluster(clusterNum);
-    fSize += BPB_BytsPerSec*BPB_SecPerClus;
-  }
-  return fSize;
-}
+//uint32_t getDirSize(DIR_Entry* entry){
+//  uint32_t clusterNum = entry->DIR_FstClus;
+//  uint32_t fSize = 0;
+//  
+//  //fSize += BPB_BytsPerSec*BPB_SecPerClus;
+//  while(clusterNum != EOC){
+//    clusterNum = ReadFATEntryForCluster(clusterNum);
+//    fSize += BPB_BytsPerSec*BPB_SecPerClus;
+//  }
+//  return fSize;
+//}
 
 void readDirEntry(DIR_Entry* entry, uint32_t entryNum, uint8_t* sector){
   

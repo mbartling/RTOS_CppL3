@@ -1,7 +1,7 @@
 #ifndef __FAT32_H__
 #define __FAT32_H__
 #include <string.h>
-
+#include <stdint.h>
 /**
 What are the two reserved clusters at the start of the FAT for? The first reserved cluster, FAT[0],
 contains the BPB_Media byte value in its low 8 bits, and all other bits are set to 1. For example, if the

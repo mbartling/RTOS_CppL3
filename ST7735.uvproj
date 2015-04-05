@@ -541,9 +541,44 @@
               <FilePath>.\helper\priority.c</FilePath>
             </File>
             <File>
-              <FileName>Lab4.cpp</FileName>
+              <FileName>test.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\Lab4.cpp</FilePath>
+              <FilePath>.\test.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>drivers</GroupName>
+          <Files>
+            <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driverlib\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>interrupt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driverlib\interrupt.c</FilePath>
+            </File>
+            <File>
+              <FileName>ssi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driverlib\ssi.c</FilePath>
+            </File>
+            <File>
+              <FileName>sysctl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driverlib\sysctl.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driverlib\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>cpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driverlib\cpu.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -50,9 +50,9 @@ s file was modified from a sample available from the FatFs
 #define SDC_SSI_PINS            (SDC_SSI_TX | SDC_SSI_RX | SDC_SSI_CLK)
 
 // GPIO for card chip select
-#define SDC_CS_GPIO_PORT_BASE      GPIO_PORTG_BASE
-#define SDC_CS_GPIO_SYSCTL_PERIPH  SYSCTL_PERIPH_GPIOG
-#define SDC_CS                     GPIO_PIN_0
+#define SDC_CS_GPIO_PORT_BASE      GPIO_PORTF_BASE
+#define SDC_CS_GPIO_SYSCTL_PERIPH  SYSCTL_PERIPH_GPIOF
+#define SDC_CS                     GPIO_PIN_4
 
 // asserts the CS pin to the card
 static
@@ -583,7 +583,7 @@ DRESULT disk_ioctl (
 )
 {
     DRESULT res;
-    BYTE n, csd[16], *ptr = buff;
+    BYTE n, csd[16], *ptr = (BYTE *)buff;
     WORD csize;
 
 

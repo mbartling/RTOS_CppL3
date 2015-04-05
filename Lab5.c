@@ -9,16 +9,16 @@
 #include <stdio.h>
 #include <string.h>
 #include "inc/hw_types.h"
-#include "serial.h"
-#include "adc.h"
+#include "ADC.h"
 #include "os.h"
-#include "lm3s8962.h"
+#include "inc/tm4c123gh6pm.h"
 #include "edisk.h"
 #include "efile.h"
+#include "Perf.h"
 
-unsigned long NumCreated;   // number of foreground threads created
-unsigned long NumSamples;   // incremented every sample
-unsigned long DataLost;     // data sent by Producer, but not received by Consumer
+//unsigned long NumCreated;   // number of foreground threads created
+//unsigned long NumSamples;   // incremented every sample
+//unsigned long DataLost;     // data sent by Producer, but not received by Consumer
 
 int Running;                // true while robot is running
 
@@ -92,7 +92,7 @@ void DownPush(void){
 // sends data to the Robot, runs periodically at 1 kHz
 // inputs:  none
 // outputs: none
-void Producer(unsigned short data){  
+void Producer(unsigned long data){  
   if(Running){
     if(OS_Fifo_Put(data)){     // send to Robot
       NumSamples++;
@@ -120,7 +120,13 @@ void IdleTask(void){
 // foreground thread, accepts input from serial port, outputs to serial port
 // inputs:  none
 // outputs: none
-extern void Interpreter(void); 
+extern void Interpreter(void);
+void Interpreter(){
+	char buff[10];
+	printf(">>\n\r");
+	scanf("%s\n", buff);
+	printf("%s\n\r", buff);
+}
 // add the following commands, remove commands that do not make sense anymore
 // 1) format 
 // 2) directory 
@@ -140,8 +146,8 @@ int realmain(void){        // lab 5 real main
   ADC_Collect(0, 1000, &Producer); // start ADC sampling, channel 0, 1000 Hz
 
 //*******attach background tasks***********
-  OS_AddButtonTask(&ButtonPush,2);
-  OS_AddButtonTask(&DownPush,3);
+//  OS_AddButtonTask(&ButtonPush,2);
+//  OS_AddButtonTask(&DownPush,3);
   OS_AddPeriodicThread(disk_timerproc,10*TIME_1MS,5);
 
   NumCreated = 0 ;
@@ -206,12 +212,12 @@ int main(void){   // testmain1
 
 //*******attach background tasks***********
   OS_AddPeriodicThread(&disk_timerproc,10*TIME_1MS,0);   // time out routines for disk
-  OS_AddButtonTask(&RunTest,2);
+//  OS_AddButtonTask(&RunTest,2);
   
   NumCreated = 0 ;
 // create initial foreground threads
   NumCreated += OS_AddThread(&TestDisk,128,1);  
-  NumCreated += OS_AddThread(&IdleTask,128,3); 
+  //NumCreated += OS_AddThread(&IdleTask,128,3); 
  
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
@@ -222,7 +228,7 @@ void TestFile(void){   int i; char data;
   // simple test of eFile
   if(eFile_Init())              diskError("eFile_Init",0); 
   if(eFile_Format())            diskError("eFile_Format",0); 
-  eFile_Directory(&Serial_OutChar);
+//  eFile_Directory(&Serial_OutChar);
   if(eFile_Create("file1"))     diskError("eFile_Create",0);
   if(eFile_WOpen("file1"))      diskError("eFile_WOpen",0);
   for(i=0;i<1000;i++){
@@ -233,14 +239,14 @@ void TestFile(void){   int i; char data;
     }
   }
   if(eFile_WClose())            diskError("eFile_Close",0);
-  eFile_Directory(&Serial_OutChar);
+//  eFile_Directory(&Serial_OutChar);
   if(eFile_ROpen("file1"))      diskError("eFile_ROpen",0);
   for(i=0;i<1000;i++){
     if(eFile_ReadNext(&data))   diskError("eFile_ReadNext",i);
-    Serial_OutChar(data);
+//    Serial_OutChar(data);
   }
   if(eFile_Delete("file1"))     diskError("eFile_Delete",0);
-  eFile_Directory(&Serial_OutChar);
+//  eFile_Directory(&Serial_OutChar);
   printf("Successful test of creating a file\n\r");
   OS_Kill();
 }
