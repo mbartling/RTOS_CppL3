@@ -82,4 +82,5 @@ void FAT_nameFrom(char* outname, char* FATfilename);
 void FAT_nameTo(char* outname, char* filename);
 void readDirEntryFromCursor(DIR_Entry* entry, uint8_t* cursor);
 
+void writeDirEntry(DIR_Entry* entry, uint32_t entryNum, uint8_t* sector);
 #endif /*__FAT32_H__*/

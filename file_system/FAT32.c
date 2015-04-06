@@ -103,8 +103,8 @@ void readDirEntryFromCursor(DIR_Entry* entry, uint8_t* cursor){
 void writeDirEntry(DIR_Entry* entry, uint32_t entryNum, uint8_t* sector){
   
   uint8_t* entry_offset = &sector[entryNum*DIR_Entry_Size];
-  FAT_nameTo((char *)entry_offset, entry->DIR_Name);
-  (*((uint16_t *)&entry_offset[DIR_FstClusHI_OFFSET])) = (uint16_t)(entry->DIR_FstClus >> 16);
+  FAT_nameTo((char *)entry_offset, (char *)entry->DIR_Name);
+  *((uint16_t *)&entry_offset[DIR_FstClusHI_OFFSET]) = (uint16_t)(entry->DIR_FstClus >> 16);
   (*((uint16_t *)&entry_offset[DIR_FstClusLO_OFFSET])) = (uint16_t) entry->DIR_FstClus & 0xFFFF;
   (*((uint32_t *)&entry_offset[DIR_FileSize_OFFSET])) = entry->DIR_FileSize;
 
