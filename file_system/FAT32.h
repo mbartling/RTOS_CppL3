@@ -13,8 +13,9 @@ other bits, are always left set to 1). Note that the bit location is different f
 because they are the high 2 bits of the entry.
 */
 
-#define EOC 0xFFFFFFFF
+#define EOC 0x0FFFFFF8
 #define FREE_CLUSTER 0x00000000
+#define FAT_Free  0x00000000
 // #define BPB_BytsPerSec 512
 #define BPB_BytsPerSec_OFFSET 11
 #define BPB_SecPerClus_OFFSET 13
@@ -71,6 +72,7 @@ typedef struct _DIR_Entry{
   uint32_t currentCluster;
   uint8_t* sectorBasePtr;
   uint8_t* cursorPtr;
+  uint32_t bytes_seen;
 } DIR_Entry;
 
 

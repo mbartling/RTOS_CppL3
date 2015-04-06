@@ -9,6 +9,7 @@ volatile int OUTPUT_redirected = 0;
 uint8_t ResidentSectors[512*NUMRESIDENTSECTORS];
 uint8_t FAT_Table_Sector[512];
 uint32_t currentRootSector;
+uint32_t currentRootCluster;
 
 DIR_Entry ActiveFile; 
 uint32_t have_active_file = 0;
@@ -28,9 +29,12 @@ void printFATStats(void){
 }
 
 void close(DIR_Entry* file){
-  eDisk_WriteBlock(file->sectorBasePtr, GetNthSectorOfCluster(file->currentCluster, file->currentSector));
+  eDisk_WriteBlock((BYTE *)FAT_Table_Sector, currentFATSector);
+  eDisk_WriteBlock((BYTE *)file->sectorBasePtr, GetNthSectorOfCluster(file->currentCluster, file->currentSector));
   uint8_t* cursor = eFile_FindFileInRoot(ResidentSectors, file->DIR_Name);
   writeDirEntryFromCursor(file, cursor);
+	eDisk_WriteBlock((BYTE *)ResidentSectors, GetNthSectorOfCluster(currentRootCluster, currentRootSector));
+
   have_active_file = 0;
 }
 //---------- eFile_Init-----------------
@@ -57,7 +61,7 @@ int eFile_Init(void){
  // dummyTest();
   //dummyTest2();
   dummyTest3();
-  //dummyTest4();
+  dummyTest4();
 } // initialize file system
 
 //---------- eFile_Format-----------------
@@ -75,6 +79,8 @@ int eFile_Format(void){
 int eFile_Create( char name[]){
   uint8_t* rootSector = ResidentSectors;
   char nameFormated[11];
+	DIR_Entry newFileDIREntry;
+
   FAT_nameTo(nameFormated, name);
   uint8_t* res = eFile_FindFileInRoot(rootSector, nameFormated);
   if (res != NULL) {
@@ -82,8 +88,7 @@ int eFile_Create( char name[]){
     return 1; 
   }else{
     //make a DIR_Entry variable and instatiate it 
-    DIR_Entry newFileDIREntry;
-    memcpy(newFileDIREntry.DIR_Name, (char *)name, 11);
+    memcpy(newFileDIREntry.DIR_Name, (char *)nameFormated, 11);
     uint32_t entryNum;
     uint8_t* rootSector = ResidentSectors;
     //find the first empty directory entry 
@@ -97,6 +102,8 @@ int eFile_Create( char name[]){
 
     writeDirEntryFromCursor(&newFileDIREntry, cursor);
     
+		eDisk_WriteBlock((BYTE *)rootSector, GetNthSectorOfCluster(currentRootCluster, currentRootSector));
+
     return 0;  
   }
 }  // create new file, make it empty 
@@ -122,6 +129,8 @@ int eFile_WOpen(char name[]){
   }else { //dump the result in to the entry and find the last block own by the file
     if(have_active_file){
       close(entry);
+			//return 1;
+
     }
     have_active_file = 1;
     readDirEntryFromCursor(entry, res);
@@ -129,10 +138,10 @@ int eFile_WOpen(char name[]){
     //find the last cluster
     uint32_t NumClusters = 0;
     uint32_t FATIndex = entry->DIR_FstClus;
-    printf("%d\n", FATIndex); 
-    while(FAT_Base[FATIndex] != EOC ) {
-      printf("%d\n",  FAT_Base[FATIndex]);
-      FATIndex = FAT_Base[FATIndex];
+    printf("Directory First Cluster: %u\n", FATIndex); 
+    while(ReadFATEntryForCluster(FATIndex, FAT_Table_Sector) < EOC ) {
+      FATIndex = ReadFATEntryForCluster(FATIndex, FAT_Table_Sector);
+      printf("Fat Table entry: %u\n",  FATIndex);
       NumClusters++;
     } 
     
@@ -141,9 +150,11 @@ int eFile_WOpen(char name[]){
     entry->currentSector = lastBlock; 
     entry->currentCluster = FATIndex;
     entry->cursorPtr = &(entry->sectorBasePtr[entry->DIR_FileSize % BPB_BytsPerSec]);
+    entry->bytes_seen = entry->DIR_FileSize;
     eDisk_ReadBlock((BYTE *)entry->sectorBasePtr, GetFirstSectorOfCluster(FAT_Table_Sector[FATIndex] + lastBlock));
 
   } 
+	return 0;
 }      // open a file for writing 
 
 //---------- eFile_Write-----------------
@@ -152,14 +163,32 @@ int eFile_WOpen(char name[]){
 // Output: 0 if successful and 1 on failure (e.g., trouble writing to flash)
 int writeCharNum = 0;
 int eFile_Write(char data){
-//  if (writeCharNum == 512) {
-//    eDisk_WriteBlock (fileSector,  
-//    DWORD sector        /* Start sector number (LBA) */
-//  }
-//  fileSector[writeCharNum] = data;
-//
-
-
+  if(have_active_file == 0) return 1;
+  if(ActiveFile.cursorPtr == ActiveFile.sectorBasePtr + BPB_BytsPerSec){
+    eDisk_WriteBlock((BYTE *)ActiveFile.sectorBasePtr, GetNthSectorOfCluster(ActiveFile.currentCluster, ActiveFile.currentSector));
+    ActiveFile.currentSector++;
+    if(ActiveFile.currentSector == BPB_SecPerClus){
+    //eDisk_WriteBlock(ActiveFile.sectorBasePtr, GetNthSectorOfCluster(ActiveFile.currentCluster, ActiveFile.currentSector));
+    //Load Next Cluster
+    uint32_t nextCluster  = ReadFATEntryForCluster(ActiveFile.currentCluster, FAT_Table_Sector);
+    if(nextCluster >= EOC){
+      nextCluster = AllocateUnusedCluster(FAT_Table_Sector);
+      WriteFATEntryForCluster(ActiveFile.currentCluster, nextCluster, FAT_Table_Sector);
+      ActiveFile.currentCluster = nextCluster;
+    }
+    
+    // eDisk_ReadBlock(ActiveFile.sectorBasePtr, GetFirstSectorOfCluster(ActiveFile.currentCluster));
+    ActiveFile.currentSector = 0;
+    ActiveFile.cursorPtr = ActiveFile.sectorBasePtr;
+  }
+    ActiveFile.cursorPtr = ActiveFile.sectorBasePtr;
+    eDisk_ReadBlock((BYTE *)ActiveFile.sectorBasePtr, GetNthSectorOfCluster(ActiveFile.currentCluster, ActiveFile.currentSector));
+  }
+  *((char *) &ActiveFile.cursorPtr[0]) = data;
+  ActiveFile.cursorPtr++;
+  ActiveFile.bytes_seen++;
+  ActiveFile.DIR_FileSize++;
+  return 0;
 }  
 
 //---------- eFile_Close-----------------
@@ -167,7 +196,9 @@ int eFile_Write(char data){
 // Input: none
 // Output: 0 if successful and 1 on failure (not currently open)
 int eFile_Close(void){
-
+  if(have_active_file == 0) return 1;
+  close(&ActiveFile);
+  return 0;
 } 
 
 
@@ -176,7 +207,9 @@ int eFile_Close(void){
 // Input: none
 // Output: 0 if successful and 1 on failure (e.g., trouble writing to flash)
 int eFile_WClose(void){
-
+  if(have_active_file == 0) return 1;
+  close(&ActiveFile);
+  return 0;
 } // close the file for writing
 
 //---------- eFile_ROpen-----------------
@@ -200,6 +233,7 @@ int eFile_ROpen( char name[]){
 
     if(have_active_file){
       close(entry);
+			//return 1;
     }
     have_active_file = 1;
 
@@ -207,7 +241,8 @@ int eFile_ROpen( char name[]){
     entry->sectorBasePtr = &ResidentSectors[512];
     entry->currentSector = 0;
     entry->currentCluster = entry->DIR_FstClus;
-    entry->cursorPtr = entry->sectorBasePtr; 
+    entry->cursorPtr = entry->sectorBasePtr;
+    entry->bytes_seen = 0; 
     eDisk_ReadBlock((BYTE *)entry->sectorBasePtr, GetFirstSectorOfCluster(entry->DIR_FstClus));
 
     return 0;
@@ -220,8 +255,26 @@ int eFile_ROpen( char name[]){
 // Output: return by reference data
 //         0 if successful and 1 on failure (e.g., end of file)
 int eFile_ReadNext( char *pt){
-
-
+  if(have_active_file == 0) return 1;
+  if(ActiveFile.bytes_seen == ActiveFile.DIR_FileSize) return 1;
+  if(ActiveFile.currentSector == BPB_SecPerClus){
+    //Load Next Cluster
+    ActiveFile.currentCluster = ReadFATEntryForCluster(ActiveFile.currentCluster, FAT_Table_Sector);
+    //If ActiveFile.currentCluster == EOC then something went wrong
+		if(ActiveFile.currentCluster >= EOC) return 1;
+    eDisk_ReadBlock((BYTE *)ActiveFile.sectorBasePtr, GetFirstSectorOfCluster(ActiveFile.currentCluster));
+    ActiveFile.currentSector = 0;
+    ActiveFile.cursorPtr = ActiveFile.sectorBasePtr;
+  }
+  if(ActiveFile.cursorPtr == ActiveFile.sectorBasePtr + BPB_BytsPerSec){
+    ActiveFile.currentSector++;
+    ActiveFile.cursorPtr = ActiveFile.sectorBasePtr;
+    eDisk_ReadBlock((BYTE *)ActiveFile.sectorBasePtr, GetNthSectorOfCluster(ActiveFile.currentCluster, ActiveFile.currentSector));
+  }
+  *pt = *((char *) &ActiveFile.cursorPtr[0]);
+  ActiveFile.cursorPtr++;
+	ActiveFile.bytes_seen++;
+	return 0;
 
 }       // get next byte 
 
@@ -230,7 +283,9 @@ int eFile_ReadNext( char *pt){
 // Input: none
 // Output: 0 if successful and 1 on failure (e.g., wasn't open)
 int eFile_RClose(void){
-
+  if(have_active_file == 0) return 1;
+  close(&ActiveFile);
+  return 0;
 } // close the file for writing
 
 //---------- eFile_Directory-----------------
@@ -284,7 +339,7 @@ int eFile_EndRedirectToFile(void){
   uint8_t* eFile_FindFileInRoot(uint8_t* rootSector, char* FATfilename){
     uint32_t i = 0;
     uint8_t* cursor;
-    uint32_t currentRootCluster = BPB_RootClus;
+    currentRootCluster = BPB_RootClus;
 
       currentRootSector = 0;
       eDisk_ReadBlock((BYTE *)rootSector, GetFirstSectorOfCluster(BPB_RootClus));
@@ -296,7 +351,7 @@ int eFile_EndRedirectToFile(void){
       if(currentRootSector == BPB_SecPerClus){
         currentRootSector = 0;
         uint32_t nextRootCluster = ReadFATEntryForCluster(currentRootCluster, FAT_Table_Sector);
-        if(nextRootCluster == EOC){
+        if(nextRootCluster >= EOC){
           nextRootCluster = AllocateUnusedCluster(FAT_Table_Sector);
           WriteFATEntryForCluster(currentRootCluster, nextRootCluster, FAT_Table_Sector);
         }
@@ -327,7 +382,7 @@ int eFile_EndRedirectToFile(void){
 uint8_t* eFile_FindFirstUnusedDirEntry(uint8_t* rootSector) {
   uint32_t i = 0;
   uint8_t* cursor;
-  uint32_t currentRootCluster = BPB_RootClus;
+  currentRootCluster = BPB_RootClus;
   currentRootSector = 0;
   eDisk_ReadBlock((BYTE *)rootSector, GetFirstSectorOfCluster(BPB_RootClus));
   cursor = rootSector;
@@ -337,7 +392,7 @@ uint8_t* eFile_FindFirstUnusedDirEntry(uint8_t* rootSector) {
       if(currentRootSector == BPB_SecPerClus){
         currentRootSector = 0;
         uint32_t nextRootCluster = ReadFATEntryForCluster(currentRootCluster, FAT_Table_Sector);
-        if(nextRootCluster == EOC){
+        if(nextRootCluster >= EOC){
           nextRootCluster = AllocateUnusedCluster(FAT_Table_Sector);
           WriteFATEntryForCluster(currentRootCluster, nextRootCluster, FAT_Table_Sector);
         }
@@ -401,14 +456,45 @@ void dummyTest3(){
   DIR_Entry entry;
   uint8_t* rootSector = ResidentSectors;
   eFile_ROpen("hello.TXT");
+  printf("File Contains: ");
+  char data;
+  //eFile_ReadNext(&data);
+  while(eFile_ReadNext(&data) == 0){
+		putc(data, stdout);
+  }
+	printf("\n\rEOF?: %d\n\r", eFile_ReadNext(&data));
+  eFile_RClose();
+
 }
 
 
 //eFile_WOpen
 void dummyTest4(){
   DIR_Entry entry;
+  char buff[20];
   uint8_t* rootSector = ResidentSectors;
-  eFile_Create("File2.TXT"); 
-  eFile_WOpen("File2.TXT");
+  int statusC = eFile_Create("File3.TXT"); 
+  int statusO = eFile_WOpen("File3.TXT");
+  for(int i = 0; i < 1000; i++){
+    sprintf(buff, "%d\t", i);
+    int k = 0;
+    while(buff[k] != '\0'){
+      eFile_Write(buff[k]);
+      k++;
+    }
+    if(i % 5 == 0){
+      eFile_Write('\n');
+      eFile_Write('\r');
+    }
+  }
+  eFile_WClose();
+  statusO = eFile_ROpen("File3.TXT");
+  printf("File Contains: ");
+  char data;
+  //eFile_ReadNext(&data);
+  while(eFile_ReadNext(&data) == 0){
+    putc(data, stdout);
+  }
+  eFile_RClose();
 }
 

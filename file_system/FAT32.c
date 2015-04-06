@@ -49,7 +49,10 @@ void FAT_Init(uint8_t* MBRSector){
 uint32_t ReadFATEntryForCluster(uint32_t N, uint8_t* SecBuff){
   uint32_t ThisFATSecNum = FAT_Begin_LBA + N*4/BPB_BytsPerSec;
   /*Check to see if need to load a different sector of FAT Table*/
-
+  if(currentFATSector != ThisFATSecNum){
+    currentFATSector = ThisFATSecNum;
+    eDisk_ReadBlock(SecBuff, currentFATSector);
+  }
   uint32_t ThisFATEntOffset = (N*4) % BPB_BytsPerSec;
   uint32_t FAT32ClusEntryVal = (*((uint32_t *) &SecBuff[ThisFATEntOffset])) & 0x0FFFFFFF;
   return FAT32ClusEntryVal;
@@ -58,7 +61,10 @@ uint32_t ReadFATEntryForCluster(uint32_t N, uint8_t* SecBuff){
 void WriteFATEntryForCluster(uint32_t N, uint32_t FAT32ClusEntryVal, uint8_t* SecBuff){
   uint32_t ThisFATSecNum = FAT_Begin_LBA + N*4/BPB_BytsPerSec;
   /*Check to see if need to load a different sector of FAT Table*/
-
+  if(currentFATSector != ThisFATSecNum){
+    currentFATSector = ThisFATSecNum;
+    eDisk_ReadBlock(SecBuff, currentFATSector);
+  }
   uint32_t ThisFATEntOffset = (N*4) % BPB_BytsPerSec;
   FAT32ClusEntryVal = FAT32ClusEntryVal & 0x0FFFFFFF;
   (*((uint32_t *) &SecBuff[ThisFATEntOffset])) = (*((uint32_t *) &SecBuff[ThisFATEntOffset])) & 0xF0000000;
@@ -71,8 +77,8 @@ int isDirFree(DIR_Entry* entry){
 }
 
 uint32_t AllocateUnusedCluster(uint8_t* FAT_Base){
-  uint32_t i = 0;
-  while(ReadFATEntryForCluster(i, FAT_Base) != EOC){
+  uint32_t i = 2;
+  while(ReadFATEntryForCluster(i, FAT_Base) != FAT_Free){
     i++;
   }
   WriteFATEntryForCluster(i, EOC, FAT_Base);
