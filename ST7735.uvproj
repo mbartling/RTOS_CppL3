@@ -362,7 +362,7 @@
               <MiscControls>--cpp</MiscControls>
               <Define>rvmdk PART_LM4F120H5QR</Define>
               <Undefine></Undefine>
-              <IncludePath>..;..\..\..;.\os;.\hardware;.\graphics;.\data_structures;.\helper</IncludePath>
+              <IncludePath>..\RTOS_CppL3;..\..\..;.\os;.\hardware;.\graphics;.\data_structures;.\helper;.\file_system</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -541,9 +541,24 @@
               <FilePath>.\helper\priority.c</FilePath>
             </File>
             <File>
-              <FileName>test.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\test.cpp</FilePath>
+              <FileName>Lab5.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Lab5.c</FilePath>
+            </File>
+            <File>
+              <FileName>edisk.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\file_system\edisk.c</FilePath>
+            </File>
+            <File>
+              <FileName>efile.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\file_system\efile.c</FilePath>
+            </File>
+            <File>
+              <FileName>FAT32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\file_system\FAT32.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -553,32 +568,32 @@
             <File>
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\driverlib\gpio.c</FilePath>
+              <FilePath>.\driverlib\gpio.c</FilePath>
             </File>
             <File>
               <FileName>interrupt.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\driverlib\interrupt.c</FilePath>
+              <FilePath>.\driverlib\interrupt.c</FilePath>
             </File>
             <File>
               <FileName>ssi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\driverlib\ssi.c</FilePath>
-            </File>
-            <File>
-              <FileName>sysctl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\driverlib\sysctl.c</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\driverlib\uart.c</FilePath>
+              <FilePath>.\driverlib\ssi.c</FilePath>
             </File>
             <File>
               <FileName>cpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\driverlib\cpu.c</FilePath>
+              <FilePath>.\driverlib\cpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>sysctl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driverlib\sysctl.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driverlib\uart.c</FilePath>
             </File>
           </Files>
         </Group>
