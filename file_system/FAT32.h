@@ -46,6 +46,8 @@ extern uint32_t Partition1_LBA_Begin;
 extern uint32_t CountOfClusters;
 extern uint32_t FAT_Begin_LBA;
 extern uint32_t Cluster_Begin_LBA;
+extern uint32_t currentFATSector;
+
 /**
  This sector number is relative to the first sector of the volume that contains the BPB (the
 sector that contains the BPB is sector number 0). This does not necessarily map directly onto the
@@ -66,6 +68,7 @@ typedef struct _DIR_Entry{
   uint32_t DIR_FstClus;
   uint32_t DIR_FileSize;
   uint32_t currentSector;
+  uint32_t currentCluster;
   uint8_t* sectorBasePtr;
   uint8_t* cursorPtr;
 } DIR_Entry;
@@ -81,6 +84,8 @@ uint32_t GetFirstSectorOfCluster(uint32_t N);
 void FAT_nameFrom(char* outname, char* FATfilename);
 void FAT_nameTo(char* outname, char* filename);
 void readDirEntryFromCursor(DIR_Entry* entry, uint8_t* cursor);
-
+void writeDirEntryFromCursor(DIR_Entry* entry, uint8_t* cursor);
+uint32_t GetNthSectorOfCluster(uint32_t ClusterNum, uint32_t N);
+uint32_t AllocateUnusedCluster(uint8_t* FAT_Base);
 void writeDirEntry(DIR_Entry* entry, uint32_t entryNum, uint8_t* sector);
 #endif /*__FAT32_H__*/

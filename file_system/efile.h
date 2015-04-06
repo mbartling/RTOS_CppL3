@@ -99,6 +99,6 @@ int eFile_RedirectToFile(char *name);
 int eFile_EndRedirectToFile(void);
 
 uint8_t* eFile_FindFileInRoot(uint8_t* rootSector, char* FATfilename);
-uint32_t eFile_FindFirstUnusedDirEntry(uint8_t* rootSector);
+uint8_t* eFile_FindFirstUnusedDirEntry(uint8_t* rootSector);
 #endif /*__EFILE_H__*/
 

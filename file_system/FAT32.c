@@ -15,6 +15,8 @@ uint32_t FirstDataSector;
 uint32_t FAT_Begin_LBA;
 uint32_t Cluster_Begin_LBA;
 
+uint32_t currentFATSector;
+
 void FAT_Init(uint8_t* MBRSector){
   /*
    * Get the First Partitions logical block number to load the proper volume
@@ -68,6 +70,14 @@ int isDirFree(DIR_Entry* entry){
   return (entry->DIR_Name[0] == 0xE5 || entry->DIR_Name[0] == 0x00) ? 1 /*is Free*/ : 0 /*Is not free*/;
 }
 
+uint32_t AllocateUnusedCluster(uint8_t* FAT_Base){
+  uint32_t i = 0;
+  while(ReadFATEntryForCluster(i, FAT_Base) != EOC){
+    i++;
+  }
+  WriteFATEntryForCluster(i, EOC, FAT_Base);
+  return i;
+}
 
 //uint32_t getDirSize(DIR_Entry* entry){
 //  uint32_t clusterNum = entry->DIR_FstClus;
@@ -100,6 +110,14 @@ void readDirEntryFromCursor(DIR_Entry* entry, uint8_t* cursor){
   entry->DIR_FileSize= (*((uint32_t *)&cursor[DIR_FileSize_OFFSET]));
 
 }
+void writeDirEntryFromCursor(DIR_Entry* entry, uint8_t* cursor){
+
+  memcpy((char *)cursor, entry->DIR_Name, 11);  
+  *((uint16_t *)&cursor[DIR_FstClusHI_OFFSET]) = (uint16_t)(entry->DIR_FstClus >> 16);
+  (*((uint16_t *)&cursor[DIR_FstClusLO_OFFSET])) = (uint16_t) entry->DIR_FstClus & 0xFFFF;
+  (*((uint32_t *)&cursor[DIR_FileSize_OFFSET])) = entry->DIR_FileSize;
+}
+
 void writeDirEntry(DIR_Entry* entry, uint32_t entryNum, uint8_t* sector){
   
   uint8_t* entry_offset = &sector[entryNum*DIR_Entry_Size];
