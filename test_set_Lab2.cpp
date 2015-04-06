@@ -279,16 +279,19 @@ unsigned long t;                  // time in 2.5 ms
             outputArray[i]= LPFilter(3000*inputArray[i]/4095); // Real part at frequency 0, imaginary part should be zero
             //outputArray[i]= (3000*inputArray[i]/4095); // Real part at frequency 0, imaginary part should be zero
 // printf("data %d\n", outputArray[i]); 
-            //printf("%d\n", outputArray[i]); 
+            printf("%d\n", outputArray[i]); 
         }
+				printf("\n\n");
     }else if(mode == 2) {
         for (int i = 0; i < 64; i++) {
             outputArrayBeforeFFT[i]= LPFilter(300*inputArray[i]/4095); // Real part at frequency 0, imaginary part should be zero
       }
        cr4_fft_64_stm32(outputArray,outputArrayBeforeFFT,64);  // complex FFT of last 64 ADC values
-//       for (int i = 0; i < 64; i++) {
-//           printf("%d\n", outputArray[i] &0xFFFF); 
+ 
+//      for (int i = 0; i < 64; i++) {
+//           printf("%d %d\n", outputArray[i] & 0x0000FFFF, outputArray[i] & 0xFFFF0000); 
 //        }
+//			 printf("\n\n");
    } 
      
     plot(outputArray, mode);

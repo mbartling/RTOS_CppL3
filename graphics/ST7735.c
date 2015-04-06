@@ -1259,7 +1259,8 @@ int32_t Yrange; //YrangeDiv2;
 // Inputs: ymin and ymax are range of the plot
 // Outputs: none
 void ST7735_PlotClear(int32_t ymin, int32_t ymax){
-  ST7735_FillRect(0, 32, 128, 128, ST7735_Color565(228,228,228)); // light grey
+  //ST7735_FillRect(0, 32, 128, 128, ST7735_Color565(228,228,228)); // light grey
+	ST7735_FillRect(0, 32, 128, 128, ST7735_Color565(255,255,255)); // light grey
   if(ymax>ymin){
     Ymax = ymax;
     Ymin = ymin;
@@ -1654,7 +1655,7 @@ void ST7735_PlotPoint(long y){long j;
   j = 32+(127*(Ymax-y))/Yrange;
   if(j<32) j = 32;
   if(j>159) j = 159;
-  ST7735_DrawPixel(2*X, j*(2) - 180, ST7735_BLUE) ;
+  ST7735_DrawPixel(2*X, j*(2) - 180, ST7735_BLACK) ;
  //ST7735_PlotNext();
 }
 // *************** ST7735_PlotdBfs ********************
