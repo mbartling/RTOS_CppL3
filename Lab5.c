@@ -277,18 +277,80 @@ void TestFAT(void){
   printf("Successful test of %u blocks\n\r",MAXBLOCKS);
   OS_Kill();
 }
+
+uint32_t Ping(void){
+	uint32_t pingStartTime; 
+	uint32_t pingEndTime;
+	//Write GPIO_Pin High
+	OS_DelayUS(5);
+	//Write GPIO Pin Low
+	
+	//Could move into a ISR
+	//while(gpio_Pin_Low){}
+	pingStartTime = OS_GetUsTime();
+	//while(gpio_Pin_High){}
+	OS_DelayUS(18500); //For Simulation
+
+	pingEndTime = OS_GetUsTime();
+	
+	//Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)
+	//Then the ping time is c*dT/2
+	return ((pingEndTime - pingStartTime) >> 1)*343000/1000000;
+	//return (uint32_t)(((float)((pingEndTime - pingStartTime) >> 1))*34000.0/1000000.0);
+}
+void TestUs(void){
+	
+	uint32_t currTime; 
+	uint32_t currTime2;
+	uint32_t distance;
+	//uint32_t distance_buff[4];
+	unsigned long id = OS_Id();
+	uint32_t i = 0;
+	uint32_t x = 5;
+	x--;
+	x--;
+	x--;
+	currTime = OS_GetUsTime();
+	OS_DelayUS(5);
+	currTime2 = OS_GetUsTime();
+	printf("Verifying Timing Conditions\n");
+	printf("%u\t%u\t%u\n", currTime, currTime2, currTime2-currTime);
+	
+	currTime = OS_GetUsTime();
+	currTime2 = OS_GetUsTime();
+	printf("Verifying Timing Conditions\n");
+	printf("%u\t%u\t%u\n", currTime, currTime2, currTime2-currTime);
+	
+		currTime = OS_GetUsTime();
+		currTime2 = OS_GetUsTime();
+		printf("Verifying Timing Conditions\n");
+		printf("%u\t%u\t%u\n", currTime, currTime2, currTime2-currTime);
+	while(1){
+		distance = 0;
+		for(i = 0; i < 4; i++){
+			currTime = OS_GetUsTime();
+			//distance_buff[i] = Ping();
+			distance += Ping();
+			currTime2 = OS_GetUsTime();
+		}
+		distance = distance >> 2;
+		printf("ID: %u\t\t%u\t\t%u\n", id, distance, currTime2-currTime);
+	}
+	OS_Kill();
+}
 int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
 
 //*******attach background tasks***********
-  OS_AddPeriodicThread(&disk_timerproc,10*TIME_1MS,0);   // time out routines for disk
+  //OS_AddPeriodicThread(&disk_timerproc,10*TIME_1MS,0);   // time out routines for disk
 //  OS_AddButtonTask(&RunTest,2);
   
   NumCreated = 0 ;
 // create initial foreground threads
-  NumCreated += OS_AddThread(&TestFAT,128,1);  
+  //NumCreated += OS_AddThread(&TestFAT,128,1);  
   //NumCreated += OS_AddThread(&IdleTask,128,3); 
- 
+  NumCreated += OS_AddThread(&TestUs, 128, 1);
+	NumCreated += OS_AddThread(&TestUs, 128, 1);
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }

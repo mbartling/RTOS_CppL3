@@ -145,13 +145,15 @@ int eFile_WOpen(char name[]){
       NumClusters++;
     } 
     
-    uint32_t lastBlock = (entry->DIR_FileSize - NumClusters*BPB_SecPerClus*BPB_BytsPerSec - (entry->DIR_FileSize % BPB_BytsPerSec)) / BPB_BytsPerSec ;
+    //uint32_t lastBlock = (entry->DIR_FileSize - NumClusters*BPB_SecPerClus*BPB_BytsPerSec - (entry->DIR_FileSize % BPB_BytsPerSec)) / BPB_BytsPerSec ;
+		uint32_t lastBlock = (entry->DIR_FileSize %(BPB_SecPerClus*BPB_BytsPerSec))/BPB_BytsPerSec; //Will be between 0 and BPB_SecPerClus
     entry->sectorBasePtr = &ResidentSectors[512];
     entry->currentSector = lastBlock; 
     entry->currentCluster = FATIndex;
     entry->cursorPtr = &(entry->sectorBasePtr[entry->DIR_FileSize % BPB_BytsPerSec]);
     entry->bytes_seen = entry->DIR_FileSize;
-    eDisk_ReadBlock((BYTE *)entry->sectorBasePtr, GetFirstSectorOfCluster(FAT_Table_Sector[FATIndex] + lastBlock));
+    //eDisk_ReadBlock((BYTE *)entry->sectorBasePtr, GetFirstSectorOfCluster(FAT_Table_Sector[FATIndex] + lastBlock));
+		eDisk_ReadBlock((BYTE *)entry->sectorBasePtr, GetNthSectorOfCluster(FATIndex, lastBlock));
 
   } 
 	return 0;
@@ -256,7 +258,7 @@ int eFile_ROpen( char name[]){
 //         0 if successful and 1 on failure (e.g., end of file)
 int eFile_ReadNext( char *pt){
   if(have_active_file == 0) return 1;
-  if(ActiveFile.bytes_seen == ActiveFile.DIR_FileSize) return 1;
+  if(ActiveFile.bytes_seen >= ActiveFile.DIR_FileSize) return 1;
   if(ActiveFile.currentSector == BPB_SecPerClus){
     //Load Next Cluster
     ActiveFile.currentCluster = ReadFATEntryForCluster(ActiveFile.currentCluster, FAT_Table_Sector);
@@ -284,7 +286,8 @@ int eFile_ReadNext( char *pt){
 // Output: 0 if successful and 1 on failure (e.g., wasn't open)
 int eFile_RClose(void){
   if(have_active_file == 0) return 1;
-  close(&ActiveFile);
+  //close(&ActiveFile);
+	have_active_file = 0;
   return 0;
 } // close the file for writing
 
@@ -294,7 +297,7 @@ int eFile_RClose(void){
 // Output: characters returned by reference
 //         0 if successful and 1 on failure (e.g., trouble reading from flash)
 int eFile_Directory(void(*fp)(unsigned char)){
-
+	return 1;
 }   
 
 //---------- eFile_Delete-----------------
@@ -302,7 +305,7 @@ int eFile_Directory(void(*fp)(unsigned char)){
 // Input: file name is a single ASCII letter
 // Output: 0 if successful and 1 on failure (e.g., trouble writing to flash)
 int eFile_Delete( char name[]){
-
+	return 1;
 }  // remove this file 
 
 //---------- eFile_RedirectToFile-----------------
@@ -311,8 +314,10 @@ int eFile_Delete( char name[]){
 // stream printf data into file
 // Output: 0 if successful and 1 on failure (e.g., trouble read/write to flash)
 int eFile_RedirectToFile(char *name){
+	if(have_active_file == 1) return 1;
   eFile_WOpen(name);
   OUTPUT_redirected = 1;
+	return 0;
 }
 
 //---------- eFile_EndRedirectToFile-----------------
@@ -320,7 +325,9 @@ int eFile_RedirectToFile(char *name){
 // redirect printf data back to UART
 // Output: 0 if successful and 1 on failure (e.g., wasn't open)
 int eFile_EndRedirectToFile(void){
+	if(have_active_file == 0) return 1;
   OUTPUT_redirected = 0;
+	return 0;
 }
 
 

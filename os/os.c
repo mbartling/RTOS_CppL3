@@ -95,7 +95,7 @@ void OS_Init(void)
   UART0_Init();
   //EnableInterrupts(); 
 	//Timer1A_Init((uint32_t)Timer1APeriod);
-
+	WTimer3A_Init();
   TCB_Configure_IdleThread(); //Set up the idle thread
 }
 
@@ -640,4 +640,15 @@ void SysTick_Handler(void){
    
 }
 
-
+uint32_t OS_GetUsTime(void){
+	//volatile uint32_t currtime = WTIMER3_TAR_R;
+	//return currtime;
+	return 0xFFFFFFFF - WTIMER3_TAR_R;
+}
+void OS_DelayUS(uint32_t numUs){
+	volatile uint32_t currTime = WTIMER3_TAR_R;
+	uint32_t Target = currTime - numUs;
+	while(currTime > Target){
+		currTime = WTIMER3_TAR_R;
+	}
+}

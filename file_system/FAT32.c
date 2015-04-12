@@ -73,7 +73,7 @@ void WriteFATEntryForCluster(uint32_t N, uint32_t FAT32ClusEntryVal, uint8_t* Se
 }
 
 int isDirFree(DIR_Entry* entry){
-  return (entry->DIR_Name[0] == 0xE5 || entry->DIR_Name[0] == 0x00) ? 1 /*is Free*/ : 0 /*Is not free*/;
+  return ((uint8_t)(entry->DIR_Name[0]) == 0xE5 || entry->DIR_Name[0] == 0x00) ? 1 /*is Free*/ : 0 /*Is not free*/;
 }
 
 uint32_t AllocateUnusedCluster(uint8_t* FAT_Base){

@@ -12,7 +12,8 @@
 #include "sleepList.hpp"
 #include "TCB.h"
  //edit these depending on your clock        
-#define TIME_1MS    80000          
+#define TIME_1MS    80000
+#define TIME_1US    80
 #define TIME_2MS    (2*TIME_1MS)  
 #define TIME_500US  (TIME_1MS/2)  
 #define TIME_250US  (TIME_1MS/5)  
@@ -25,6 +26,9 @@ struct  Sema4{
 };
 typedef struct Sema4 Sema4Type;
 
+uint32_t OS_GetUsTime(void);
+void OS_DelayUS(uint32_t numUs);
+	
  /****har	***** OS_Init ************
  * initialize operating system, disable interrupts until OS_Launch
  * initialize OS controlled I/O: serial, ADC, systick, LaunchPad I/O and timers 

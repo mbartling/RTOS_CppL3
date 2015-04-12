@@ -47,6 +47,7 @@ void PWM_Duty(uint16_t high);
 void Timer1A_Init(uint32_t period);
 void Timer2A_Init(uint32_t period);
 
+void WTimer3A_Init(void);
 
 #ifdef __cplusplus
 extern "C" {

@@ -44,11 +44,14 @@
                                             // Select
 #define TIMER_TAMR_TAMR_PERIOD  0x00000002  // Periodic Timer mode
 #define TIMER_CTL_TAEN          0x00000001  // GPTM TimerA Enable
+#define TIMER_CTL_TA_STALL_EN          0x00000002  // GPTM TimerA Enable
 #define TIMER_TAILR_TAILRL_M    0x0000FFFF  // GPTM TimerA Interval Load
                                             // Register Low
 #define TIMER_TBILR_TBILRL_M    0x0000FFFF  // GPTM TimerB Interval Load
                                             // Register
-
+#define TIMER_US_PRESCALE 0x00000050	//1 Timer tick = 1 us
+#define WTIMER_CFG_32_BIT        0x00000004  // 16-bit timer configuration,
+#define WTIMER_Count_Up 0x00000010
 
 // period is number of clock cycles in PWM period ((1/clockfreq) units)
 // high is number of clock cycles output is high ((1/clockfreq) units)
@@ -95,6 +98,18 @@ void Timer1A_Init(uint32_t period){
   //NVIC_PRI5_R = (0x1<<13); 
   NVIC_PRI5_R = Timer1APriority;
   NVIC_EN0_R =  1 <<21;
+}
+
+void WTimer3A_Init(void){
+	SYSCTL_RCGCWTIMER_R |= 0x00000008;
+	WTIMER3_CTL_R &= ~TIMER_CTL_TAEN;
+	WTIMER3_CTL_R |= TIMER_CTL_TA_STALL_EN;
+	WTIMER3_CFG_R = WTIMER_CFG_32_BIT;
+	WTIMER3_TAMR_R = TIMER_TAMR_TAMR_PERIOD;// | WTIMER_Count_Up; 
+	WTIMER3_TAILR_R = 0xFFFFFFFF; //This timer just runs and does not throw interrupts
+	WTIMER3_TAPR_R = TIMER_US_PRESCALE;
+	WTIMER3_CTL_R |= TIMER_CTL_TAEN;
+	
 }
 
 
