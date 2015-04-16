@@ -96,7 +96,9 @@ int eFile_Create( char name[]){
 
     newFileDIREntry.DIR_FstClus = AllocateUnusedCluster(FAT_Table_Sector);;
     newFileDIREntry.DIR_FileSize = 0;
-    newFileDIREntry.currentSector = GetFirstSectorOfCluster(newFileDIREntry.DIR_FstClus);
+    //newFileDIREntry.currentSector = GetFirstSectorOfCluster(newFileDIREntry.DIR_FstClus);
+		newFileDIREntry.currentSector = 0;
+
     newFileDIREntry.sectorBasePtr =  &ResidentSectors[512];
     newFileDIREntry.cursorPtr =  &ResidentSectors[512];
 

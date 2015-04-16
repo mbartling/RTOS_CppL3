@@ -29,6 +29,24 @@ int Running;                // true while robot is running
 #define GPIO_PF2  (*((volatile unsigned long *)0x40025010))
 #define GPIO_PF3  (*((volatile unsigned long *)0x40025020))
 #define GPIO_PG1  (*((volatile unsigned long *)0x40026008))
+
+#define PE0  (*((volatile unsigned long *)0x40024004))
+#define PE1  (*((volatile unsigned long *)0x40024008))
+#define PE2  (*((volatile unsigned long *)0x40024010))
+#define PE3  (*((volatile unsigned long *)0x40024020))
+void PortE_Init(void){ unsigned long volatile delay;
+  //SYSCTL_RCGC2_R |= 0x10;       // activate port E
+  SYSCTL_RCGCGPIO_R |= 0x10;       
+  delay = SYSCTL_RCGC2_R;        
+  delay = SYSCTL_RCGC2_R;         
+  GPIO_PORTE_DIR_R |= 0x0F;    // make PE3-0 output heartbeats
+	GPIO_PORTE_DIR_R &= ~0x04;
+  GPIO_PORTE_AFSEL_R &= ~0x0F;   // disable alt funct on PE3-0
+  GPIO_PORTE_DEN_R |= 0x0F;     // enable digital I/O on PE3-0
+  GPIO_PORTE_PCTL_R = ~0x0000FFFF;
+  GPIO_PORTE_AMSEL_R &= ~0x0F;;      // disable analog functionality on PF
+}
+
 // PF1/IDX1 is user input select switch
 // PE1/PWM5 is user input down switch 
 // PF0/PWM0 is debugging output on Systick
@@ -282,20 +300,25 @@ uint32_t Ping(void){
 	uint32_t pingStartTime; 
 	uint32_t pingEndTime;
 	//Write GPIO_Pin High
+  PE3 = 0x08;
 	OS_DelayUS(5);
 	//Write GPIO Pin Low
-	
+	PE3 = 0x00;
 	//Could move into a ISR
 	//while(gpio_Pin_Low){}
+  //while(PE2 == 0){OS_DelayUS(1);}
+	while(PE2 == 0){}
 	pingStartTime = OS_GetUsTime();
 	//while(gpio_Pin_High){}
-	OS_DelayUS(18500); //For Simulation
+  //while(PE2 != 0){OS_DelayUS(1);}
+	while(PE2 != 0){}
+//	OS_DelayUS(18500); //For Simulation
 
 	pingEndTime = OS_GetUsTime();
-	
+	OS_DelayUS(200);
 	//Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)
 	//Then the ping time is c*dT/2
-	return ((pingEndTime - pingStartTime) >> 1)*343000/1000000;
+	return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
 	//return (uint32_t)(((float)((pingEndTime - pingStartTime) >> 1))*34000.0/1000000.0);
 }
 void TestUs(void){
@@ -334,23 +357,24 @@ void TestUs(void){
 			currTime2 = OS_GetUsTime();
 		}
 		distance = distance >> 2;
-		printf("ID: %u\t\t%u\t\t%u\n", id, distance, currTime2-currTime);
+		printf("ID: %u\t\t%u\t\t%u\n\r", id, distance, currTime2-currTime);
 	}
 	OS_Kill();
 }
 int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
-
+  PortE_Init();
+  PE3 = 0x00;
 //*******attach background tasks***********
-  //OS_AddPeriodicThread(&disk_timerproc,10*TIME_1MS,0);   // time out routines for disk
+//  OS_AddPeriodicThread(&disk_timerproc,10*TIME_1MS,0);   // time out routines for disk
 //  OS_AddButtonTask(&RunTest,2);
   
   NumCreated = 0 ;
 // create initial foreground threads
-  //NumCreated += OS_AddThread(&TestFAT,128,1);  
+//  NumCreated += OS_AddThread(&TestFAT,128,1);  
   //NumCreated += OS_AddThread(&IdleTask,128,3); 
   NumCreated += OS_AddThread(&TestUs, 128, 1);
-	NumCreated += OS_AddThread(&TestUs, 128, 1);
+	//NumCreated += OS_AddThread(&TestUs, 128, 1);
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
