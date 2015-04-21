@@ -12,8 +12,6 @@
 #include "ADC.h"
 #include "os.h"
 #include "inc/tm4c123gh6pm.h"
-#include "edisk.h"
-#include "efile.h"
 #include "Perf.h"
 #include "can0.h"
 
