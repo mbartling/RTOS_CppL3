@@ -33,6 +33,10 @@
 // reverse these IDs on the other microcontroller
 #define RCV_ID 4
 #define XMT_ID 2
+
+#define CAST_CAN_2_UINT8P(X) ((uint8_t *) &X )
+#define CAST_UINT8_2_CAN(X) (*((CanMessage_t *) &X[0] ))
+
 // Returns true if receive data is available
 //         false if no receive data ready
 int CAN0_CheckMail(void);
@@ -51,7 +55,10 @@ void CAN0_Open(void);
 // send 4 bytes of data to other microcontroller 
 void CAN0_SendData(uint8_t data[4]);
 
-
+typedef struct CanMessage {
+	uint8_t mId; 	//<! Message ID
+	uint32_t data;	//<! Data Component
+} CanMessage_t;
 
 #endif //  __CAN0_H__
 

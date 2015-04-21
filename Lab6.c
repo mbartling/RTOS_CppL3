@@ -37,6 +37,9 @@ int Running;                // true while robot is running
 #define PC6  (*((volatile unsigned long *)0x40022100))
 #define PC7  (*((volatile unsigned long *)0x40022200))
 
+#define PING_L_ID 1
+#define PING_R_ID 2
+
 void PortD_Init(void){ unsigned long volatile delay;
   //SYSCTL_RCGC2_R |= 0x10;       // activate port D
   SYSCTL_RCGCGPIO_R |= 0x08;       
@@ -49,7 +52,17 @@ void PortD_Init(void){ unsigned long volatile delay;
   //GPIO_PORTD_PCTL_R = ~0x0000FFFF;
   //GPIO_PORTD_AMSEL_R &= ~0x0F;;      // disable analog functionality on PF
 }
+void PortC_Init(void){ unsigned long volatile delay;
+  //SYSCTL_RCGC2_R |= 0x10;       // activate port c
+  SYSCTL_RCGCGPIO_R |= 0x04;       
+  delay = SYSCTL_RCGC2_R;        
+  delay = SYSCTL_RCGC2_R;         
+  GPIO_PORTC_DIR_R |= 0x30;    // make PC7 output
+  GPIO_PORTC_DIR_R &= ~0x10;   //PC6 is echo
+  GPIO_PORTC_AFSEL_R &= ~0x30;   // disable alt funct on PC6-7
+  GPIO_PORTC_DEN_R |= 0x30;     // enable digital I/O on PC6-7
 
+}
 
 uint32_t Ping1(void){
 	uint32_t pingStartTime; 
@@ -98,64 +111,45 @@ uint32_t Ping2(void){
   return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
 }
 
-void TestUs(void){
-	
-	uint32_t currTime; 
-	uint32_t currTime2;
-	uint32_t distance;
-	//uint32_t distance_buff[4];
-	unsigned long id = OS_Id();
-	uint32_t i = 0;
-	uint32_t x = 5;
-	x--;
-	x--;
-	x--;
-	currTime = OS_GetUsTime();
-	OS_DelayUS(5);
-	currTime2 = OS_GetUsTime();
-	printf("Verifying Timing Conditions\n");
-	printf("%u\t%u\t%u\n", currTime, currTime2, currTime2-currTime);
-	
-	currTime = OS_GetUsTime();
-	currTime2 = OS_GetUsTime();
-	printf("Verifying Timing Conditions\n");
-	printf("%u\t%u\t%u\n", currTime, currTime2, currTime2-currTime);
-	
-		currTime = OS_GetUsTime();
-		currTime2 = OS_GetUsTime();
-		printf("Verifying Timing Conditions\n");
-		printf("%u\t%u\t%u\n", currTime, currTime2, currTime2-currTime);
-	while(1){
-		distance = 0;
-		for(i = 0; i < 4; i++){
-			currTime = OS_GetUsTime();
-			//distance_buff[i] = Ping();
-			distance += Ping1();
-			currTime2 = OS_GetUsTime();
-		}
-		distance = distance >> 2;
-		printf("ID: %u\t\t%u\t\t%u\n\r", id, distance, currTime2-currTime);
-	}
-	OS_Kill();
-}
-
 void PingR(void){
   
 
   uint32_t distance;
+  CanMessage_t msg;
   //uint32_t distance_buff[4];
   unsigned long id = OS_Id();
   uint32_t i = 0;
-  uint8_t* XmtData;
   while(1){
     distance = 0;
     for(i = 0; i < 4; i++){
       distance += Ping1();
     }
     distance = distance >> 2;
+    //XmtData = (uint8_t *) &distance;
+    msg.mId = PING_R_ID;
+    msg.data = distance;
+    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
+
+  }
+  OS_Kill();
+}
+
+void PingL(void){
+  
+  uint32_t distance;
+  CanMessage_t msg;
+
+  uint32_t i = 0;
+  while(1){
+    distance = 0;
+    for(i = 0; i < 4; i++){
+      distance += Ping2();
+    }
+    distance = distance >> 2;
     XmtData = (uint8_t *) &distance;
-    //printf("ID: %u\t\t%u\t\t%u\n\r", id, distance, currTime2-currTime);
-    CAN0_SendData(XmtData);
+    msg.mId = PING_L_ID;
+    msg.data = distance;
+    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
 
   }
   OS_Kill();
@@ -165,12 +159,13 @@ void PingR(void){
 uint32_t RcvCount=0;
 
 void CAN_Listener(void){
-  uint8_t RcvData[4];
-  uint32_t rxDat;
+  uint8_t RcvData[5];
+//  uint32_t rxDat;
+  CanMessage_t rxDat;
   while(1){
     if(CAN0_GetMailNonBlock(RcvData)){
       RcvCount++;
-      rxDat = *((uint32_t *) &RcvData[0]);
+      rxDat = CAST_UINT8_2_CAN(RcvData);
     }
   } 
 }

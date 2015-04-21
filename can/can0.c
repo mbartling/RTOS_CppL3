@@ -53,12 +53,25 @@
 uint8_t static RCVData[4];
 int static MailFlag;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void DisableInterrupts(void); // Disable interrupts
+void EnableInterrupts(void);  // Enable interrupts
+long StartCritical (void);    // previous I bit, disable interrupts
+void EndCritical(long sr);    // restore I bit to previous value
+void WaitForInterrupt(void);  // low power mode
+void CAN0_Handler(void)
+#ifdef __cplusplus
+}
+#endif
 //*****************************************************************************
 //
 // The CAN controller interrupt handler.
 //
 //*****************************************************************************
-void CAN0_Handler(void){ uint8_t data[4];
+void CAN0_Handler(void){ uint8_t data[5];
   uint32_t ulIntStatus, ulIDStatus;
   int i;
   tCANMsgObject xTempMsgObject;
@@ -74,6 +87,7 @@ void CAN0_Handler(void){ uint8_t data[4];
           RCVData[1] = data[1];
           RCVData[2] = data[2];
           RCVData[3] = data[3];
+          RCVData[4] = data[4];
           MailFlag = true;   // new mail
         }
       }
@@ -117,15 +131,17 @@ void CAN0_Open(void){uint32_t volatile delay;
   CANIntEnable(CAN0_BASE, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);
 // Set up filter to receive these IDs
 // in this case there is just one type, but you could accept multiple ID types
-  CAN0_Setup_Message_Object(RCV_ID, MSG_OBJ_RX_INT_ENABLE, 4, NULL, RCV_ID, MSG_OBJ_TYPE_RX);
+  CAN0_Setup_Message_Object(RCV_ID, MSG_OBJ_RX_INT_ENABLE, 5, NULL, RCV_ID, MSG_OBJ_TYPE_RX);
   NVIC_EN1_R = (1 << (INT_CAN0 - 48)); //IntEnable(INT_CAN0);
   return;
 }
 
 // send 4 bytes of data to other microcontroller 
-void CAN0_SendData(uint8_t data[4]){
+void CAN0_SendData(uint8_t data[5]){
+  long sr = StartCritical();
 // in this case there is just one type, but you could accept multiple ID types
-  CAN0_Setup_Message_Object(XMT_ID, NULL, 4, data, XMT_ID, MSG_OBJ_TYPE_TX);
+  CAN0_Setup_Message_Object(XMT_ID, NULL, 5, data, XMT_ID, MSG_OBJ_TYPE_TX);
+  EndCritical(sr);
 }
 
 // Returns true if receive data is available
@@ -141,6 +157,7 @@ int CAN0_GetMailNonBlock(uint8_t data[4]){
     data[1] = RCVData[1];
     data[2] = RCVData[2];
     data[3] = RCVData[3];
+    data[4] = RCVData[4];
     MailFlag = false;
     return true;
   }
@@ -154,6 +171,7 @@ void CAN0_GetMail(uint8_t data[4]){
   data[1] = RCVData[1];
   data[2] = RCVData[2];
   data[3] = RCVData[3];
+  data[4] = RCVData[4];
   MailFlag = false;
 }
 
