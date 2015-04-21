@@ -154,19 +154,38 @@ void PingL(void){
 }
 
 
+/**
+ * CAN Receiver Code
+ */
 uint32_t RcvCount=0;
+
+uint32_t PingRVal;
+uint32_t PingLVal;
 
 void CAN_Listener(void){
   uint8_t RcvData[5];
 //  uint32_t rxDat;
   CanMessage_t rxDat;
   while(1){
-    if(CAN0_GetMailNonBlock(CAST_CAN_2_UINT8P(RcvData))){
+    if(CAN0_GetMailNonBlock(CAST_CAN_2_UINT8P(rxDat))){
       RcvCount++;
       //rxDat = CAST_UINT8_2_CAN(RcvData);
-    }
-  } 
-}
+			switch(rxDat.mId){
+				case PING_L_ID:
+					PingLVal = rxDat.data;
+					break;
+				
+				case PING_R_ID:
+					PingRVal = rxDat.data;
+					break;
+				
+				default:
+					break;
+			} //End Switch
+    } // End if CAN0_GetMail
+  }// End While 
+}//End CAN_Listener
+
 
 #ifdef SENSOR_BOARD
 int main(void){   // testmain1
