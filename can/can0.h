@@ -43,17 +43,17 @@ int CAN0_CheckMail(void);
 
 // if receive data is ready, gets the data and returns true
 // if no receive data is ready, returns false
-int CAN0_GetMailNonBlock(uint8_t data[4]);
+int CAN0_GetMailNonBlock(uint8_t data[5]);
 
 // if receive data is ready, gets the data 
 // if no receive data is ready, it waits until it is ready
-void CAN0_GetMail(uint8_t data[4]);
+void CAN0_GetMail(uint8_t data[5]);
 
 // Initialize CAN port
 void CAN0_Open(void);
 
 // send 4 bytes of data to other microcontroller 
-void CAN0_SendData(uint8_t data[4]);
+void CAN0_SendData(uint8_t data[5]);
 
 typedef struct CanMessage {
 	uint8_t mId; 	//<! Message ID

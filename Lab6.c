@@ -146,7 +146,7 @@ void PingL(void){
       distance += Ping2();
     }
     distance = distance >> 2;
-    XmtData = (uint8_t *) &distance;
+    //XmtData = (uint8_t *) &distance;
     msg.mId = PING_L_ID;
     msg.data = distance;
     CAN0_SendData(CAST_CAN_2_UINT8P(msg));
@@ -163,9 +163,9 @@ void CAN_Listener(void){
 //  uint32_t rxDat;
   CanMessage_t rxDat;
   while(1){
-    if(CAN0_GetMailNonBlock(RcvData)){
+    if(CAN0_GetMailNonBlock(CAST_CAN_2_UINT8P(RcvData))){
       RcvCount++;
-      rxDat = CAST_UINT8_2_CAN(RcvData);
+      //rxDat = CAST_UINT8_2_CAN(RcvData);
     }
   } 
 }

@@ -50,7 +50,7 @@
 // reverse these IDs on the other microcontroller
 
 // Mailbox linkage from background to foreground
-uint8_t static RCVData[4];
+uint8_t static RCVData[5];
 int static MailFlag;
 
 #ifdef __cplusplus
@@ -62,7 +62,7 @@ void EnableInterrupts(void);  // Enable interrupts
 long StartCritical (void);    // previous I bit, disable interrupts
 void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
-void CAN0_Handler(void)
+void CAN0_Handler(void);
 #ifdef __cplusplus
 }
 #endif
