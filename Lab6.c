@@ -15,6 +15,7 @@
 #include "edisk.h"
 #include "efile.h"
 #include "Perf.h"
+#include "can0.h"
 
 #define SENSOR_BOARD 1
 //unsigned long NumCreated;   // number of foreground threads created
@@ -129,7 +130,7 @@ void TestUs(void){
 		for(i = 0; i < 4; i++){
 			currTime = OS_GetUsTime();
 			//distance_buff[i] = Ping();
-			distance += Ping();
+			distance += Ping1();
 			currTime2 = OS_GetUsTime();
 		}
 		distance = distance >> 2;
@@ -140,8 +141,7 @@ void TestUs(void){
 
 void PingR(void){
   
-  uint32_t currTime; 
-  uint32_t currTime2;
+
   uint32_t distance;
   //uint32_t distance_buff[4];
   unsigned long id = OS_Id();
@@ -150,10 +150,7 @@ void PingR(void){
   while(1){
     distance = 0;
     for(i = 0; i < 4; i++){
-      currTime = OS_GetUsTime();
-      //distance_buff[i] = Ping();
       distance += Ping1();
-      currTime2 = OS_GetUsTime();
     }
     distance = distance >> 2;
     XmtData = (uint8_t *) &distance;
@@ -165,9 +162,23 @@ void PingR(void){
 }
 
 
+uint32_t RcvCount=0;
+
+void CAN_Listener(void){
+  uint8_t RcvData[4];
+  uint32_t rxDat;
+  while(1){
+    if(CAN0_GetMailNonBlock(RcvData)){
+      RcvCount++;
+      rxDat = *((uint32_t *) &RcvData[0]);
+    }
+  } 
+}
+
+#ifdef SENSOR_BOARD
 int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
-  PortE_Init();
+  PortD_Init();
   PD7 = 0x00;
   CAN0_Open();
 
@@ -177,10 +188,26 @@ int main(void){   // testmain1
   
   NumCreated = 0 ;
 // create initial foreground threads
-//  NumCreated += OS_AddThread(&TestFAT,128,1);  
-  //NumCreated += OS_AddThread(&IdleTask,128,3); 
   NumCreated += OS_AddThread(&PingR, 128, 1);
-	//NumCreated += OS_AddThread(&TestUs, 128, 1);
+
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
+
+#else
+
+int main(void){   // testmain1
+  OS_Init();           // initialize, disable interrupts
+  PortD_Init();
+  CAN0_Open();
+
+
+  NumCreated = 0 ;
+// create initial foreground threads
+  NumCreated += OS_AddThread(&CAN_Listener, 128, 1);
+
+  OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
+  return 0;               // this never executes
+}
+
+#endif
