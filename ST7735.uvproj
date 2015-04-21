@@ -362,7 +362,7 @@
               <MiscControls>--cpp</MiscControls>
               <Define>rvmdk PART_LM4F120H5QR</Define>
               <Undefine></Undefine>
-              <IncludePath>..\RTOS_CppL3;..\..\..;.\os;.\hardware;.\graphics;.\data_structures;.\helper;.\file_system</IncludePath>
+              <IncludePath>..\RTOS_CppL3;..\..\..;.\os;.\hardware;.\graphics;.\data_structures;.\helper;.\file_system;.\can;.\inc;.\driverlib</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -541,11 +541,6 @@
               <FilePath>.\helper\priority.c</FilePath>
             </File>
             <File>
-              <FileName>Lab5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Lab5.c</FilePath>
-            </File>
-            <File>
               <FileName>edisk.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\file_system\edisk.c</FilePath>
@@ -559,6 +554,11 @@
               <FileName>FAT32.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\file_system\FAT32.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lab6.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Lab6.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -594,6 +594,16 @@
               <FileName>uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\driverlib\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>can0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\can\can0.c</FilePath>
+            </File>
+            <File>
+              <FileName>can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driverlib\can.c</FilePath>
             </File>
           </Files>
         </Group>
