@@ -14,6 +14,7 @@
 #include "inc/tm4c123gh6pm.h"
 #include "Perf.h"
 #include "can0.h"
+#include "median.h"
 
 #define SENSOR_BOARD 1
 //unsigned long NumCreated;   // number of foreground threads created
@@ -168,7 +169,7 @@ void IR0(void){
     ADC_Collect0(0, 100, Res_buffer, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(0)){}
     for(i = 0; i < 4; i++){
-      SendData += median_filter(Res_buffer);
+      SendData += median_filt(Res_buffer);
     }
     SendData = SendData >> 2;
     msg.mId = IR_0_ID;

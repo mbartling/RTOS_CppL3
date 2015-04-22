@@ -13,7 +13,7 @@ uint32_t median(uint32_t* buffer){
 	return buffer[numInts/2];
 }
 
-uint32_t median_filt(uint32_t* buffer){
+uint32_t median_filt(uint16_t* buffer){
 	uint32_t buff[numInts];
 	for(int i = 0; i < numInts; i++){
 		buff[i] = buffer[i];
