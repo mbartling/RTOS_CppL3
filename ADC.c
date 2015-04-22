@@ -227,11 +227,13 @@ int ADC_Status(int id)
 //   counter +=1; 
 //  // ADCTask(ADC0_SSFIFO2_R); 
 //}
+volatile unsigned short dummy0;
 void ADC0Seq2_Handler(void){
   if(Collecting[0] > 0){
     ADC0_ISC_R = 0x04;          // acknowledge ADC sequence 2 completion
     SampleCount[0]+=2;          // taking care of reducing the frequency by a factor 2
     Buffer0[SampleCount[0]/2] = ADC0_SSFIFO2_R;  // 12-bit result
+    dummy0 = ADC0_SSFIFO2_R;
 //    Buffer[0][SampleCount[0]++] = ADC0_SSFIFO2_R;
 		//TODO May need to double read to pop from fifo
     Collecting[0] = TargetCount[0] - SampleCount[0]; //Faster than branching

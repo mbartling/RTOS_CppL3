@@ -17,7 +17,7 @@
 #include "median.h"
 #include "PWMDual.h"
 
-#define SENSOR_BOARD 0
+
 //unsigned long NumCreated;   // number of foreground threads created
 //unsigned long NumSamples;   // incremented every sample
 //unsigned long DataLost;     // data sent by Producer, but not received by Consumer
@@ -32,10 +32,10 @@ int Running;                // true while robot is running
 #define GPIO_PF3  (*((volatile unsigned long *)0x40025020))
 #define GPIO_PG1  (*((volatile unsigned long *)0x40026008))
 
-#define PD6  (*((volatile unsigned long *)0x40023100)) //Echo
-#define PD7  (*((volatile unsigned long *)0x40023200)) //Trigger
-#define PC6  (*((volatile unsigned long *)0x40022100))
-#define PC7  (*((volatile unsigned long *)0x40022200))
+#define PD6  (*((volatile unsigned long *)0x40007100)) //Echo
+#define PD7  (*((volatile unsigned long *)0x40007200)) //Trigger
+#define PC6  (*((volatile unsigned long *)0x40006100))
+#define PC7  (*((volatile unsigned long *)0x40006200))
 
 #define PING_L_ID 1
 #define PING_R_ID 2
@@ -165,18 +165,20 @@ void PingL(void){
   OS_Kill();
 }
 
+uint16_t Res_buffer0[64];
 void IR0(void){
 
-  uint16_t Res_buffer[64];
+
   uint32_t SendData;
   CanMessage_t msg;
   while(1){
-    ADC_Collect0(0, 100, Res_buffer, 128); //128, to bring down sampling rate from 100 to 50
+		SendData = 0;
+    ADC_Collect0(0, 100, Res_buffer0, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(0)){}
-    for(int i = 0; i < 4; i++){
-      SendData += median_filt(&Res_buffer[i*16]);
+    for(int i = 0; i < 128-MEDIAN_FILTER_SIZE; i++){
+      SendData += median_filt(&Res_buffer0[i]);
     }
-    SendData = SendData >> 2;
+    SendData = SendData/(128-MEDIAN_FILTER_SIZE);
     msg.mId = IR_0_ID;
     msg.data = SendData;
     CAN0_SendData(CAST_CAN_2_UINT8P(msg));
@@ -184,19 +186,20 @@ void IR0(void){
   OS_Kill();
 }
 
-
+uint16_t Res_buffer1[64];
 void IR1(void){
 
-  uint16_t Res_buffer[64];
+
   uint32_t SendData;
   CanMessage_t msg;
   while(1){
-    ADC_Collect1(1, 100, Res_buffer, 128); //128, to bring down sampling rate from 100 to 50
+		SendData = 0;
+    ADC_Collect1(1, 100, Res_buffer1, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(1)){}
-    for(int i = 0; i < 4; i++){
-      SendData += median_filt(&Res_buffer[i*16]);
+    for(int i = 0; i < 128-MEDIAN_FILTER_SIZE; i++){
+      SendData += median_filt(&Res_buffer1[i]);
     }
-    SendData = SendData >> 2;
+    SendData = SendData/(128-MEDIAN_FILTER_SIZE);
     msg.mId = IR_1_ID;
     msg.data = SendData;
     CAN0_SendData(CAST_CAN_2_UINT8P(msg));
@@ -204,18 +207,19 @@ void IR1(void){
   OS_Kill();
 }
 
+uint16_t Res_buffer2[64];
 void IR2(void){
 
-  uint16_t Res_buffer[64];
   uint32_t SendData;
   CanMessage_t msg;
   while(1){
-    ADC_Collect2(2, 100, Res_buffer, 128); //128, to bring down sampling rate from 100 to 50
+		SendData = 0;
+    ADC_Collect2(2, 100, Res_buffer2, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(2)){}
-    for(int i = 0; i < 4; i++){
-      SendData += median_filt(&Res_buffer[i*16]);
+    for(int i = 0; i < 128-MEDIAN_FILTER_SIZE; i++){
+      SendData += median_filt(&Res_buffer2[i]);
     }
-    SendData = SendData >> 2;
+    SendData = SendData/(128-MEDIAN_FILTER_SIZE);
     msg.mId = IR_2_ID;
     msg.data = SendData;
     CAN0_SendData(CAST_CAN_2_UINT8P(msg));
@@ -223,18 +227,19 @@ void IR2(void){
   OS_Kill();
 }
 
+uint16_t Res_buffer3[64];
 void IR3(void){
 
-  uint16_t Res_buffer[64];
   uint32_t SendData;
   CanMessage_t msg;
   while(1){
-    ADC_Collect3(3, 100, Res_buffer, 128); //128, to bring down sampling rate from 100 to 50
+		SendData = 0;
+    ADC_Collect3(3, 100, Res_buffer3, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(3)){}
-    for(int i = 0; i < 4; i++){
-      SendData += median_filt(&Res_buffer[i*16]);
+    for(int i = 0; i < 128-MEDIAN_FILTER_SIZE; i++){
+      SendData += median_filt(&Res_buffer3[i]);
     }
-    SendData = SendData >> 2;
+    SendData = SendData/(128-MEDIAN_FILTER_SIZE);
     msg.mId = IR_3_ID;
     msg.data = SendData;
     CAN0_SendData(CAST_CAN_2_UINT8P(msg));
@@ -297,7 +302,15 @@ void CAN_Listener(void){
 					break;
 				case IR_0_ID: 
 					IR0Val = rxDat.data;
-				  LEDS ^= BLUE; 
+					if(IR0Val > 4500){
+						LEDS ^= BLUE; 
+					}
+					else if(IR0Val > 4000){
+						LEDS ^= RED; 
+					}
+					else{
+						LEDS ^= GREEN;
+					}
 					break;
 				case IR_1_ID: 
 					IR1Val = rxDat.data;
@@ -317,9 +330,9 @@ void CAN_Listener(void){
 
 void Controller(void){
 	while(1){
-		if(IR0Val>2000){ //Too close, stop
+		if(IR0Val>3500){ //Too close, stop
 			motorMovement(LEFTMOTOR, STOP, FORWARD);
-			motorMovement(RIGHTMOTOR, STOP, REVERSE);
+			motorMovement(RIGHTMOTOR, MOVE, REVERSE);
 		}
 		else{ //Too close, stop
 			motorMovement(LEFTMOTOR, MOVE, FORWARD);

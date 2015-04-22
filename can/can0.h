@@ -30,9 +30,16 @@
 #define __CAN0_H__
 #define CAN_BITRATE             1000000
 
+#define SENSOR_BOARD 1
+
+#if SENSOR_BOARD
 // reverse these IDs on the other microcontroller
 #define RCV_ID 4
 #define XMT_ID 2
+#else
+#define RCV_ID 2
+#define XMT_ID 4
+#endif
 
 #define CAST_CAN_2_UINT8P(X) ((uint8_t *) &X )
 #define CAST_UINT8_2_CAN(X) (*((CanMessage_t *) &X[0] ))

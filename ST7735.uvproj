@@ -595,6 +595,11 @@
               <FileType>1</FileType>
               <FilePath>.\driverlib\can.c</FilePath>
             </File>
+            <File>
+              <FileName>PWMDual.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware\PWMDual.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

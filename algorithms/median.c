@@ -1,7 +1,6 @@
 #include "median.h"
 #include <stdint.h>
 #include <stdlib.h>
-#define numInts 16
 
 int compare(const void* a, const void* b){
 	if ( *(uint32_t *) a  < *(uint32_t *) b) return -1;
