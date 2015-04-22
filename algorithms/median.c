@@ -1,5 +1,6 @@
 #include "median.h"
-
+#include <stdint.h>
+#include <stdlib.h>
 #define numInts 16
 
 int compare(const void* a, const void* b){
@@ -16,7 +17,7 @@ uint32_t median(uint32_t* buffer){
 uint32_t median_filt(uint16_t* buffer){
 	uint32_t buff[numInts];
 	for(int i = 0; i < numInts; i++){
-		buff[i] = buffer[i];
+		buff[i] = (uint32_t)buffer[i];
 	}
 	return median(buff);
 }

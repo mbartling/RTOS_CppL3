@@ -168,13 +168,13 @@ void IR0(void){
   while(1){
     ADC_Collect0(0, 100, Res_buffer, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(0)){}
-    for(i = 0; i < 4; i++){
-      SendData += median_filt(Res_buffer);
+    for(int i = 0; i < 4; i++){
+      SendData += median_filt(&Res_buffer[i*16]);
     }
     SendData = SendData >> 2;
     msg.mId = IR_0_ID;
     msg.data = SendData;
-    CAN0_SendData(SendData);
+    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
   }
   OS_Kill();
 }
@@ -188,13 +188,13 @@ void IR1(void){
   while(1){
     ADC_Collect1(1, 100, Res_buffer, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(1)){}
-    for(i = 0; i < 4; i++){
-      SendData += median_filter(Res_buffer);
+    for(int i = 0; i < 4; i++){
+      SendData += median_filt(&Res_buffer[i*16]);
     }
     SendData = SendData >> 2;
     msg.mId = IR_1_ID;
     msg.data = SendData;
-    CAN0_SendData(SendData);
+    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
   }
   OS_Kill();
 }
@@ -207,13 +207,13 @@ void IR2(void){
   while(1){
     ADC_Collect2(2, 100, Res_buffer, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(2)){}
-    for(i = 0; i < 4; i++){
-      SendData += median_filter(Res_buffer);
+    for(int i = 0; i < 4; i++){
+      SendData += median_filt(&Res_buffer[i*16]);
     }
     SendData = SendData >> 2;
     msg.mId = IR_2_ID;
     msg.data = SendData;
-    CAN0_SendData(SendData);
+    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
   }
   OS_Kill();
 }
@@ -226,13 +226,13 @@ void IR3(void){
   while(1){
     ADC_Collect3(3, 100, Res_buffer, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(3)){}
-    for(i = 0; i < 4; i++){
-      SendData += median_filter(Res_buffer);
+    for(int i = 0; i < 4; i++){
+      SendData += median_filt(&Res_buffer[i*16]);
     }
     SendData = SendData >> 2;
     msg.mId = IR_3_ID;
     msg.data = SendData;
-    CAN0_SendData(SendData);
+    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
   }
   OS_Kill();
 }

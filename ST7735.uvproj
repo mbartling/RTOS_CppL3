@@ -362,7 +362,7 @@
               <MiscControls>--cpp</MiscControls>
               <Define>rvmdk PART_LM4F120H5QR</Define>
               <Undefine></Undefine>
-              <IncludePath>..\RTOS_CppL3;..\..\..;.\os;.\hardware;.\graphics;.\data_structures;.\helper;.\file_system;.\can;.\inc;.\driverlib</IncludePath>
+              <IncludePath>..\RTOS_CppL3;..\..\..;.\os;.\hardware;.\graphics;.\data_structures;.\helper;.\file_system;.\can;.\inc;.\driverlib;.\algorithms</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -541,24 +541,14 @@
               <FilePath>.\helper\priority.c</FilePath>
             </File>
             <File>
-              <FileName>edisk.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\file_system\edisk.c</FilePath>
-            </File>
-            <File>
-              <FileName>efile.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\file_system\efile.c</FilePath>
-            </File>
-            <File>
-              <FileName>FAT32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\file_system\FAT32.c</FilePath>
-            </File>
-            <File>
               <FileName>Lab6.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Lab6.c</FilePath>
+            </File>
+            <File>
+              <FileName>median.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\algorithms\median.c</FilePath>
             </File>
           </Files>
         </Group>

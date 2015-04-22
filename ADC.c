@@ -218,7 +218,7 @@ int ADC_Status(int id)
     case 1: return Collecting[1]; break;
     case 2: return Collecting[2]; break;
     case 3: return Collecting[3]; break;
-
+	}
 }
 //int counter = 0;
 //void ADC0Seq2_Handler(void){
