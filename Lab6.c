@@ -289,9 +289,9 @@ int main(void){   // testmain1
 // create initial foreground threads
   NumCreated += OS_AddThread(&PingR, 128, 1);
   NumCreated += OS_AddThread(&IR0, 128, 1);
-  NumCreated += OS_AddThread(&IR1, 128, 1);
-  NumCreated += OS_AddThread(&IR2, 128, 1);
-  NumCreated += OS_AddThread(&IR3, 128, 1);
+//  NumCreated += OS_AddThread(&IR1, 128, 1);
+//  NumCreated += OS_AddThread(&IR2, 128, 1);
+//  NumCreated += OS_AddThread(&IR3, 128, 1);
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
