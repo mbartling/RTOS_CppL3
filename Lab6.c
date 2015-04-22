@@ -15,8 +15,9 @@
 #include "Perf.h"
 #include "can0.h"
 #include "median.h"
+#include "PWMDual.h"
 
-#define SENSOR_BOARD 1
+#define SENSOR_BOARD 0
 //unsigned long NumCreated;   // number of foreground threads created
 //unsigned long NumSamples;   // incremented every sample
 //unsigned long DataLost;     // data sent by Producer, but not received by Consumer
@@ -45,6 +46,10 @@ int Running;                // true while robot is running
 
 
 
+/*----------------------------------------------
+SENSOR BOARD CODE
+-----------------------------------------------*/
+
 void PortD_Init(void){ unsigned long volatile delay;
   //SYSCTL_RCGC2_R |= 0x10;       // activate port D
   SYSCTL_RCGCGPIO_R |= 0x08;       
@@ -57,7 +62,7 @@ void PortD_Init(void){ unsigned long volatile delay;
   //GPIO_PORTD_PCTL_R = ~0x0000FFFF;
   //GPIO_PORTD_AMSEL_R &= ~0x0F;;      // disable analog functionality on PF
 }
-void PortC_Init(void){ unsigned long volatile delay;
+void PortC_SensorBoard_Init(void){ unsigned long volatile delay;
   //SYSCTL_RCGC2_R |= 0x10;       // activate port c
   SYSCTL_RCGCGPIO_R |= 0x04;       
   delay = SYSCTL_RCGC2_R;        
@@ -238,7 +243,28 @@ void IR3(void){
 }
 
 
+/*----------------------------------------------
+MOTOR BOARD CODE
+-----------------------------------------------*/
 
+
+#define LEDS      (*((volatile uint32_t *)0x40025038))
+
+#define RED       0x02
+#define BLUE      0x04
+#define GREEN     0x08
+
+void PortF_Init(void){
+  SYSCTL_RCGCGPIO_R |= 0x20;       // activate port F
+  while((SYSCTL_PRGPIO_R&0x0020) == 0){};// ready?
+  GPIO_PORTF_DIR_R |= 0x0E;        // make PF3-1 output (PF3-1 built-in LEDs)
+  GPIO_PORTF_AFSEL_R &= ~0x0E;     // disable alt funct on PF3-1
+  GPIO_PORTF_DEN_R |= 0x0E;        // enable digital I/O on PF3-1
+                                   // configure PF3-1 as GPIO
+  GPIO_PORTF_PCTL_R = (GPIO_PORTF_PCTL_R&0xFFFF000F)+0x00000000;
+  GPIO_PORTF_AMSEL_R = 0;          // disable analog functionality on PF
+  LEDS = 0;		// turn all LEDs off
+}
 
 
 /**
@@ -252,6 +278,7 @@ uint32_t IR0Val;
 uint32_t IR1Val;
 uint32_t IR2Val;
 uint32_t IR3Val;
+
 void CAN_Listener(void){
   uint8_t RcvData[5];
 //  uint32_t rxDat;
@@ -270,6 +297,7 @@ void CAN_Listener(void){
 					break;
 				case IR_0_ID: 
 					IR0Val = rxDat.data;
+				  LEDS ^= BLUE; 
 					break;
 				case IR_1_ID: 
 					IR1Val = rxDat.data;
@@ -287,12 +315,28 @@ void CAN_Listener(void){
   }// End While 
 }//End CAN_Listener
 
+void Controller(void){
+	while(1){
+		if(IR0Val>2000){ //Too close, stop
+			motorMovement(LEFTMOTOR, STOP, FORWARD);
+			motorMovement(RIGHTMOTOR, STOP, REVERSE);
+		}
+		else{ //Too close, stop
+			motorMovement(LEFTMOTOR, MOVE, FORWARD);
+			motorMovement(RIGHTMOTOR, MOVE, FORWARD);
+		}
+		OS_Sleep(10);
+	}
+	OS_Kill();
+}
 
-#ifdef SENSOR_BOARD
+
+
+#if SENSOR_BOARD
 int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
   PortD_Init();
-	PortC_Init();
+	PortC_SensorBoard_Init();
   PD7 = 0x00;
 	PC7 = 0x00;
   CAN0_Open();
@@ -303,7 +347,7 @@ int main(void){   // testmain1
   
   NumCreated = 0 ;
 // create initial foreground threads
-  NumCreated += OS_AddThread(&PingR, 128, 1);
+  //NumCreated += OS_AddThread(&PingR, 128, 1);
   NumCreated += OS_AddThread(&IR0, 128, 1);
 //  NumCreated += OS_AddThread(&IR1, 128, 1);
 //  NumCreated += OS_AddThread(&IR2, 128, 1);
@@ -316,14 +360,16 @@ int main(void){   // testmain1
 
 int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
-  PortD_Init();
+	PWM0Dual_Init(60000);            // initialize PWM1-0, 0.8333 Hz, 1 RPM
+  PWM0Dual_Period(4000);           // 12.50 Hz, 15 RPM
+  PortF_Init();
   CAN0_Open();
 
 
   NumCreated = 0 ;
 // create initial foreground threads
   NumCreated += OS_AddThread(&CAN_Listener, 128, 1);
-
+  NumCreated += OS_AddThread(&Controller, 128, 1);
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }

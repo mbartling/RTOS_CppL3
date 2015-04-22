@@ -23,6 +23,13 @@
  */
 
 
+#define MOVE 1
+#define STOP 0
+#define FORWARD 2 
+#define REVERSE 3
+#define LEFTMOTOR 5
+#define RIGHTMOTOR 6 
+
 // period is 16-bit number of PWM clock cycles in one period (3<=period)
 // PWM clock rate = processor clock rate/SYSCTL_RCC_PWMDIV
 //                = BusClock/64 
@@ -32,3 +39,5 @@ void PWM0Dual_Init(uint16_t period);
 // change period
 // period is 16-bit number of PWM clock cycles in one period (3<=period)
 void PWM0Dual_Period(uint16_t period);
+
+void motorMovement(int motorPosition, int command , int dir);

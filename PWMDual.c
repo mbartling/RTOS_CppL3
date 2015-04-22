@@ -23,6 +23,7 @@
  */
 #include <stdint.h>
 #include "inc/tm4c123gh6pm.h"
+#include "PWMDual.h"
 
 #define PC4       (*((volatile uint32_t *)0x40006040))
 #define PC5       (*((volatile uint32_t *)0x40006080))
@@ -48,12 +49,6 @@
 #define SYSCTL_RCGC0_PWM0       0x00100000  // PWM Clock Gating Control
 #define SYSCTL_RCGC2_GPIOB      0x00000002  // Port B Clock Gating Control
 
-#define MOVE 1
-#define STOP 0
-#define FORWARD 2 
-#define REVERSE 3
-#define LEFTMOTOR 5
-#define RIGHTMOTOR 6 
 void motorMovement(int motorPosition, int command , int dir) {
     if(motorPosition == LEFTMOTOR) {
         if(command == MOVE)   
