@@ -50,10 +50,10 @@ void PortD_Init(void){ unsigned long volatile delay;
   SYSCTL_RCGCGPIO_R |= 0x08;       
   delay = SYSCTL_RCGC2_R;        
   delay = SYSCTL_RCGC2_R;         
-  GPIO_PORTD_DIR_R |= 0x30;    // make PD7 output
-	GPIO_PORTD_DIR_R &= ~0x10;   //PD6 is echo
-  GPIO_PORTD_AFSEL_R &= ~0x30;   // disable alt funct on PD6-7
-  GPIO_PORTD_DEN_R |= 0x30;     // enable digital I/O on PD6-7
+  GPIO_PORTD_DIR_R |= 0xC0;    // make PD7 output
+	GPIO_PORTD_DIR_R &= ~0x40;   //PD6 is echo
+  GPIO_PORTD_AFSEL_R &= ~0xC0;   // disable alt funct on PD6-7
+  GPIO_PORTD_DEN_R |= 0xC0;     // enable digital I/O on PD6-7
   //GPIO_PORTD_PCTL_R = ~0x0000FFFF;
   //GPIO_PORTD_AMSEL_R &= ~0x0F;;      // disable analog functionality on PF
 }
@@ -62,10 +62,10 @@ void PortC_Init(void){ unsigned long volatile delay;
   SYSCTL_RCGCGPIO_R |= 0x04;       
   delay = SYSCTL_RCGC2_R;        
   delay = SYSCTL_RCGC2_R;         
-  GPIO_PORTC_DIR_R |= 0x30;    // make PC7 output
-  GPIO_PORTC_DIR_R &= ~0x10;   //PC6 is echo
-  GPIO_PORTC_AFSEL_R &= ~0x30;   // disable alt funct on PC6-7
-  GPIO_PORTC_DEN_R |= 0x30;     // enable digital I/O on PC6-7
+  GPIO_PORTC_DIR_R |= 0xC0;    // make PC7 output
+  GPIO_PORTC_DIR_R &= ~0x40;   //PC6 is echo
+  GPIO_PORTC_AFSEL_R &= ~0xC0;   // disable alt funct on PC6-7
+  GPIO_PORTC_DEN_R |= 0xC0;     // enable digital I/O on PC6-7
 
 }
 
@@ -292,7 +292,9 @@ void CAN_Listener(void){
 int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
   PortD_Init();
+	PortC_Init();
   PD7 = 0x00;
+	PC7 = 0x00;
   CAN0_Open();
 
 //*******attach background tasks***********
