@@ -48,13 +48,15 @@ unsigned short ADC_In(void);
  */
 //int ADC_Collect(unsigned int channelNum, unsigned int fs, unsigned short buffer[], unsigned int numberOfSamples);
 
-int ADC_Collect(unsigned int channelNum, unsigned int fs, void (*task)(unsigned long));
-
+int ADC_Collect0(unsigned int channelNum, unsigned int fs, void (*task)(unsigned long));
+int ADC_Collect1(unsigned int channelNum, unsigned int fs, void (*task)(unsigned long));
+int ADC_Collect2(unsigned int channelNum, unsigned int fs, void (*task)(unsigned long));
+int ADC_Collect3(unsigned int channelNum, unsigned int fs, void (*task)(unsigned long));
 /**
  * @brief returns 0 when ADC_collect finishes
  * @return 0 if ADC_collect is complete, , else returns the remaining
  * number of samples to record
  */
-int ADC_Status(void);
+int ADC_Status(int);
 
 #endif /*__ADC_H__*/
