@@ -37,6 +37,12 @@ int Running;                // true while robot is running
 
 #define PING_L_ID 1
 #define PING_R_ID 2
+#define IR_1_ID   3
+#define IR_2_ID   4
+#define IR_3_ID   5
+#define IR_4_ID   6
+
+
 
 void PortD_Init(void){ unsigned long volatile delay;
   //SYSCTL_RCGC2_R |= 0x10;       // activate port D
@@ -153,6 +159,25 @@ void PingL(void){
   OS_Kill();
 }
 
+void IR1(void){
+
+  uint16_t Res_buffer[64];
+  uint32_t SendData;
+  CanMessage_t msg;
+  while(1){
+    ADC_Collect(0, 100, Res_buffer, 128); //128, to bring down sampling rate from 100 to 50
+    while(ADC_Status()){}
+    for(i = 0; i < 4; i++){
+      SendData += median_filter(Res_buffer);
+    }
+    SendData = SendData >> 2;
+    msg.mId = IR_1_ID;
+    msg.data = SendData;
+    CAN0_SendData(SendData);
+  }
+  OS_Kill();
+}
+
 
 /**
  * CAN Receiver Code
@@ -201,7 +226,7 @@ int main(void){   // testmain1
   NumCreated = 0 ;
 // create initial foreground threads
   NumCreated += OS_AddThread(&PingR, 128, 1);
-
+  NumCreated += OS_AddThread(&IR1, 128, 1);
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
