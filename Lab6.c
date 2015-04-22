@@ -248,7 +248,10 @@ uint32_t RcvCount=0;
 
 uint32_t PingRVal;
 uint32_t PingLVal;
-
+uint32_t IR0Val;
+uint32_t IR1Val;
+uint32_t IR2Val;
+uint32_t IR3Val;
 void CAN_Listener(void){
   uint8_t RcvData[5];
 //  uint32_t rxDat;
@@ -265,7 +268,18 @@ void CAN_Listener(void){
 				case PING_R_ID:
 					PingRVal = rxDat.data;
 					break;
-				
+				case IR_0_ID: 
+					IR0Val = rxDat.data;
+					break;
+				case IR_1_ID: 
+					IR1Val = rxDat.data;
+					break;
+				case IR_2_ID: 
+					IR2Val = rxDat.data;
+					break;
+				case IR_3_ID: 
+					IR3Val = rxDat.data;
+					break;
 				default:
 					break;
 			} //End Switch
