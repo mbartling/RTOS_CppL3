@@ -368,13 +368,22 @@ void CAN_Listener(void){
 
 void Controller(void){
 	while(1){
-		if(IR0Val>1088){//Too close, stop
+		/*if(IR0Val>1088){//Too close, stop
 			motorMovement(LEFTMOTOR, STOP, FORWARD);
 			motorMovement(RIGHTMOTOR, MOVE, REVERSE);
-		} else
+		} else*/
 		if(PingRVal > 20){
-			motorMovement(LEFTMOTOR, MOVE, FORWARD);
-			motorMovement(RIGHTMOTOR, STOP, REVERSE);
+			int i=0;
+			
+			while(i<1){
+			  motorMovement(LEFTMOTOR, MOVE, FORWARD);
+			  motorMovement(RIGHTMOTOR, STOP, REVERSE);
+				OS_Sleep(50);
+				motorMovement(LEFTMOTOR, MOVE, FORWARD);
+			  motorMovement(RIGHTMOTOR, MOVE, FORWARD);
+				OS_Sleep(50);
+				i++;			
+			}
 		}
 		else{ //Too close, stop
 			motorMovement(LEFTMOTOR, MOVE, FORWARD);

@@ -30,7 +30,7 @@
 #define __CAN0_H__
 #define CAN_BITRATE             1000000
 
-#define SENSOR_BOARD 1
+#define SENSOR_BOARD 0
 
 #if SENSOR_BOARD
 // reverse these IDs on the other microcontroller
