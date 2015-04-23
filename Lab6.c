@@ -321,7 +321,7 @@ uint32_t RcvCount=0;
 
 uint32_t PingRVal;
 uint32_t PingLVal;
-uint32_t IR0Val;
+uint32_t IR0Val = 4096;
 uint32_t IR1Val;
 uint32_t IR2Val;
 uint32_t IR3Val;
@@ -357,9 +357,27 @@ void CAN_Listener(void){
 					break;
 				case IR_1_ID: 
 					IR1Val = rxDat.data;
+					if(IR1Val > 1100){
+						LEDS ^= BLUE; 
+					}
+					else if(IR1Val > 600){
+						LEDS ^= RED; 
+					}
+					else{
+						LEDS ^= GREEN;
+					}
 					break;
 				case IR_2_ID: 
 					IR2Val = rxDat.data;
+					if(IR2Val > 1100){
+						LEDS ^= BLUE; 
+					}
+					else if(IR2Val > 600){
+						LEDS ^= RED; 
+					}
+					else{
+						LEDS ^= GREEN;
+					}
 					break;
 				case IR_3_ID: 
 					IR3Val = rxDat.data;
@@ -373,28 +391,35 @@ void CAN_Listener(void){
 
 void Controller(void){
 	while(1){
-		/*if(IR0Val>1088){//Too close, stop
+		if(IR0Val>1250){//Too close, stop
 			motorMovement(LEFTMOTOR, STOP, FORWARD);
-			motorMovement(RIGHTMOTOR, MOVE, REVERSE);
-		} else*/
-		if(PingRVal > 20){
+			motorMovement(RIGHTMOTOR, MOVE, FORWARD);
+			//OS_Sleep(5);
+		}else{
+		if(IR0Val>800){//Too close, stop
+			motorMovement(LEFTMOTOR, MOVE, FORWARD);
+			motorMovement(RIGHTMOTOR, MOVE, FORWARD);
+		} else{
+		/*if(PingRVal > 20){*/
 			int i=0;
 			
 			while(i<1){
 			  motorMovement(LEFTMOTOR, MOVE, FORWARD);
 			  motorMovement(RIGHTMOTOR, STOP, REVERSE);
-				OS_Sleep(50);
+				OS_Sleep(7);
 				motorMovement(LEFTMOTOR, MOVE, FORWARD);
 			  motorMovement(RIGHTMOTOR, MOVE, FORWARD);
-				OS_Sleep(50);
+				OS_Sleep(8);
 				i++;			
 			}
-		}
-		else{ //Too close, stop
+		}}
+		/*else{ //Too close, stop
 			motorMovement(LEFTMOTOR, MOVE, FORWARD);
 			motorMovement(RIGHTMOTOR, MOVE, FORWARD);
-		}
-		OS_Sleep(10);
+		}*/
+		//motorMovement(LEFTMOTOR, MOVE, FORWARD);
+			//motorMovement(RIGHTMOTOR, MOVE, FORWARD);
+		OS_Sleep(3);
 	}
 	OS_Kill();
 }
@@ -418,10 +443,10 @@ int main(void){   // testmain1
   
   NumCreated = 0 ;
 // create initial foreground threads
-  NumCreated += OS_AddThread(&PingR, 128, 1);
+ // NumCreated += OS_AddThread(&PingR, 128, 1);
   NumCreated += OS_AddThread(&IR0, 128, 1);
-//  NumCreated += OS_AddThread(&IR1, 128, 1);
-//  NumCreated += OS_AddThread(&IR2, 128, 1);
+ // NumCreated += OS_AddThread(&IR1, 128, 1);
+  //NumCreated += OS_AddThread(&IR2, 128, 1);
 //  NumCreated += OS_AddThread(&IR3, 128, 1);
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
