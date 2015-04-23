@@ -65,7 +65,10 @@ void CAN0_SendData(uint8_t data[5]);
 typedef struct CanMessage {
 	uint8_t mId; 	//<! Message ID
 	uint32_t data;	//<! Data Component
+	uint32_t bs;
 } CanMessage_t;
 
+void CanMessage2Buff(CanMessage_t* orig, uint8_t* buff);
+void Buff2CanMessage(CanMessage_t* orig, uint8_t* buff);
 #endif //  __CAN0_H__
 

@@ -36,7 +36,8 @@ int Running;                // true while robot is running
 #define PD7  (*((volatile unsigned long *)0x40007200)) //Trigger
 #define PC6  (*((volatile unsigned long *)0x40006100))
 #define PC7  (*((volatile unsigned long *)0x40006200))
-
+#define PA6  (*((volatile unsigned long *)0x40004100))
+#define PA7  (*((volatile unsigned long *)0x40004200))
 #define PING_L_ID 1
 #define PING_R_ID 2
 #define IR_0_ID   3
@@ -44,7 +45,19 @@ int Running;                // true while robot is running
 #define IR_2_ID   5
 #define IR_3_ID   6
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
+//comment the following line to deactivate Systick
+void DisableInterrupts(void); // Disable interrupts
+void EnableInterrupts(void);  // Enable interrupts
+long StartCritical (void);    // previous I bit, disable interrupts
+void EndCritical(long sr);    // restore I bit to previous value
+void WaitForInterrupt(void);  // low power mode
+// void PendSV_Handler(void);
+#ifdef __cplusplus
+}
+#endif
 
 /*----------------------------------------------
 SENSOR BOARD CODE
@@ -74,26 +87,39 @@ void PortC_SensorBoard_Init(void){ unsigned long volatile delay;
 
 }
 
+void PortA_SensorBoard_Init(void){ unsigned long volatile delay;
+  //SYSCTL_RCGC2_R |= 0x10;       // activate port A
+  SYSCTL_RCGCGPIO_R |= 0x01;       
+  delay = SYSCTL_RCGC2_R;        
+  delay = SYSCTL_RCGC2_R;         
+  GPIO_PORTA_DIR_R |= 0xC0;    // make PA7 output
+  GPIO_PORTA_DIR_R &= ~0x40;   //PA6 is echo
+  GPIO_PORTA_AFSEL_R &= ~0xC0;   // disable alt funct on PA6-7
+  GPIO_PORTA_DEN_R |= 0xC0;     // enable digital I/O on PA6-7
+
+}
 uint32_t Ping1(void){
 	uint32_t pingStartTime; 
 	uint32_t pingEndTime;
 	//Write GPIO_Pin High
-  PD7 = 0x80;
+	long sr = StartCritical();
+  PA7 = 0x80;
 	OS_DelayUS(5);
 	//Write GPIO Pin Low
-	PD7 = 0x00;
+	PA7 = 0x00;
 	//Could move into a ISR
 	//while(gpio_Pin_Low){}
-	while(PD6 == 0){}
+	while(PA6 == 0){}
 	pingStartTime = OS_GetUsTime();
 
 	//while(gpio_Pin_High){}
-	while(PD6 != 0){}
+	while(PA6 != 0){}
 
 	pingEndTime = OS_GetUsTime();
 	OS_DelayUS(200);
 	//Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)
 	//Then the ping time is c*dT/2
+		EndCritical(sr);
 	return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
 }
 
@@ -126,6 +152,8 @@ void PingR(void){
 
   uint32_t distance;
   CanMessage_t msg;
+	uint8_t byteMe[5];
+
   //uint32_t distance_buff[4];
   unsigned long id = OS_Id();
   uint32_t i = 0;
@@ -138,7 +166,8 @@ void PingR(void){
     //XmtData = (uint8_t *) &distance;
     msg.mId = PING_R_ID;
     msg.data = distance;
-    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
+		CanMessage2Buff(&msg, byteMe);
+    CAN0_SendData(byteMe);
 
   }
   OS_Kill();
@@ -148,6 +177,7 @@ void PingL(void){
   
   uint32_t distance;
   CanMessage_t msg;
+	uint8_t byteMe[5];
 
   uint32_t i = 0;
   while(1){
@@ -159,29 +189,36 @@ void PingL(void){
     //XmtData = (uint8_t *) &distance;
     msg.mId = PING_L_ID;
     msg.data = distance;
-    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
+		CanMessage2Buff(&msg, byteMe);
+
+    //CAN0_SendData(CAST_CAN_2_UINT8P(msg));
+		CAN0_SendData(byteMe);
+
 
   }
   OS_Kill();
 }
 
-uint16_t Res_buffer0[64];
+#define buffSIZE 32
+uint16_t Res_buffer0[buffSIZE];
 void IR0(void){
 
 
   uint32_t SendData;
   CanMessage_t msg;
+	uint8_t byteMe[5];
   while(1){
 		SendData = 0;
-    ADC_Collect0(0, 100, Res_buffer0, 128); //128, to bring down sampling rate from 100 to 50
+    ADC_Collect0(0, 100, Res_buffer0, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(0)){}
-    for(int i = 0; i < 128-MEDIAN_FILTER_SIZE; i++){
+    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer0[i]);
     }
-    SendData = SendData/(128-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
     msg.mId = IR_0_ID;
     msg.data = SendData;
-    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
+		CanMessage2Buff(&msg, byteMe);
+    CAN0_SendData(byteMe);
   }
   OS_Kill();
 }
@@ -196,10 +233,10 @@ void IR1(void){
 		SendData = 0;
     ADC_Collect1(1, 100, Res_buffer1, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(1)){}
-    for(int i = 0; i < 128-MEDIAN_FILTER_SIZE; i++){
+    for(int i = 0; i < 64-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer1[i]);
     }
-    SendData = SendData/(128-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(64-MEDIAN_FILTER_SIZE);
     msg.mId = IR_1_ID;
     msg.data = SendData;
     CAN0_SendData(CAST_CAN_2_UINT8P(msg));
@@ -216,10 +253,10 @@ void IR2(void){
 		SendData = 0;
     ADC_Collect2(2, 100, Res_buffer2, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(2)){}
-    for(int i = 0; i < 128-MEDIAN_FILTER_SIZE; i++){
+    for(int i = 0; i < 64-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer2[i]);
     }
-    SendData = SendData/(128-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(64-MEDIAN_FILTER_SIZE);
     msg.mId = IR_2_ID;
     msg.data = SendData;
     CAN0_SendData(CAST_CAN_2_UINT8P(msg));
@@ -236,10 +273,10 @@ void IR3(void){
 		SendData = 0;
     ADC_Collect3(3, 100, Res_buffer3, 128); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(3)){}
-    for(int i = 0; i < 128-MEDIAN_FILTER_SIZE; i++){
+    for(int i = 0; i < 64-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer3[i]);
     }
-    SendData = SendData/(128-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(64-MEDIAN_FILTER_SIZE);
     msg.mId = IR_3_ID;
     msg.data = SendData;
     CAN0_SendData(CAST_CAN_2_UINT8P(msg));
@@ -289,7 +326,8 @@ void CAN_Listener(void){
 //  uint32_t rxDat;
   CanMessage_t rxDat;
   while(1){
-    if(CAN0_GetMailNonBlock(CAST_CAN_2_UINT8P(rxDat))){
+    if(CAN0_GetMailNonBlock(RcvData)){
+			Buff2CanMessage(&rxDat, RcvData);
       RcvCount++;
       //rxDat = CAST_UINT8_2_CAN(RcvData);
 			switch(rxDat.mId){
@@ -302,10 +340,10 @@ void CAN_Listener(void){
 					break;
 				case IR_0_ID: 
 					IR0Val = rxDat.data;
-					if(IR0Val > 4500){
+					if(IR0Val > 1100){
 						LEDS ^= BLUE; 
 					}
-					else if(IR0Val > 4000){
+					else if(IR0Val > 600){
 						LEDS ^= RED; 
 					}
 					else{
@@ -330,9 +368,13 @@ void CAN_Listener(void){
 
 void Controller(void){
 	while(1){
-		if(IR0Val>3500){ //Too close, stop
+		if(IR0Val>1088){//Too close, stop
 			motorMovement(LEFTMOTOR, STOP, FORWARD);
 			motorMovement(RIGHTMOTOR, MOVE, REVERSE);
+		} else
+		if(PingRVal > 20){
+			motorMovement(LEFTMOTOR, MOVE, FORWARD);
+			motorMovement(RIGHTMOTOR, STOP, REVERSE);
 		}
 		else{ //Too close, stop
 			motorMovement(LEFTMOTOR, MOVE, FORWARD);
@@ -350,8 +392,10 @@ int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
   PortD_Init();
 	PortC_SensorBoard_Init();
+	PortA_SensorBoard_Init();
   PD7 = 0x00;
 	PC7 = 0x00;
+	PA7 = 0x00;
   CAN0_Open();
 
 //*******attach background tasks***********
@@ -360,7 +404,7 @@ int main(void){   // testmain1
   
   NumCreated = 0 ;
 // create initial foreground threads
-  //NumCreated += OS_AddThread(&PingR, 128, 1);
+  NumCreated += OS_AddThread(&PingR, 128, 1);
   NumCreated += OS_AddThread(&IR0, 128, 1);
 //  NumCreated += OS_AddThread(&IR1, 128, 1);
 //  NumCreated += OS_AddThread(&IR2, 128, 1);
@@ -381,7 +425,7 @@ int main(void){   // testmain1
 
   NumCreated = 0 ;
 // create initial foreground threads
-  NumCreated += OS_AddThread(&CAN_Listener, 128, 1);
+  NumCreated += OS_AddThread(&CAN_Listener, 128, 2);
   NumCreated += OS_AddThread(&Controller, 128, 1);
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes

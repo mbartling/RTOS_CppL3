@@ -175,3 +175,18 @@ void CAN0_GetMail(uint8_t data[4]){
   MailFlag = false;
 }
 
+void CanMessage2Buff(CanMessage_t* orig, uint8_t* buff){
+	buff[0] = orig->mId;
+	buff[1] = (orig->data >> 24) & 0xFF;
+	buff[2] = (orig->data >> 16) & 0xFF;
+	buff[3] = (orig->data >> 8) & 0xFF;
+	buff[4] = (orig->data >> 0) & 0xFF;
+}
+void Buff2CanMessage(CanMessage_t* orig, uint8_t* buff){
+	orig->mId = buff[0];
+	orig->data = 0;
+	orig->data |= buff[1] << 24;
+	orig->data |= buff[2] << 16;
+	orig->data |= buff[3] << 8;
+	orig->data |= buff[4] << 0;
+}
