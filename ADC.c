@@ -26,37 +26,17 @@ void ADC0Seq2_Handler(void);
 
 volatile int Open[4] = {0,0,0,0};				//Default to not open
 volatile int Collecting[4] = {0,0,0,0};		//Is ADC_Collect active?
-volatile unsigned short* Buffer0, Buffer1, Buffer2, Buffer3;	//Pointer to ADC_Collect buffer
+volatile unsigned short* Buffer0, *Buffer1, *Buffer2, *Buffer3;	//Pointer to ADC_Collect buffer
 volatile int SampleCount[4];			//Current Sample count 
 volatile int TargetCount[4];			//Target cound for collect
 
 
-/**
- * @brief Collect a set number of samples
- * @details [long description]
- * 
- * @param channelNum Channel to configure
- * @param fs Sample Frequency (Hz) must be between 100Hz and 10kHz
- * @param buffer Array to buffer data, does not bounds check buffer
- * @param numberOfSamples number of samples to record
- *  must be even number > 1
- * @return 0 if initialization successful, -1 if fail
- * 
- * Uses ADC Sample Sequencer 2 and Timer 0. Does not require
- * call to ADC_Open()
- */
-int ADC_Collect0(unsigned int channelNum, unsigned int fs,
-				unsigned short buffer[], unsigned int numberOfSamples)
-{
+int ADC_init_channel(int channelNum, unsigned int fs){
+	volatile uint32_t delay;
   if(fs < 100 || fs > 10000){
     return -1;
-  }
-  if(numberOfSamples < 1){
-    return -1;
-  }
-
-  volatile uint32_t delay;
-  // **** GPIO pin initialization ****
+  }	
+	// **** GPIO pin initialization ****
   switch(channelNum){             // 1) activate clock
     case 0:
     case 1:
@@ -171,8 +151,37 @@ int ADC_Collect0(unsigned int channelNum, unsigned int fs,
   ADC0_EMUX_R = (ADC0_EMUX_R&0xFFFFF0FF)+0x0500; // timer trigger event SS2
 
   ADC0_SAC_R = 0x02;  // 4x Hardware Oversample
+  EnableInterrupts();
+	return 1;
+}
 
-  ADC0_SSMUX2_R = (channelNum << 4) | channelNum;
+
+/**
+ * @brief Collect a set number of samples
+ * @details [long description]
+ * 
+ * @param channelNum Channel to configure
+ * @param fs Sample Frequency (Hz) must be between 100Hz and 10kHz
+ * @param buffer Array to buffer data, does not bounds check buffer
+ * @param numberOfSamples number of samples to record
+ *  must be even number > 1
+ * @return 0 if initialization successful, -1 if fail
+ * 
+ * Uses ADC Sample Sequencer 2 and Timer 0. Does not require
+ * call to ADC_Open()
+ */
+int ADC_Collect0(unsigned int channelNum, unsigned int fs,
+				unsigned short buffer[], unsigned int numberOfSamples)
+{
+  if(fs < 100 || fs > 10000){
+    return -1;
+  }
+  if(numberOfSamples < 1){
+    return -1;
+  }
+  
+	DisableInterrupts();
+	ADC0_SSMUX2_R = (channelNum << 4) | channelNum;
   ADC0_SSCTL2_R = 0x064;          // set flag and end, 2 samples at a time                      
   ADC0_IM_R |= 0x04;             // enable SS2 interrupts
   ADC0_ACTSS_R |= 0x04;          // enable sample sequencer 2
@@ -192,10 +201,58 @@ int ADC_Collect0(unsigned int channelNum, unsigned int fs,
 int ADC_Collect1(unsigned int channelNum, unsigned int fs,
                                 unsigned short buffer[], unsigned int numberOfSamples){
 
+  if(fs < 100 || fs > 10000){
+    return -1;
+  }
+  if(numberOfSamples < 1){
+    return -1;
+  }
+  
+	DisableInterrupts();
+	ADC0_SSMUX3_R = (channelNum << 4) | channelNum;
+  ADC0_SSCTL3_R = 0x064;          // set flag and end, 2 samples at a time                      
+  ADC0_IM_R |= 0x08;             // enable SS3 interrupts
+  ADC0_ACTSS_R |= 0x08;          // enable sample sequencer 3
+  NVIC_PRI4_R = (NVIC_PRI4_R & 0xFF00FFFF)|0x00400000; //priority 2 
+  NVIC_EN0_R = 1<<17;              // enable interrupt 16 in NVIC 
+                                   //Sample Sequencer 3
+  
+  Collecting[1] = 1;
+  SampleCount[1] = 0;
+  TargetCount[1] = numberOfSamples;
+	Buffer1 = buffer;
+  EnableInterrupts();
+
+  return Collecting[1];
 }
 
 int ADC_Collect2(unsigned int channelNum, unsigned int fs,
-                                unsigned short buffer[], unsigned int numberOfSamples){
+	unsigned short buffer[], unsigned int numberOfSamples){
+			
+  if(fs < 100 || fs > 10000){
+    return -1;
+  }
+  if(numberOfSamples < 1){
+    return -1;
+  }
+  
+	DisableInterrupts();
+	ADC0_SSMUX1_R = (channelNum << 4) | channelNum;
+  ADC0_SSCTL1_R = 0x064;          // set flag and end, 2 samples at a time                      
+  ADC0_IM_R |= 0x02;             // enable SS1 interrupts
+  ADC0_ACTSS_R |= 0x02;          // enable sample sequencer 1
+  NVIC_PRI4_R = (NVIC_PRI4_R & 0xFFFFFF00)|0x00000040; //priority 2 
+  NVIC_EN0_R = 1<<15;              // enable interrupt 16 in NVIC 
+                                   //Sample Sequencer 1
+  
+  Collecting[2] = 1;
+  SampleCount[2] = 0;
+  TargetCount[2] = numberOfSamples;
+	Buffer2 = buffer;
+  EnableInterrupts();
+
+  return Collecting[2];
+		
 }
 
 int ADC_Collect3(unsigned int channelNum, unsigned int fs,
@@ -240,5 +297,32 @@ void ADC0Seq2_Handler(void){
   }
   else{ //Not Collecting
     NVIC_DIS0_R = 1<<16; //Disable SS2 Interrupt
+  }
+}
+
+void ADC0Seq3_Handler(void){
+  if(Collecting[1] > 0){
+    ADC0_ISC_R = 0x08;          // acknowledge ADC sequence 3 completion
+    SampleCount[1]+=2;          // taking care of reducing the frequency by a factor 3
+    Buffer1[(SampleCount[1])/2] = ADC0_SSFIFO3_R;  // 12-bit result
+    dummy0 = ADC0_SSFIFO3_R;
+    Collecting[1] = TargetCount[1] - SampleCount[1]; //Faster than branching
+  }
+  else{ //Not Collecting
+    NVIC_DIS0_R = 1<<17; //Disable SS3 Interrupt 
+  }
+}
+
+
+void ADC0Seq1_Handler(void){
+  if(Collecting[2] > 0){
+    ADC0_ISC_R = 0x02;          // acknowledge ADC sequence 1 completion
+    SampleCount[2]+=2;          // taking care of reducing the frequency by a factor 2
+    Buffer2[(SampleCount[2])/2] = ADC0_SSFIFO1_R;  // 12-bit result
+    dummy0 = ADC0_SSFIFO1_R;
+    Collecting[2] = TargetCount[2] - SampleCount[2]; //Faster than branching
+  }
+  else{ //Not Collecting
+    NVIC_DIS0_R = 1<<15; //Disable SS1 Interrupt 
   }
 }

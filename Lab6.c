@@ -202,12 +202,12 @@ void PingL(void){
 #define buffSIZE 32
 uint16_t Res_buffer0[buffSIZE];
 void IR0(void){
-
-
+	
   uint32_t SendData;
   CanMessage_t msg;
 	uint8_t byteMe[5];
-  while(1){
+  ADC_init_channel(0, 100);
+	while(1){
 		SendData = 0;
     ADC_Collect0(0, 100, Res_buffer0, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(0)){}
@@ -225,41 +225,46 @@ void IR0(void){
 
 uint16_t Res_buffer1[64];
 void IR1(void){
-
-
+	
   uint32_t SendData;
   CanMessage_t msg;
-  while(1){
+	uint8_t byteMe[5];
+  ADC_init_channel(1, 100);
+	while(1){
 		SendData = 0;
-    ADC_Collect1(1, 100, Res_buffer1, 128); //128, to bring down sampling rate from 100 to 50
+    ADC_Collect1(1, 100, Res_buffer1, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(1)){}
-    for(int i = 0; i < 64-MEDIAN_FILTER_SIZE; i++){
+    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer1[i]);
     }
-    SendData = SendData/(64-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
     msg.mId = IR_1_ID;
     msg.data = SendData;
-    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
+		CanMessage2Buff(&msg, byteMe);
+    CAN0_SendData(byteMe);
   }
   OS_Kill();
 }
 
 uint16_t Res_buffer2[64];
 void IR2(void){
-
+		
   uint32_t SendData;
   CanMessage_t msg;
-  while(1){
+	uint8_t byteMe[5];
+  ADC_init_channel(2, 100);
+	while(1){
 		SendData = 0;
-    ADC_Collect2(2, 100, Res_buffer2, 128); //128, to bring down sampling rate from 100 to 50
+    ADC_Collect2(2, 100, Res_buffer2, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(2)){}
-    for(int i = 0; i < 64-MEDIAN_FILTER_SIZE; i++){
+    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer2[i]);
     }
-    SendData = SendData/(64-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
     msg.mId = IR_2_ID;
     msg.data = SendData;
-    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
+		CanMessage2Buff(&msg, byteMe);
+    CAN0_SendData(byteMe);
   }
   OS_Kill();
 }
