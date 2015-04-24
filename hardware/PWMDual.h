@@ -40,4 +40,4 @@ void PWM0Dual_Init(uint16_t period);
 // period is 16-bit number of PWM clock cycles in one period (3<=period)
 void PWM0Dual_Period(uint16_t period);
 
-void motorMovement(int motorPosition, int command , int dir);
+void motorMovement(int motorPosition, int command , int dir, int speed);

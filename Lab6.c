@@ -388,31 +388,45 @@ void CAN_Listener(void){
     } // End if CAN0_GetMail
   }// End While 
 }//End CAN_Listener
-
+//int turned_left = 0;
 void Controller(void){
 	while(1){
-		if(IR0Val>1250){//Too close, stop
-			motorMovement(LEFTMOTOR, STOP, FORWARD);
-			motorMovement(RIGHTMOTOR, MOVE, FORWARD);
-			//OS_Sleep(5);
-		}else{
-		if(IR0Val>800){//Too close, stop
-			motorMovement(LEFTMOTOR, MOVE, FORWARD);
-			motorMovement(RIGHTMOTOR, MOVE, FORWARD);
-		} else{
-		/*if(PingRVal > 20){*/
-			int i=0;
-			
-			while(i<1){
-			  motorMovement(LEFTMOTOR, MOVE, FORWARD);
-			  motorMovement(RIGHTMOTOR, STOP, REVERSE);
-				OS_Sleep(7);
-				motorMovement(LEFTMOTOR, MOVE, FORWARD);
-			  motorMovement(RIGHTMOTOR, MOVE, FORWARD);
-				OS_Sleep(8);
-				i++;			
-			}
-		}}
+		if(IR1Val>1050){//too close, turn the other way
+			motorMovement(RIGHTMOTOR, MOVE, FORWARD,100);
+            motorMovement(LEFTMOTOR, MOVE, FORWARD, 80);
+            //OS_Sleep(4);
+		    //motorMovement(RIGHTMOTOR, MOVE, FORWARD,100);
+            //motorMovement(LEFTMOTOR, MOVE, FORWARD, 100);
+            //OS_Sleep(2);
+		    //motorMovement(RIGHTMOTOR, MOVE, FORWARD,80);
+            //motorMovement(LEFTMOTOR, MOVE, FORWARD, 100);
+            //turned_left = 1; 
+            //OS_Sleep(2);
+        }
+        else{
+		if(IR1Val>600 ){//within the proper range, move stright
+		   // if (turned_left) {
+               // turned_left = 0;
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,80);
+                motorMovement(LEFTMOTOR, MOVE, FORWARD, 100);
+                OS_Sleep(2);
+           // }
+           // else { 
+              //  motorMovement(RIGHTMOTOR, MOVE, FORWARD, 100);
+             //   motorMovement(LEFTMOTOR, MOVE, FORWARD, 100);
+            //}	
+        } else{ //if empty space, make a turn
+            /*if(PingRVal > 20){*/
+            int i=0;
+            while(i<1){
+                //turn 
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,50);
+                motorMovement(LEFTMOTOR, MOVE, FORWARD, 100);
+                OS_Sleep(4);
+                i++;			
+            }
+        }
+        }
 		/*else{ //Too close, stop
 			motorMovement(LEFTMOTOR, MOVE, FORWARD);
 			motorMovement(RIGHTMOTOR, MOVE, FORWARD);
@@ -445,7 +459,7 @@ int main(void){   // testmain1
 // create initial foreground threads
  // NumCreated += OS_AddThread(&PingR, 128, 1);
   NumCreated += OS_AddThread(&IR0, 128, 1);
- // NumCreated += OS_AddThread(&IR1, 128, 1);
+  NumCreated += OS_AddThread(&IR1, 128, 1);
   //NumCreated += OS_AddThread(&IR2, 128, 1);
 //  NumCreated += OS_AddThread(&IR3, 128, 1);
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
@@ -456,12 +470,12 @@ int main(void){   // testmain1
 
 int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
-	PWM0Dual_Init(60000);            // initialize PWM1-0, 0.8333 Hz, 1 RPM
-  PWM0Dual_Period(4000);           // 12.50 Hz, 15 RPM
+//  PWM0Dual_Period(40000);           // 12.50 Hz, 15 RPM
   PortF_Init();
   CAN0_Open();
 
 
+	PWM0Dual_Init(60000);            // initialize PWM1-0, 0.8333 Hz, 1 RPM
   NumCreated = 0 ;
 // create initial foreground threads
   NumCreated += OS_AddThread(&CAN_Listener, 128, 2);
