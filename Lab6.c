@@ -49,6 +49,15 @@ int Running;                // true while robot is running
 #define IR_2_ID   5
 #define IR_3_ID   6
 
+
+
+#define LEDS      (*((volatile uint32_t *)0x40025038))
+
+#define RED       0x02
+#define BLUE      0x04
+#define GREEN     0x08
+#define WHITE     0x0F
+
 Sema4Type ADC_Collection;
 
 #ifdef __cplusplus
@@ -228,6 +237,7 @@ void IR0(void){
     msg.data = SendData;
 		CanMessage2Buff(&msg, byteMe);
     CAN0_SendData(byteMe);
+		LEDS ^= GREEN;
   }
   OS_Kill();
 }
@@ -253,6 +263,7 @@ void IR1(void){
     msg.data = SendData;
 		CanMessage2Buff(&msg, byteMe);
     CAN0_SendData(byteMe);
+		LEDS ^= RED;
   }
   OS_Kill();
 }
@@ -278,6 +289,7 @@ void IR2(void){
     msg.data = SendData;
 		CanMessage2Buff(&msg, byteMe);
     CAN0_SendData(byteMe);
+		LEDS ^= BLUE;
   }
   OS_Kill();
 }
@@ -302,6 +314,7 @@ void IR3(void){
     msg.data = SendData;
 		CanMessage2Buff(&msg, byteMe);
     CAN0_SendData(byteMe);
+		LEDS ^= WHITE;
   }
   OS_Kill();
 }
@@ -310,14 +323,6 @@ void IR3(void){
 /*----------------------------------------------
 MOTOR BOARD CODE
 -----------------------------------------------*/
-
-
-#define LEDS      (*((volatile uint32_t *)0x40025038))
-
-#define RED       0x02
-#define BLUE      0x04
-#define GREEN     0x08
-#define WHITE     0x0F
 
 void PortF_Init(void){
   SYSCTL_RCGCGPIO_R |= 0x20;       // activate port F
@@ -386,12 +391,35 @@ void CAN_Listener(void){
 //int turned_left = 0;
 void Controller(void){
 	while(1){
+		  
+			int difference = IR3Val-IR2Val;
+			int threshold = 400;
+			
+		  //IR1 - front. IR2 - right back IR3- right front
 		  //Too close to front wall, turn left
-			if(IR3Val > TooClose) //IR0 is on Right side and IR1 in front
+			/*if(IR1Val > TooClose) //IR0 is on Right side and IR1 in front
 			{
-				motorMovement(LEFTMOTOR, MOVE, FORWARD,80);
-				motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
+				motorMovement(LEFTMOTOR, STOP, FORWARD,80);
+				motorMovement(RIGHTMOTOR, STOP, FORWARD,120);
+			}*/
+//			else
+				if((IR3Val>IR2Val) && ((IR3Val-IR2Val) > threshold))
+      { //Right front is closer, turn left
+				motorMovement(LEFTMOTOR, STOP, FORWARD,150);
+				motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);	
+		  }
+			else	if((IR2Val>IR3Val) && ((IR2Val-IR3Val) > threshold))
+			{
+        //Right back is closer, turn right	
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+				motorMovement(RIGHTMOTOR, STOP, FORWARD,150);	
 			}
+			else
+			{
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+			}
+			/*
 			//Too close to right wall, turn left
 			else if((IR2Val > TooClose)&&(IR3Val < OkRangeMax)) //IR0 is on Right side and IR1 in front
 			{
@@ -409,7 +437,7 @@ void Controller(void){
 			{
 				motorMovement(LEFTMOTOR, MOVE, FORWARD,120);
 			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
-			}
+			}*/
 		OS_Sleep(2);
 	}
 	OS_Kill();
@@ -423,7 +451,8 @@ int main(void){   // testmain1
   PortD_Init();
 	PortC_SensorBoard_Init();
 	PortA_SensorBoard_Init();
-  PD7 = 0x00;
+  PortF_Init();
+	PD7 = 0x00;
 	PC7 = 0x00;
 	PA7 = 0x00;
   CAN0_Open();
