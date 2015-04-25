@@ -18,8 +18,8 @@
 #include "PWMDual.h"
 
 #define TooClose 1200
-#define TooFar 400
-#define OkRangeMin 400
+#define TooFar 600
+#define OkRangeMin 600
 #define OkRangeMax 1200
 
 //unsigned long NumCreated;   // number of foreground threads created
@@ -48,6 +48,8 @@ int Running;                // true while robot is running
 #define IR_1_ID   4
 #define IR_2_ID   5
 #define IR_3_ID   6
+
+Sema4Type ADC_Collection;
 
 #ifdef __cplusplus
 extern "C" {
@@ -203,6 +205,7 @@ void PingL(void){
   OS_Kill();
 }
 
+
 #define buffSIZE 32
 uint16_t Res_buffer0[buffSIZE];
 void IR0(void){
@@ -213,8 +216,10 @@ void IR0(void){
   ADC_init_channel(0, 100);
 	while(1){
 		SendData = 0;
-    ADC_Collect0(0, 100, Res_buffer0, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
+		OS_Wait(&ADC_Collection);
+    ADC_Collect(0, 100, Res_buffer0, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(0)){}
+		OS_Signal(&ADC_Collection);
     for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer0[i]);
     }
@@ -236,8 +241,10 @@ void IR1(void){
   ADC_init_channel(1, 100);
 	while(1){
 		SendData = 0;
-    ADC_Collect1(1, 100, Res_buffer1, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
+		OS_Wait(&ADC_Collection);
+    ADC_Collect(1, 100, Res_buffer1, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(1)){}
+		OS_Signal(&ADC_Collection);
     for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer1[i]);
     }
@@ -259,9 +266,11 @@ void IR2(void){
   ADC_init_channel(2, 100);
 	while(1){
 		SendData = 0;
-    ADC_Collect2(2, 100, Res_buffer2, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
+		OS_Wait(&ADC_Collection);
+    ADC_Collect(2, 100, Res_buffer2, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(2)){}
-    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
+    OS_Signal(&ADC_Collection);
+		for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer2[i]);
     }
     SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
@@ -278,11 +287,13 @@ void IR3(void){
   uint32_t SendData;
   CanMessage_t msg;
 	uint8_t byteMe[5];
-  ADC_init_channel(3, 100);
+  ADC_init_channel(4, 100);
 	while(1){
 		SendData = 0;
-    ADC_Collect3(3, 100, Res_buffer3, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
+		OS_Wait(&ADC_Collection);
+    ADC_Collect(4, 100, Res_buffer3, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(3)){}
+		OS_Signal(&ADC_Collection);
     for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer3[i]);
     }
@@ -306,6 +317,7 @@ MOTOR BOARD CODE
 #define RED       0x02
 #define BLUE      0x04
 #define GREEN     0x08
+#define WHITE     0x0F
 
 void PortF_Init(void){
   SYSCTL_RCGCGPIO_R |= 0x20;       // activate port F
@@ -328,9 +340,9 @@ uint32_t RcvCount=0;
 uint32_t PingRVal;
 uint32_t PingLVal;
 uint32_t IR0Val = 4096;
-uint32_t IR1Val;
-uint32_t IR2Val;
-uint32_t IR3Val;
+uint32_t IR1Val= 4096;
+uint32_t IR2Val= 4096;
+uint32_t IR3Val= 4096;
 
 void CAN_Listener(void){
   uint8_t RcvData[5];
@@ -351,42 +363,19 @@ void CAN_Listener(void){
 					break;
 				case IR_0_ID: 
 					IR0Val = rxDat.data;
-					if(IR0Val > 1100){
-						LEDS ^= BLUE; 
-					}
-					else if(IR0Val > 600){
-						LEDS ^= RED; 
-					}
-					else{
-						LEDS ^= GREEN;
-					}
+					LEDS ^= BLUE;
 					break;
 				case IR_1_ID: 
 					IR1Val = rxDat.data;
-					if(IR1Val > 1100){
-						LEDS ^= BLUE; 
-					}
-					else if(IR1Val > 600){
-						LEDS ^= RED; 
-					}
-					else{
-						LEDS ^= GREEN;
-					}
+					LEDS ^= GREEN;
 					break;
 				case IR_2_ID: 
 					IR2Val = rxDat.data;
-					if(IR2Val > 1100){
-						LEDS ^= BLUE; 
-					}
-					else if(IR2Val > 600){
-						LEDS ^= RED; 
-					}
-					else{
-						LEDS ^= GREEN;
-					}
+					LEDS = RED;
 					break;
 				case IR_3_ID: 
 					IR3Val = rxDat.data;
+				  LEDS = WHITE;
 					break;
 				default:
 					break;
@@ -397,31 +386,31 @@ void CAN_Listener(void){
 //int turned_left = 0;
 void Controller(void){
 	while(1){
-		  //Too close to right wall, turn left
-			if(IR1Val > OkRangeMax) //IR0 is on Right side and IR1 in front
+		  //Too close to front wall, turn left
+			if(IR3Val > TooClose) //IR0 is on Right side and IR1 in front
 			{
 				motorMovement(LEFTMOTOR, MOVE, FORWARD,80);
 				motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
 			}
-			//Too close to front wall, turn left
-			else if((IR0Val > TooClose)&&(IR1Val < OkRangeMax)) //IR0 is on Right side and IR1 in front
+			//Too close to right wall, turn left
+			else if((IR2Val > TooClose)&&(IR3Val < OkRangeMax)) //IR0 is on Right side and IR1 in front
 			{
 				motorMovement(LEFTMOTOR, MOVE, FORWARD,80);
 				motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
 			}
 			//Too far from right wall, turn right
-			else if(IR0Val < TooFar) //IR0 is on Right side and IR1 in front
+			else if(IR2Val < TooFar) //IR0 is on Right side and IR1 in front
 			{
-				motorMovement(LEFTMOTOR, STOP, FORWARD,120);
-			  motorMovement(RIGHTMOTOR, STOP, FORWARD,80);
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,120);
+			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,40);
 			}
 			//All okay, go ahead
-			else if((IR0Val < OkRangeMax)&&(IR0Val > OkRangeMin)) //IR0 is on Right side and IR1 in front
+			else if((IR2Val < OkRangeMax)&&(IR2Val > OkRangeMin)) //IR0 is on Right side and IR1 in front
 			{
-				motorMovement(LEFTMOTOR, STOP, FORWARD,120);
-			  motorMovement(RIGHTMOTOR, STOP, FORWARD,120);
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,120);
+			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
 			}
-		OS_Sleep(4);
+		OS_Sleep(2);
 	}
 	OS_Kill();
 }
@@ -444,12 +433,13 @@ int main(void){   // testmain1
 //  OS_AddButtonTask(&RunTest,2);
   
   NumCreated = 0 ;
+	OS_InitSemaphore(&ADC_Collection, 1);
 // create initial foreground threads
  // NumCreated += OS_AddThread(&PingR, 128, 1);
   NumCreated += OS_AddThread(&IR0, 128, 1);
   NumCreated += OS_AddThread(&IR1, 128, 1);
- // NumCreated += OS_AddThread(&IR2, 128, 1);
- // NumCreated += OS_AddThread(&IR3, 128, 1);
+  NumCreated += OS_AddThread(&IR2, 128, 1);
+  NumCreated += OS_AddThread(&IR3, 128, 1);
   OS_Launch(2*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
