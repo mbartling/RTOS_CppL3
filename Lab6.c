@@ -17,6 +17,10 @@
 #include "median.h"
 #include "PWMDual.h"
 
+#define TooClose 1200
+#define TooFar 400
+#define OkRangeMin 400
+#define OkRangeMax 1200
 
 //unsigned long NumCreated;   // number of foreground threads created
 //unsigned long NumSamples;   // incremented every sample
@@ -271,20 +275,22 @@ void IR2(void){
 
 uint16_t Res_buffer3[64];
 void IR3(void){
-
   uint32_t SendData;
   CanMessage_t msg;
-  while(1){
+	uint8_t byteMe[5];
+  ADC_init_channel(3, 100);
+	while(1){
 		SendData = 0;
-    ADC_Collect3(3, 100, Res_buffer3, 128); //128, to bring down sampling rate from 100 to 50
+    ADC_Collect3(3, 100, Res_buffer3, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(3)){}
-    for(int i = 0; i < 64-MEDIAN_FILTER_SIZE; i++){
+    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
       SendData += median_filt(&Res_buffer3[i]);
     }
-    SendData = SendData/(64-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
     msg.mId = IR_3_ID;
     msg.data = SendData;
-    CAN0_SendData(CAST_CAN_2_UINT8P(msg));
+		CanMessage2Buff(&msg, byteMe);
+    CAN0_SendData(byteMe);
   }
   OS_Kill();
 }
@@ -391,49 +397,31 @@ void CAN_Listener(void){
 //int turned_left = 0;
 void Controller(void){
 	while(1){
-		if(IR1Val>1050){//too close, turn the other way
-			motorMovement(RIGHTMOTOR, MOVE, FORWARD,100);
-            motorMovement(LEFTMOTOR, MOVE, FORWARD, 80);
-            //OS_Sleep(4);
-		    //motorMovement(RIGHTMOTOR, MOVE, FORWARD,100);
-            //motorMovement(LEFTMOTOR, MOVE, FORWARD, 100);
-            //OS_Sleep(2);
-		    //motorMovement(RIGHTMOTOR, MOVE, FORWARD,80);
-            //motorMovement(LEFTMOTOR, MOVE, FORWARD, 100);
-            //turned_left = 1; 
-            //OS_Sleep(2);
-        }
-        else{
-		if(IR1Val>600 ){//within the proper range, move stright
-		   // if (turned_left) {
-               // turned_left = 0;
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,80);
-                motorMovement(LEFTMOTOR, MOVE, FORWARD, 100);
-                OS_Sleep(2);
-           // }
-           // else { 
-              //  motorMovement(RIGHTMOTOR, MOVE, FORWARD, 100);
-             //   motorMovement(LEFTMOTOR, MOVE, FORWARD, 100);
-            //}	
-        } else{ //if empty space, make a turn
-            /*if(PingRVal > 20){*/
-            int i=0;
-            while(i<1){
-                //turn 
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,50);
-                motorMovement(LEFTMOTOR, MOVE, FORWARD, 100);
-                OS_Sleep(4);
-                i++;			
-            }
-        }
-        }
-		/*else{ //Too close, stop
-			motorMovement(LEFTMOTOR, MOVE, FORWARD);
-			motorMovement(RIGHTMOTOR, MOVE, FORWARD);
-		}*/
-		//motorMovement(LEFTMOTOR, MOVE, FORWARD);
-			//motorMovement(RIGHTMOTOR, MOVE, FORWARD);
-		OS_Sleep(3);
+		  //Too close to right wall, turn left
+			if(IR1Val > OkRangeMax) //IR0 is on Right side and IR1 in front
+			{
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,80);
+				motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
+			}
+			//Too close to front wall, turn left
+			else if((IR0Val > TooClose)&&(IR1Val < OkRangeMax)) //IR0 is on Right side and IR1 in front
+			{
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,80);
+				motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
+			}
+			//Too far from right wall, turn right
+			else if(IR0Val < TooFar) //IR0 is on Right side and IR1 in front
+			{
+				motorMovement(LEFTMOTOR, STOP, FORWARD,120);
+			  motorMovement(RIGHTMOTOR, STOP, FORWARD,80);
+			}
+			//All okay, go ahead
+			else if((IR0Val < OkRangeMax)&&(IR0Val > OkRangeMin)) //IR0 is on Right side and IR1 in front
+			{
+				motorMovement(LEFTMOTOR, STOP, FORWARD,120);
+			  motorMovement(RIGHTMOTOR, STOP, FORWARD,120);
+			}
+		OS_Sleep(4);
 	}
 	OS_Kill();
 }
@@ -460,9 +448,9 @@ int main(void){   // testmain1
  // NumCreated += OS_AddThread(&PingR, 128, 1);
   NumCreated += OS_AddThread(&IR0, 128, 1);
   NumCreated += OS_AddThread(&IR1, 128, 1);
-  //NumCreated += OS_AddThread(&IR2, 128, 1);
-//  NumCreated += OS_AddThread(&IR3, 128, 1);
-  OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
+ // NumCreated += OS_AddThread(&IR2, 128, 1);
+ // NumCreated += OS_AddThread(&IR3, 128, 1);
+  OS_Launch(2*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
 

@@ -19,6 +19,8 @@ long StartCritical (void);    // previous I bit, disable interrupts
 void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 void ADC0Seq2_Handler(void);
+void ADC0Seq3_Handler(void);
+void ADC0Seq1_Handler(void);
 #ifdef __cplusplus
 }
 #endif
@@ -147,10 +149,6 @@ int ADC_init_channel(int channelNum, unsigned int fs){
   
   ADC0_PC_R = 0x01;         // configure for 125K samples/sec
   ADC0_SSPRI_R = 0x3210;    // sequencer 0 is highest, sequencer 3 is lowest
-  ADC0_ACTSS_R &= ~0x04;    // disable sample sequencer 2
-  ADC0_EMUX_R = (ADC0_EMUX_R&0xFFFFF0FF)+0x0500; // timer trigger event SS2
-
-  ADC0_SAC_R = 0x02;  // 4x Hardware Oversample
   EnableInterrupts();
 	return 1;
 }
@@ -181,6 +179,11 @@ int ADC_Collect0(unsigned int channelNum, unsigned int fs,
   }
   
 	DisableInterrupts();
+	ADC0_ACTSS_R &= ~0x04;    // disable sample sequencer 2
+  ADC0_EMUX_R = (ADC0_EMUX_R&0xFFFFF0FF)+0x0500; // timer trigger event SS2
+
+  ADC0_SAC_R = 0x02;  // 4x Hardware Oversample
+ 
 	ADC0_SSMUX2_R = (channelNum << 4) | channelNum;
   ADC0_SSCTL2_R = 0x064;          // set flag and end, 2 samples at a time                      
   ADC0_IM_R |= 0x04;             // enable SS2 interrupts
@@ -209,6 +212,11 @@ int ADC_Collect1(unsigned int channelNum, unsigned int fs,
   }
   
 	DisableInterrupts();
+	ADC0_ACTSS_R &= ~0x08;    // disable sample sequencer 3
+  ADC0_EMUX_R = (ADC0_EMUX_R&0xFFFF0FFF)+0x5000; // timer trigger event SS2
+
+  ADC0_SAC_R = 0x02;  // 4x Hardware Oversample
+ 
 	ADC0_SSMUX3_R = (channelNum << 4) | channelNum;
   ADC0_SSCTL3_R = 0x064;          // set flag and end, 2 samples at a time                      
   ADC0_IM_R |= 0x08;             // enable SS3 interrupts
@@ -237,6 +245,12 @@ int ADC_Collect2(unsigned int channelNum, unsigned int fs,
   }
   
 	DisableInterrupts();
+	ADC0_ACTSS_R &= ~0x02;    // disable sample sequencer 1
+  ADC0_EMUX_R = (ADC0_EMUX_R&0xFFFFFF0F)+0x0050; // timer trigger event SS2
+
+  ADC0_SAC_R = 0x02;  // 4x Hardware Oversample
+ 
+	
 	ADC0_SSMUX1_R = (channelNum << 4) | channelNum;
   ADC0_SSCTL1_R = 0x064;          // set flag and end, 2 samples at a time                      
   ADC0_IM_R |= 0x02;             // enable SS1 interrupts
@@ -257,6 +271,37 @@ int ADC_Collect2(unsigned int channelNum, unsigned int fs,
 
 int ADC_Collect3(unsigned int channelNum, unsigned int fs,
                                 unsigned short buffer[], unsigned int numberOfSamples){
+			
+  if(fs < 100 || fs > 10000){
+    return -1;
+  }
+  if(numberOfSamples < 1){
+    return -1;
+  }
+  
+	DisableInterrupts();
+	ADC0_ACTSS_R &= ~0x01;    // disable sample sequencer 0
+  ADC0_EMUX_R = (ADC0_EMUX_R&0xFFFFFFF0)+0x0005; // timer trigger event SS0
+
+  ADC0_SAC_R = 0x02;  // 4x Hardware Oversample
+ 
+	
+	ADC0_SSMUX0_R = (channelNum << 4) | channelNum;
+  ADC0_SSCTL0_R = 0x064;          // set flag and end, 2 samples at a time                      
+  ADC0_IM_R |= 0x01;             // enable SS0 interrupts
+  ADC0_ACTSS_R |= 0x01;          // enable sample sequencer 0
+  NVIC_PRI3_R = (NVIC_PRI3_R & 0x00FFFFFF)|0x40000000; //priority 2 
+  NVIC_EN0_R = 1<<14;              // enable interrupt 16 in NVIC 
+                                   //Sample Sequencer 0
+  
+  Collecting[2] = 1;
+  SampleCount[2] = 0;
+  TargetCount[2] = numberOfSamples;
+	Buffer2 = buffer;
+  EnableInterrupts();
+
+  return Collecting[2];
+																
 }
 /**
  * @brief returns 0 when ADC_collect finishes
@@ -324,5 +369,19 @@ void ADC0Seq1_Handler(void){
   }
   else{ //Not Collecting
     NVIC_DIS0_R = 1<<15; //Disable SS1 Interrupt 
+  }
+}
+
+
+void ADC0Seq0_Handler(void){
+  if(Collecting[3] > 0){
+    ADC0_ISC_R = 0x01;          // acknowledge ADC sequence 0 completion
+    SampleCount[3]+=2;          // taking care of reducing the frequency by a factor 2
+    Buffer3[(SampleCount[3])/2] = ADC0_SSFIFO0_R;  // 12-bit result
+    dummy0 = ADC0_SSFIFO0_R;
+    Collecting[3] = TargetCount[3] - SampleCount[3]; //Faster than branching
+  }
+  else{ //Not Collecting
+    NVIC_DIS0_R = 1<<14; //Disable SS1 Interrupt 
   }
 }
