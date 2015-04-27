@@ -16,6 +16,7 @@
 #include "can0.h"
 #include "median.h"
 #include "PWMDual.h"
+#include "Mailbox.hpp"
 
 #define TooClose 1200
 #define TooFar 600
@@ -533,7 +534,7 @@ int main(void){   // testmain1
   NumCreated = 0 ;
 	OS_InitSemaphore(&ADC_Collection, 1);
 // create initial foreground threads
- // NumCreated += OS_AddThread(&PingR, 128, 1);
+  NumCreated += OS_AddThread(&PingR, 128, 1);
   NumCreated += OS_AddThread(&IR0, 128, 1);
   NumCreated += OS_AddThread(&IR1, 128, 1);
   NumCreated += OS_AddThread(&IR2, 128, 1);
