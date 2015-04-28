@@ -42,4 +42,38 @@ public:
   }
 
 };
+template <class T>
+class BGMailbox{
+private:
+  Sema4Type semaSend;
+  //Sema4Type semaAck;
+  T Mail;
+public:
+  BGMailbox(void) {
+    OS_InitSemaphore(&semaSend, 0);
+    //OS_InitSemaphore(&semaAck, 0);
+  }
+  /**
+   * @brief Send data via a mailbox
+   * 
+   * @param data Data to send
+   */
+  inline void Send(T& data){
+    Mail = data;
+    OS_Signal(&semaSend);
+    //OS_Wait(&semaAck);
+  }
+
+  /**
+   * @brief Receive data via a mailbox
+   * 
+   * @param data Data to receive
+   */
+  inline void Receive(T& data){
+    OS_Wait(&semaSend);
+    data = Mail;
+    //OS_Signal(&semaAck);
+  }
+
+};
 #endif /*__MAILBOX_HPP__*/

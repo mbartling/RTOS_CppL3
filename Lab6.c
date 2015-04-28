@@ -16,6 +16,7 @@
 #include "can0.h"
 #include "median.h"
 #include "PWMDual.h"
+#include "Mailbox.hpp"
 
 #define TooClose 1600
 #define Close 1200
@@ -72,6 +73,7 @@ long StartCritical (void);    // previous I bit, disable interrupts
 void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 // void PendSV_Handler(void);
+void GPIOPortA_Handler(void);
 #ifdef __cplusplus
 }
 #endif
@@ -79,6 +81,8 @@ void WaitForInterrupt(void);  // low power mode
 /*----------------------------------------------
 SENSOR BOARD CODE
 -----------------------------------------------*/
+Mailbox<uint32_t> Ping1Mail;
+Mailbox<uint32_t> Ping2Mail;
 
 void PortD_Init(void){ unsigned long volatile delay;
   //SYSCTL_RCGC2_R |= 0x10;       // activate port D
@@ -91,6 +95,47 @@ void PortD_Init(void){ unsigned long volatile delay;
   GPIO_PORTD_DEN_R |= 0xC0;     // enable digital I/O on PD6-7
   //GPIO_PORTD_PCTL_R = ~0x0000FFFF;
   //GPIO_PORTD_AMSEL_R &= ~0x0F;;      // disable analog functionality on PF
+  GPIO_PORTD_IS_R &= ~(1 << 6);   // PD6 is edge-sensitive
+  GPIO_PORTD_IBE_R |= (1 << 6);   // PD6 is sensitive to both edges
+  GPIO_PORTD_IEV_R |= (1 << 6);   // PD6 rising edge event (Dont care)
+  GPIO_PORTD_ICR_R = (1 << 6); //Clear the flag
+  GPIO_PORTD_IM_R |= (1 << 6);    // enable interrupt on PD6
+
+  //Priority Level 3
+  NVIC_PRI0_R = (NVIC_PRI0_R&0x00FFFFFF)| (3 << 29);
+  NVIC_EN0_R = 1 << 3;
+ 
+}
+
+void GPIOPortA_Handler(void){
+  GPIO_PORTA_ICR_R = (1 << 6);    // acknowledge flag6
+  //SW2 = 1;
+  static uint32_t pingStartTime; 
+  static uint32_t pingEndTime;
+
+  if(PA6 != 0)  pingStartTime = OS_GetUsTime();
+  else if(PA6 == 0){
+    pingEndTime = OS_GetUsTime();
+    uint32_t delta =  ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
+    if(pingEndTime > pingStartTime){
+      Ping1Mail.Send(delta);
+    }
+  }
+}
+void GPIOPortC_Handler(void){
+  GPIO_PORTC_ICR_R = (1 << 6);    // acknowledge flag6
+  //SW2 = 1;
+  static uint32_t pingStartTime; 
+  static uint32_t pingEndTime;
+
+  if(PA6 != 0)  pingStartTime = OS_GetUsTime();
+  else if(PA6 == 0){
+    pingEndTime = OS_GetUsTime();
+    uint32_t delta =  ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
+    if(pingEndTime > pingStartTime){
+      Ping2Mail.Send(delta);
+    }
+  }
 }
 void PortC_SensorBoard_Init(void){ unsigned long volatile delay;
   //SYSCTL_RCGC2_R |= 0x10;       // activate port c
@@ -102,6 +147,15 @@ void PortC_SensorBoard_Init(void){ unsigned long volatile delay;
   GPIO_PORTC_AFSEL_R &= ~0xC0;   // disable alt funct on PC6-7
   GPIO_PORTC_DEN_R |= 0xC0;     // enable digital I/O on PC6-7
 
+  GPIO_PORTC_IS_R &= ~(1 << 6);   // PA6 is edge-sensitive
+  GPIO_PORTC_IBE_R |= (1 << 6);   // PA6 is sensitive to both edges
+  GPIO_PORTC_IEV_R |= (1 << 6);   // PA6 rising edge event (Dont care)
+  GPIO_PORTC_ICR_R = (1 << 6); //Clear the flag
+  GPIO_PORTC_IM_R |= (1 << 6);    // enable interrupt on PA6
+
+  //Priority Level 3
+  NVIC_PRI0_R = (NVIC_PRI0_R&0xFF00FFFFF)| (3 << 21);
+  NVIC_EN0_R = 1 << 2;
 }
 
 void PortA_SensorBoard_Init(void){ unsigned long volatile delay;
@@ -114,36 +168,49 @@ void PortA_SensorBoard_Init(void){ unsigned long volatile delay;
   GPIO_PORTA_AFSEL_R &= ~0xC0;   // disable alt funct on PA6-7
   GPIO_PORTA_DEN_R |= 0xC0;     // enable digital I/O on PA6-7
 
+  GPIO_PORTA_IS_R &= ~(1 << 6);   // PA6 is edge-sensitive
+  GPIO_PORTA_IBE_R |= (1 << 6);   // PA6 is sensitive to both edges
+  GPIO_PORTA_IEV_R |= (1 << 6);   // PA6 rising edge event (Dont care)
+  GPIO_PORTA_ICR_R = (1 << 6); //Clear the flag
+  GPIO_PORTA_IM_R |= (1 << 6);    // enable interrupt on PA6
+
+  //Priority Level 3
+  NVIC_PRI0_R = (NVIC_PRI0_R&0xFFFFFFF00)| (3 << 5);
+  NVIC_EN0_R = 1 << 0;
 }
 uint32_t Ping1(void){
-	uint32_t pingStartTime; 
-	uint32_t pingEndTime;
+	// uint32_t pingStartTime; 
+	// uint32_t pingEndTime;
 	//Write GPIO_Pin High
-	long sr = StartCritical();
+	// long sr = StartCritical();
   PA7 = 0x80;
 	OS_DelayUS(5);
 	//Write GPIO Pin Low
 	PA7 = 0x00;
 	//Could move into a ISR
 	//while(gpio_Pin_Low){}
-	while(PA6 == 0){}
-	pingStartTime = OS_GetUsTime();
+	// while(PA6 == 0){}
+	// pingStartTime = OS_GetUsTime();
 
-	//while(gpio_Pin_High){}
-	while(PA6 != 0){}
+	// //while(gpio_Pin_High){}
+	// while(PA6 != 0){}
 
-	pingEndTime = OS_GetUsTime();
-	OS_DelayUS(200);
-	//Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)
-	//Then the ping time is c*dT/2
-		EndCritical(sr);
-	return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
+	// pingEndTime = OS_GetUsTime();
+	// OS_DelayUS(200);
+	// //Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)
+	// //Then the ping time is c*dT/2
+	// 	EndCritical(sr);
+	// return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
+
+  uint32_t delta;
+  Ping1Mail.Receive(delta);
+  return delta;
 }
 
 
 uint32_t Ping2(void){
-  uint32_t pingStartTime; 
-  uint32_t pingEndTime;
+  // uint32_t pingStartTime; 
+  // uint32_t pingEndTime;
   //Write GPIO_Pin High
   PC7 = 0x80;
   OS_DelayUS(5);
@@ -151,17 +218,20 @@ uint32_t Ping2(void){
   PC7 = 0x00;
   //Could move into a ISR
   //while(gpio_Pin_Low){}
-  while(PC6 == 0){}
-  pingStartTime = OS_GetUsTime();
+  // while(PC6 == 0){}
+  // pingStartTime = OS_GetUsTime();
 
-  //while(gpio_Pin_High){}
-  while(PC6 != 0){}
+  // //while(gpio_Pin_High){}
+  // while(PC6 != 0){}
 
-  pingEndTime = OS_GetUsTime();
-  OS_DelayUS(200);
-  //Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)
-  //Then the ping time is c*dT/2
-  return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
+  // pingEndTime = OS_GetUsTime();
+  // OS_DelayUS(200);
+  // //Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)
+  // //Then the ping time is c*dT/2
+  // return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
+  uint32_t delta;
+  Ping2Mail.Receive(delta);
+  return delta;
 }
 
 void PingR(void){
@@ -518,7 +588,7 @@ int main(void){   // testmain1
   NumCreated = 0 ;
 	OS_InitSemaphore(&ADC_Collection, 1);
 // create initial foreground threads
- // NumCreated += OS_AddThread(&PingR, 128, 1);
+  NumCreated += OS_AddThread(&PingR, 128, 1);
   NumCreated += OS_AddThread(&IR0, 128, 1);
   NumCreated += OS_AddThread(&IR1, 128, 1);
   NumCreated += OS_AddThread(&IR2, 128, 1);
