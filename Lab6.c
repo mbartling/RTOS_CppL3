@@ -17,7 +17,9 @@
 #include "median.h"
 #include "PWMDual.h"
 
-#define TooClose 1200
+#define TooClose 1600
+#define Close 1200
+
 #define TooFar 600
 #define OkRangeMin 600
 #define OkRangeMax 1200
@@ -215,7 +217,7 @@ void PingL(void){
 }
 
 
-#define buffSIZE 32
+#define buffSIZE 16
 uint16_t Res_buffer0[buffSIZE];
 void IR0(void){
 	
@@ -390,20 +392,25 @@ void CAN_Listener(void){
 }//End CAN_Listener
 //int turned_left = 0;
 void Controller(void){
-	while(1){
+	int turned_left = 0;
+    int turned_right = 0;
+
+    while(1){
 		  
 			int difference = IR3Val-IR2Val;
-			int threshold = 400;
+			int threshold =200;
 			
 		  //IR1 - front. IR2 - right back IR3- right front
 		  //Too close to front wall, turn left
-			/*if(IR1Val > TooClose) //IR0 is on Right side and IR1 in front
-			{
-				motorMovement(LEFTMOTOR, STOP, FORWARD,80);
-				motorMovement(RIGHTMOTOR, STOP, FORWARD,120);
-			}*/
+//			if(IR1Val > TooClose) //IR0 is on Right side and IR1 in front
+//			{
+//				motorMovement(LEFTMOTOR, STOP, FORWARD,80);
+//				motorMovement(RIGHTMOTOR, STOP, FORWARD,120);
+//			}
 //			else
-				if((IR3Val>IR2Val) && ((IR3Val-IR2Val) > threshold))
+            
+           /* 
+            if((IR3Val>IR2Val) && ((IR3Val-IR2Val) > threshold))
       { //Right front is closer, turn left
 				motorMovement(LEFTMOTOR, STOP, FORWARD,150);
 				motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);	
@@ -420,26 +427,73 @@ void Controller(void){
 			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
 			}
 			/*
-			//Too close to right wall, turn left
-			else if((IR2Val > TooClose)&&(IR3Val < OkRangeMax)) //IR0 is on Right side and IR1 in front
-			{
-				motorMovement(LEFTMOTOR, MOVE, FORWARD,80);
-				motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
-			}
-			//Too far from right wall, turn right
-			else if(IR2Val < TooFar) //IR0 is on Right side and IR1 in front
-			{
-				motorMovement(LEFTMOTOR, MOVE, FORWARD,120);
-			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,40);
-			}
-			//All okay, go ahead
-			else if((IR2Val < OkRangeMax)&&(IR2Val > OkRangeMin)) //IR0 is on Right side and IR1 in front
-			{
-				motorMovement(LEFTMOTOR, MOVE, FORWARD,120);
-			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
-			}*/
-		OS_Sleep(2);
-	}
+		*/	
+            //front too close 
+           /* 
+            if((IR1Val > TooClose))
+            {
+                if((IR3Val>IR2Val) && ((IR3Val-IR2Val) > threshold))
+                { //Right front is closer, turn left
+                    motorMovement(LEFTMOTOR, MOVE, FORWARD,150);
+                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);	
+                }
+                else	if((IR2Val>IR3Val) && ((IR2Val-IR3Val) > threshold))
+                {
+                    //Right back is closer, turn right	
+                    motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,150);	
+                }
+            }	
+            //right too close 
+            */ 
+            //right wheel close 
+            if((IR2Val > TooClose))
+            {
+                if(!turned_left){
+                    motorMovement(LEFTMOTOR, STOP, FORWARD,50);
+                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+                    OS_DelayUS(500);
+                    turned_left = 1;
+                }
+                turned_right = 0;
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,50);
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+            }
+            //left too close 
+            else if(IR3Val > TooClose) //IR0 is on Right side and IR1 in front
+            {
+                if(!turned_right){
+                    motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+                    motorMovement(RIGHTMOTOR, STOP, FORWARD,50);
+                    OS_DelayUS(500);
+                    turned_right = 1;
+                }
+                turned_left = 0;
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,50);
+            }
+            else if((IR2Val > Close && IR2Val < TooClose))
+            {
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,50);
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+            }
+            //left too close 
+            else if((IR3Val > Close && IR3Val < TooClose))
+            {
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,50);
+            }
+             
+           //go straight 
+            else 
+            {
+                turned_right = 0;
+                turned_left = 0;
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+            }
+            OS_Sleep(1);
+    }
 	OS_Kill();
 }
 
@@ -487,7 +541,7 @@ int main(void){   // testmain1
 // create initial foreground threads
   NumCreated += OS_AddThread(&CAN_Listener, 128, 2);
   NumCreated += OS_AddThread(&Controller, 128, 1);
-  OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
+  OS_Launch(TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
 
