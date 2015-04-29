@@ -437,22 +437,19 @@ void CAN_Listener(void){
 					break;
 				case IR_0_ID: 
 					IR0Val = rxDat.data;
-                    LEDS = BLUE;
+                    //LEDS = BLUE;
 					break;
 				case IR_1_ID: 
 					IR1Val = rxDat.data;
-                    LEDS = BLUE;
-                    //LEDS ^= GREEN;
+                    LEDS ^= GREEN;
 					break;
 				case IR_2_ID: 
 					IR2Val = rxDat.data;
-                    LEDS = BLUE;
-                    //LEDS = RED;
+                    LEDS = RED;
 					break;
 				case IR_3_ID: 
 					IR3Val = rxDat.data;
-                    LEDS = BLUE;
-                    //LEDS = WHITE;
+                    LEDS = WHITE;
 					break;
 				default:
 					LEDS = BLUE;
@@ -562,7 +559,7 @@ void Controller(void){
             LPWMError = IR3Val - leftClose;
             FPWMError = IR1Val - tooClose;
             if(IR1Val > tooClose){
-                LEDS = RED;
+                //LEDS = RED;
                 if(IR2Val > IR3Val){ //Turn left
                     baseSpeed = superLowSpeedFixed;
                     //leftMotorSpeed = superLowSpeed; 
@@ -585,7 +582,7 @@ void Controller(void){
             }
             //right wheel close 
             else if(IR2Val > rightClose){
-                LEDS = GREEN;
+                //LEDS = GREEN;
                 baseSpeed = lowSpeedFixed;
                 leftMotorSpeed = baseSpeed; 
                 rightMotorSpeed = baseSpeed + weight*(RPWMError);
@@ -596,7 +593,7 @@ void Controller(void){
             }
             //left too close 
             else if(IR3Val > leftClose){ //IR0 is on Right side and IR1 in front
-                LEDS = WHITE;
+                //LEDS = WHITE;
                 baseSpeed = lowSpeedFixed;
                 rightMotorSpeed = baseSpeed; 
                 leftMotorSpeed = baseSpeed + weight*(LPWMError);
@@ -607,7 +604,7 @@ void Controller(void){
             } 
             else 
             {
-                LEDS = WHITE; 
+                //LEDS = WHITE; 
                 motorMovement(LEFTMOTOR, MOVE, FORWARD,highSpeedFixed);
                 motorMovement(RIGHTMOTOR, MOVE, FORWARD,highSpeedFixed);
             }
