@@ -22,9 +22,7 @@
 #define Close 1200
 
 #define TooFar 600
-#define OkRangeMin 600
-#define OkRangeMax 1200
-
+#define OKRangeMax 1200
 //unsigned long NumCreated;   // number of foreground threads created
 //unsigned long NumSamples;   // incremented every sample
 //unsigned long DataLost;     // data sent by Producer, but not received by Consumer
@@ -417,7 +415,7 @@ uint32_t RcvCount=0;
 uint32_t PingRVal;
 uint32_t PingLVal;
 uint32_t IR0Val = 4096;
-uint32_t IR1Val= 4096;
+uint32_t IR1Val= 0;
 uint32_t IR2Val= 4096;
 uint32_t IR3Val= 4096;
 
@@ -434,138 +432,190 @@ void CAN_Listener(void){
 				case PING_L_ID:
 					PingLVal = rxDat.data;
 					break;
-				
 				case PING_R_ID:
 					PingRVal = rxDat.data;
 					break;
 				case IR_0_ID: 
 					IR0Val = rxDat.data;
-					LEDS ^= BLUE;
+                    LEDS = BLUE;
 					break;
 				case IR_1_ID: 
 					IR1Val = rxDat.data;
-					LEDS ^= GREEN;
+                    LEDS = BLUE;
+                    //LEDS ^= GREEN;
 					break;
 				case IR_2_ID: 
 					IR2Val = rxDat.data;
-					LEDS = RED;
+                    LEDS = BLUE;
+                    //LEDS = RED;
 					break;
 				case IR_3_ID: 
 					IR3Val = rxDat.data;
-				  LEDS = WHITE;
+                    LEDS = BLUE;
+                    //LEDS = WHITE;
 					break;
 				default:
-					break;
+					LEDS = BLUE;
+                    break;
 			} //End Switch
     } // End if CAN0_GetMail
   }// End While 
 }//End CAN_Listener
 //int turned_left = 0;
-void Controller(void){
-	int turned_left = 0;
-    int turned_right = 0;
+//void Controller(void){
+//	int turned_left = 0;
+//    int turned_right = 0;
+//
+//    while(1){
+//		  
+//			int difference = IR3Val-IR2Val;
+//			int threshold =200;
+//		     //right wheel close 
+//            if((IR2Val > TooClose))
+//            {
+//                if(!turned_left){
+//                    motorMovement(LEFTMOTOR, STOP, FORWARD,50);
+//                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+//                    OS_DelayUS(500);
+//                    turned_left = 1;
+//                }
+//                turned_right = 0;
+//                motorMovement(LEFTMOTOR, MOVE, FORWARD,50);
+//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+//            }
+//            //left too close 
+//            else if(IR3Val > TooClose) //IR0 is on Right side and IR1 in front
+//            {
+//                if(!turned_right){
+//                    motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+//                    motorMovement(RIGHTMOTOR, STOP, FORWARD,50);
+//                    OS_DelayUS(500);
+//                    turned_right = 1;
+//                }
+//                turned_left = 0;
+//                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,50);
+//            }
+//            else if((IR2Val > Close && IR2Val < TooClose))
+//            {
+//                motorMovement(LEFTMOTOR, MOVE, FORWARD,50);
+//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+//            }
+//            //left too close 
+//            else if((IR3Val > Close && IR3Val < TooClose))
+//            {
+//                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,50);
+//            }
+//             
+//           //go straight 
+//            else 
+//            {
+//                turned_right = 0;
+//                turned_left = 0;
+//                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+//            }
+//            OS_Sleep(1);
+//    }
+//	OS_Kill();
+//}
 
+//IR3 right
+//IR2 Left
+//IR1 center
+
+int turned_left = 0;
+//int ref_distance = ;
+
+int RPWMError = 0; //how far Right Wheel is from the OKRangeMin
+int LPWMError = 0; //how far left Wheel is from the OKRangeMin
+int FPWMError = 0; //how far left Wheel is from the OKRangeMin
+//void Controller(void){
+//    while(1){
+//            
+//            RPWMError = IR2Val - OkRangeMin;
+//            LPWMError = IR3Val - OkRangeMin;
+//		    //right wheel close 
+//            //if(IR2Val > OkRangeMin){
+//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+//                motorMovement(LEFTMOTOR, MOVE , FORWARD,100);
+//            //}
+//    }	
+//            OS_Kill();
+//}
+
+#define leftClose 850
+#define rightClose 1050
+#define tooClose 1200
+
+int leftMotorSpeed = 0;
+int rightMotorSpeed = 0;
+#define lowSpeedFixed 80 
+#define superLowSpeedFixed 80 
+#define highSpeedFixed 200 
+float weight = .25; //determines how sharp the turn is by tunning the difference
+float baseSpeed = 0;
+void Controller(void){
     while(1){
-		  
-			int difference = IR3Val-IR2Val;
-			int threshold =200;
-			
-		  //IR1 - front. IR2 - right back IR3- right front
-		  //Too close to front wall, turn left
-//			if(IR1Val > TooClose) //IR0 is on Right side and IR1 in front
-//			{
-//				motorMovement(LEFTMOTOR, STOP, FORWARD,80);
-//				motorMovement(RIGHTMOTOR, STOP, FORWARD,120);
-//			}
-//			else
+            RPWMError = IR2Val - rightClose;
+            LPWMError = IR3Val - leftClose;
+            FPWMError = IR1Val - tooClose;
+            if(IR1Val > tooClose){
+                LEDS = RED;
+                if(IR2Val > IR3Val){ //Turn left
+                    baseSpeed = superLowSpeedFixed;
+                    //leftMotorSpeed = superLowSpeed; 
+                    rightMotorSpeed = superLowSpeedFixed+ (2*weight)*(FPWMError);
+                    if(rightMotorSpeed > highSpeedFixed)
+                        rightMotorSpeed = highSpeedFixed;
+                    //rightMotorSpeed = highSpeedFixed - (highSpeedFixed/(weight*RPWMError));
+                    motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
+                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+                }
+                else{ //Turn right
+                    //rightMotorSpeed = superLowSpeed; 
+                    leftMotorSpeed = superLowSpeedFixed + (2*weight*(FPWMError));
+                    if(leftMotorSpeed > highSpeedFixed)
+                        leftMotorSpeed = highSpeedFixed;
+                    motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+                    motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
+                }
             
-           /* 
-            if((IR3Val>IR2Val) && ((IR3Val-IR2Val) > threshold))
-      { //Right front is closer, turn left
-				motorMovement(LEFTMOTOR, STOP, FORWARD,150);
-				motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);	
-		  }
-			else	if((IR2Val>IR3Val) && ((IR2Val-IR3Val) > threshold))
-			{
-        //Right back is closer, turn right	
-				motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-				motorMovement(RIGHTMOTOR, STOP, FORWARD,150);	
-			}
-			else
-			{
-				motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
-			}
-			/*
-		*/	
-            //front too close 
-           /* 
-            if((IR1Val > TooClose))
-            {
-                if((IR3Val>IR2Val) && ((IR3Val-IR2Val) > threshold))
-                { //Right front is closer, turn left
-                    motorMovement(LEFTMOTOR, MOVE, FORWARD,150);
-                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);	
-                }
-                else	if((IR2Val>IR3Val) && ((IR2Val-IR3Val) > threshold))
-                {
-                    //Right back is closer, turn right	
-                    motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,150);	
-                }
-            }	
-            //right too close 
-            */ 
+            }
             //right wheel close 
-            if((IR2Val > TooClose))
-            {
-                if(!turned_left){
-                    motorMovement(LEFTMOTOR, STOP, FORWARD,50);
-                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
-                    OS_DelayUS(500);
-                    turned_left = 1;
-                }
-                turned_right = 0;
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,50);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+            else if(IR2Val > rightClose){
+                LEDS = GREEN;
+                baseSpeed = lowSpeedFixed;
+                leftMotorSpeed = baseSpeed; 
+                rightMotorSpeed = baseSpeed + weight*(RPWMError);
+                if(rightMotorSpeed > highSpeedFixed) 
+                     rightMotorSpeed = highSpeedFixed;
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
             }
             //left too close 
-            else if(IR3Val > TooClose) //IR0 is on Right side and IR1 in front
-            {
-                if(!turned_right){
-                    motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-                    motorMovement(RIGHTMOTOR, STOP, FORWARD,50);
-                    OS_DelayUS(500);
-                    turned_right = 1;
-                }
-                turned_left = 0;
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,50);
-            }
-            else if((IR2Val > Close && IR2Val < TooClose))
-            {
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,50);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
-            }
-            //left too close 
-            else if((IR3Val > Close && IR3Val < TooClose))
-            {
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,50);
-            }
-             
-           //go straight 
+            else if(IR3Val > leftClose){ //IR0 is on Right side and IR1 in front
+                LEDS = WHITE;
+                baseSpeed = lowSpeedFixed;
+                rightMotorSpeed = baseSpeed; 
+                leftMotorSpeed = baseSpeed + weight*(LPWMError);
+                 if(leftMotorSpeed > highSpeedFixed) 
+                     leftMotorSpeed = highSpeedFixed;
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+            } 
             else 
             {
-                turned_right = 0;
-                turned_left = 0;
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+                LEDS = WHITE; 
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,highSpeedFixed);
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,highSpeedFixed);
             }
             OS_Sleep(1);
     }
 	OS_Kill();
 }
+
 
 
 
