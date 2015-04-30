@@ -1,6 +1,6 @@
 //*****************************************************************************
 //
-// Lab5.c - user programs, File system, stream data onto disk
+// Lab6M.c - user programs, File system, stream data onto disk
 // Jonathan Valvano, March 16, 2011, EE345M
 //     You may implement Lab 5 without the oLED display
 //*****************************************************************************
@@ -18,11 +18,11 @@
 #include "PWMDual.h"
 #include "Mailbox.hpp"
 
-#define TooClose 1600
-#define Close 1200
-
+#define TooClose 1200
 #define TooFar 600
-#define OKRangeMax 1200
+#define OkRangeMin 600
+#define OkRangeMax 1200
+
 //unsigned long NumCreated;   // number of foreground threads created
 //unsigned long NumSamples;   // incremented every sample
 //unsigned long DataLost;     // data sent by Producer, but not received by Consumer
@@ -77,6 +77,7 @@ void GPIOPortC_Handler(void);
 }
 #endif
 
+#define WithMedian 1
 /*----------------------------------------------
 SENSOR BOARD CODE
 -----------------------------------------------*/
@@ -289,7 +290,114 @@ void PingL(void){
 }
 
 
-#define buffSIZE 16
+#if WithMedian
+
+#define buffSIZE 32
+uint16_t Res_buffer0[buffSIZE];
+void IR0(void){
+  
+  uint32_t SendData;
+  CanMessage_t msg;
+  uint8_t byteMe[5];
+  ADC_init_channel(0, 100);
+  while(1){
+    SendData = 0;
+    OS_Wait(&ADC_Collection);
+    ADC_Collect(0, 100, Res_buffer0, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
+    while(ADC_Status(0)){}
+    OS_Signal(&ADC_Collection);
+    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
+      SendData += median_filt(&Res_buffer0[i]);
+    }
+    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
+    msg.mId = IR_0_ID;
+    msg.data = SendData;
+    CanMessage2Buff(&msg, byteMe);
+    CAN0_SendData(byteMe);
+    LEDS ^= GREEN;
+  }
+  OS_Kill();
+}
+
+uint16_t Res_buffer1[64];
+void IR1(void){
+  
+  uint32_t SendData;
+  CanMessage_t msg;
+  uint8_t byteMe[5];
+  ADC_init_channel(1, 100);
+  while(1){
+    SendData = 0;
+    OS_Wait(&ADC_Collection);
+    ADC_Collect(1, 100, Res_buffer1, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
+    while(ADC_Status(1)){}
+    OS_Signal(&ADC_Collection);
+    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
+      SendData += median_filt(&Res_buffer1[i]);
+    }
+    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
+    msg.mId = IR_1_ID;
+    msg.data = SendData;
+    CanMessage2Buff(&msg, byteMe);
+    CAN0_SendData(byteMe);
+    LEDS ^= RED;
+  }
+  OS_Kill();
+}
+
+uint16_t Res_buffer2[64];
+void IR2(void){
+    
+  uint32_t SendData;
+  CanMessage_t msg;
+  uint8_t byteMe[5];
+  ADC_init_channel(2, 100);
+  while(1){
+    SendData = 0;
+    OS_Wait(&ADC_Collection);
+    ADC_Collect(2, 100, Res_buffer2, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
+    while(ADC_Status(2)){}
+    OS_Signal(&ADC_Collection);
+    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
+      SendData += median_filt(&Res_buffer2[i]);
+    }
+    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
+    msg.mId = IR_2_ID;
+    msg.data = SendData;
+    CanMessage2Buff(&msg, byteMe);
+    CAN0_SendData(byteMe);
+    LEDS ^= BLUE;
+  }
+  OS_Kill();
+}
+
+uint16_t Res_buffer3[64];
+void IR3(void){
+  uint32_t SendData;
+  CanMessage_t msg;
+  uint8_t byteMe[5];
+  ADC_init_channel(4, 100);
+  while(1){
+    SendData = 0;
+    OS_Wait(&ADC_Collection);
+    ADC_Collect(4, 100, Res_buffer3, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
+    while(ADC_Status(3)){}
+    OS_Signal(&ADC_Collection);
+    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
+      SendData += median_filt(&Res_buffer3[i]);
+    }
+    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
+    msg.mId = IR_3_ID;
+    msg.data = SendData;
+    CanMessage2Buff(&msg, byteMe);
+    CAN0_SendData(byteMe);
+    LEDS ^= WHITE;
+  }
+  OS_Kill();
+
+}
+#else
+#define buffSIZE 4
 uint16_t Res_buffer0[buffSIZE];
 void IR0(void){
 	
@@ -303,10 +411,10 @@ void IR0(void){
     ADC_Collect(0, 100, Res_buffer0, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(0)){}
 		OS_Signal(&ADC_Collection);
-    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
-      SendData += median_filt(&Res_buffer0[i]);
+    for(int i = 0; i < buffSIZE; i++){
+      SendData += Res_buffer0[i];
     }
-    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(buffSIZE);
     msg.mId = IR_0_ID;
     msg.data = SendData;
 		CanMessage2Buff(&msg, byteMe);
@@ -316,7 +424,7 @@ void IR0(void){
   OS_Kill();
 }
 
-uint16_t Res_buffer1[64];
+uint16_t Res_buffer1[buffSIZE];
 void IR1(void){
 	
   uint32_t SendData;
@@ -329,10 +437,10 @@ void IR1(void){
     ADC_Collect(1, 100, Res_buffer1, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(1)){}
 		OS_Signal(&ADC_Collection);
-    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
-      SendData += median_filt(&Res_buffer1[i]);
+    for(int i = 0; i < buffSIZE; i++){
+      SendData += Res_buffer1[i];
     }
-    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(buffSIZE);
     msg.mId = IR_1_ID;
     msg.data = SendData;
 		CanMessage2Buff(&msg, byteMe);
@@ -342,7 +450,7 @@ void IR1(void){
   OS_Kill();
 }
 
-uint16_t Res_buffer2[64];
+uint16_t Res_buffer2[buffSIZE];
 void IR2(void){
 		
   uint32_t SendData;
@@ -355,10 +463,10 @@ void IR2(void){
     ADC_Collect(2, 100, Res_buffer2, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(2)){}
     OS_Signal(&ADC_Collection);
-		for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
-      SendData += median_filt(&Res_buffer2[i]);
+		for(int i = 0; i < buffSIZE; i++){
+      SendData += &Res_buffer2[i];
     }
-    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(buffSIZE);
     msg.mId = IR_2_ID;
     msg.data = SendData;
 		CanMessage2Buff(&msg, byteMe);
@@ -368,7 +476,7 @@ void IR2(void){
   OS_Kill();
 }
 
-uint16_t Res_buffer3[64];
+uint16_t Res_buffer3[buffSIZE];
 void IR3(void){
   uint32_t SendData;
   CanMessage_t msg;
@@ -380,10 +488,10 @@ void IR3(void){
     ADC_Collect(4, 100, Res_buffer3, 2*buffSIZE); //128, to bring down sampling rate from 100 to 50
     while(ADC_Status(3)){}
 		OS_Signal(&ADC_Collection);
-    for(int i = 0; i < buffSIZE-MEDIAN_FILTER_SIZE; i++){
-      SendData += median_filt(&Res_buffer3[i]);
+    for(int i = 0; i < buffSIZE; i++){
+      SendData += &Res_buffer3[i];
     }
-    SendData = SendData/(buffSIZE-MEDIAN_FILTER_SIZE);
+    SendData = SendData/(buffSIZE);
     msg.mId = IR_3_ID;
     msg.data = SendData;
 		CanMessage2Buff(&msg, byteMe);
@@ -393,6 +501,7 @@ void IR3(void){
   OS_Kill();
 }
 
+#endif
 
 /*----------------------------------------------
 MOTOR BOARD CODE
@@ -419,7 +528,7 @@ uint32_t RcvCount=0;
 uint32_t PingRVal;
 uint32_t PingLVal;
 uint32_t IR0Val = 4096;
-uint32_t IR1Val= 0;
+uint32_t IR1Val= 4096;
 uint32_t IR2Val= 4096;
 uint32_t IR3Val= 4096;
 
@@ -436,188 +545,131 @@ void CAN_Listener(void){
 				case PING_L_ID:
 					PingLVal = rxDat.data;
 					break;
+				
 				case PING_R_ID:
 					PingRVal = rxDat.data;
 					break;
 				case IR_0_ID: 
 					IR0Val = rxDat.data;
-                    //LEDS = BLUE;
+					LEDS ^= BLUE;
 					break;
 				case IR_1_ID: 
 					IR1Val = rxDat.data;
-                    LEDS ^= GREEN;
+					LEDS ^= GREEN;
 					break;
 				case IR_2_ID: 
 					IR2Val = rxDat.data;
-                    LEDS = RED;
+					LEDS = RED;
 					break;
 				case IR_3_ID: 
 					IR3Val = rxDat.data;
-                    LEDS = WHITE;
+				  LEDS = WHITE;
 					break;
 				default:
-					LEDS = BLUE;
-                    break;
+					break;
 			} //End Switch
     } // End if CAN0_GetMail
   }// End While 
 }//End CAN_Listener
 //int turned_left = 0;
-
-//void Controller(void){
-//	int turned_left = 0;
-//    int turned_right = 0;
-//
-//    while(1){
-//		  
-//			int difference = IR3Val-IR2Val;
-//			int threshold =200;
-//		     //right wheel close 
-//            if((IR2Val > TooClose))
-//            {
-//                if(!turned_left){
-//                    motorMovement(LEFTMOTOR, STOP, FORWARD,50);
-//                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
-//                    OS_DelayUS(500);
-//                    turned_left = 1;
-//                }
-//                turned_right = 0;
-//                motorMovement(LEFTMOTOR, MOVE, FORWARD,50);
-//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
-//            }
-//            //left too close 
-//            else if(IR3Val > TooClose) //IR0 is on Right side and IR1 in front
-//            {
-//                if(!turned_right){
-//                    motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-//                    motorMovement(RIGHTMOTOR, STOP, FORWARD,50);
-//                    OS_DelayUS(500);
-//                    turned_right = 1;
-//                }
-//                turned_left = 0;
-//                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,50);
-//            }
-//            else if((IR2Val > Close && IR2Val < TooClose))
-//            {
-//                motorMovement(LEFTMOTOR, MOVE, FORWARD,50);
-//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
-//            }
-//            //left too close 
-//            else if((IR3Val > Close && IR3Val < TooClose))
-//            {
-//                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,50);
-//            }
-//             
-//           //go straight 
-//            else 
-//            {
-//                turned_right = 0;
-//                turned_left = 0;
-//                motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
-//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
-//            }
-//            OS_Sleep(1);
-//    }
-//	OS_Kill();
-//}
-
-//IR3 right
-//IR2 Left
-//IR1 center
-
-int turned_left = 0;
-//int ref_distance = ;
-
-int RPWMError = 0; //how far Right Wheel is from the OKRangeMin
-int LPWMError = 0; //how far left Wheel is from the OKRangeMin
-int FPWMError = 0; //how far left Wheel is from the OKRangeMin
-//void Controller(void){
-//    while(1){
-//            
-//            RPWMError = IR2Val - OkRangeMin;
-//            LPWMError = IR3Val - OkRangeMin;
-//		    //right wheel close 
-//            //if(IR2Val > OkRangeMin){
-//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
-//                motorMovement(LEFTMOTOR, MOVE , FORWARD,100);
-//            //}
-//    }	
-//            OS_Kill();
-//}
-
-#define leftClose 850
-#define rightClose 1050
-#define tooClose 1200
-
-int leftMotorSpeed = 0;
-int rightMotorSpeed = 0;
-#define lowSpeedFixed 80 
-#define superLowSpeedFixed 80 
-#define highSpeedFixed 200 
-float weight = .25; //determines how sharp the turn is by tunning the difference
-float baseSpeed = 0;
+int turningMode = 0;
+#define TURNTHRESHR 20
+#define TURNTHRESHL 60
+#define rightClose 950
+#define leftClose 750
+uint32_t WobbleR[] = {200, 205, 200, 195};
+uint32_t WobbleL[] = {200, 195, 200, 205};
 void Controller(void){
-    while(1){
-            RPWMError = IR2Val - rightClose;
-            LPWMError = IR3Val - leftClose;
-            FPWMError = IR1Val - tooClose;
-            if(IR1Val > tooClose){
-                //LEDS = RED;
-                if(IR2Val > IR3Val){ //Turn left
-                    baseSpeed = superLowSpeedFixed;
-                    //leftMotorSpeed = superLowSpeed; 
-                    rightMotorSpeed = superLowSpeedFixed+ (2*weight)*(FPWMError);
-                    if(rightMotorSpeed > highSpeedFixed)
-                        rightMotorSpeed = highSpeedFixed;
-                    //rightMotorSpeed = highSpeedFixed - (highSpeedFixed/(weight*RPWMError));
-                    motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
-                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
-                }
-                else{ //Turn right
-                    //rightMotorSpeed = superLowSpeed; 
-                    leftMotorSpeed = superLowSpeedFixed + (2*weight*(FPWMError));
-                    if(leftMotorSpeed > highSpeedFixed)
-                        leftMotorSpeed = highSpeedFixed;
-                    motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
-                    motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
-                }
-            
-            }
-            //right wheel close 
-            else if(IR2Val > rightClose){
-                //LEDS = GREEN;
-                baseSpeed = lowSpeedFixed;
-                leftMotorSpeed = baseSpeed; 
-                rightMotorSpeed = baseSpeed + weight*(RPWMError);
-                if(rightMotorSpeed > highSpeedFixed) 
-                     rightMotorSpeed = highSpeedFixed;
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
-            }
-            //left too close 
-            else if(IR3Val > leftClose){ //IR0 is on Right side and IR1 in front
-                //LEDS = WHITE;
-                baseSpeed = lowSpeedFixed;
-                rightMotorSpeed = baseSpeed; 
-                leftMotorSpeed = baseSpeed + weight*(LPWMError);
-                 if(leftMotorSpeed > highSpeedFixed) 
-                     leftMotorSpeed = highSpeedFixed;
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
-            } 
-            else 
-            {
-                //LEDS = WHITE; 
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,highSpeedFixed);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,highSpeedFixed);
-            }
-            OS_Sleep(1);
-    }
+	while(1){
+		  
+			int difference = IR3Val-IR2Val;
+			int threshold = 400;
+			static int i = 0;
+		  //IR1 - front. IR2 - right back IR3- right front
+		  //Too close to front wall, turn left
+			/*if(IR1Val > TooClose) //IR0 is on Right side and IR1 in front
+			{
+				motorMovement(LEFTMOTOR, STOP, FORWARD,80);
+				motorMovement(RIGHTMOTOR, STOP, FORWARD,120);
+			}*/
+//			else
+/*
+		if((IR3Val>IR2Val) && ((IR3Val-IR2Val) > threshold))
+      { //Right front is closer, turn left
+				motorMovement(LEFTMOTOR, STOP, FORWARD,150);
+				motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);	
+		  }
+			else	if((IR2Val>IR3Val) && ((IR2Val-IR3Val) > threshold))
+			{
+        //Right back is closer, turn right	
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+				motorMovement(RIGHTMOTOR, STOP, FORWARD,150);	
+			}
+			else
+			{
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
+			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
+			}
+			*/
+			if(!turningMode){
+			if( PingRVal < TURNTHRESHR && PingLVal < TURNTHRESHL ){
+				if(IR1Val> TooClose){
+					motorMovement(LEFTMOTOR, MOVE, FORWARD, 200);
+					motorMovement(RIGHTMOTOR, MOVE, FORWARD, 50);
+					//turningMode = 1;
+				}else{
+					if(PingRVal < 10 || IR2Val > rightClose){
+					motorMovement(LEFTMOTOR, MOVE, FORWARD, 190);
+					motorMovement(RIGHTMOTOR, MOVE, FORWARD, 210);
+					}else if(PingLVal < 10 || IR3Val > leftClose){
+					motorMovement(LEFTMOTOR, MOVE, FORWARD, 210);
+					motorMovement(RIGHTMOTOR, MOVE, FORWARD, 190);	
+					}else{
+					motorMovement(LEFTMOTOR, MOVE, FORWARD, WobbleL[i]);
+					motorMovement(RIGHTMOTOR, MOVE, FORWARD, WobbleR[i]);
+					}
+				}
+		
+			} else{		
+			if(PingRVal >= TURNTHRESHR ){
+				//turningMode = 1;
+				motorMovement(LEFTMOTOR, MOVE, FORWARD, 180);
+				motorMovement(RIGHTMOTOR, MOVE, FORWARD, 70);
+			}else if(PingLVal >= TURNTHRESHL ){
+				//turningMode = 1;
+				motorMovement(LEFTMOTOR, MOVE, FORWARD, 70);
+				motorMovement(RIGHTMOTOR, MOVE, FORWARD, 180);
+			}
+		}
+			i = (i + 1) % 4;
+	} else{
+		
+	}
+
+			
+			/*
+			//Too close to right wall, turn left
+			else if((IR2Val > TooClose)&&(IR3Val < OkRangeMax)) //IR0 is on Right side and IR1 in front
+			{
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,80);
+				motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
+			}
+			//Too far from right wall, turn right
+			else if(IR2Val < TooFar) //IR0 is on Right side and IR1 in front
+			{
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,120);
+			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,40);
+			}
+			//All okay, go ahead
+			else if((IR2Val < OkRangeMax)&&(IR2Val > OkRangeMin)) //IR0 is on Right side and IR1 in front
+			{
+				motorMovement(LEFTMOTOR, MOVE, FORWARD,120);
+			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,120);
+			}*/
+		OS_Sleep(2);
+	}
 	OS_Kill();
 }
-
 
 
 
@@ -666,7 +718,6 @@ int main(void){   // testmain1
   NumCreated += OS_AddThread(&CAN_Listener, 128, 2);
   NumCreated += OS_AddThread(&Controller, 128, 1);
   OS_Launch(2*TIME_1MS); // doesn't return, interrupts enabled in here
-
   return 0;               // this never executes
 }
 
