@@ -541,14 +541,14 @@
               <FilePath>.\helper\priority.c</FilePath>
             </File>
             <File>
-              <FileName>Lab6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Lab6.c</FilePath>
-            </File>
-            <File>
               <FileName>median.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\algorithms\median.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lab6M.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Lab6M.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -599,6 +599,11 @@
               <FileName>PWMDual.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\hardware\PWMDual.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware\UART1.c</FilePath>
             </File>
           </Files>
         </Group>
