@@ -53,7 +53,7 @@ void UART1_Handler(void);
 }
 #endif
 
-#define FIFOSIZE  1024 // size of the FIFOs (must be power of 2)
+#define FIFOSIZE  32 // size of the FIFOs (must be power of 2)
 #define FIFOSUCCESS 1         // return value on success
 #define FIFOFAIL    0         // return value on failure
                               // create index implementation FIFO (see FIFO.h)
@@ -63,8 +63,8 @@ void UART1_Handler(void);
 //FifoP_SP2MC<char, FIFOSIZE> Rx0Fifo;
 //FifoP_MP2SC<char, FIFOSIZE> Tx0Fifo;
 //
-FifoP_loose<char, FIFOSIZE> Rx0Fifo;
-FifoP_loose<char, FIFOSIZE> Tx0Fifo;
+FifoP_loose<char, FIFOSIZE> Rx1Fifo;
+FifoP_loose<char, FIFOSIZE> Tx1Fifo;
 
 // FifoP<char, FIFOSIZE> Tx0Fifo;
 

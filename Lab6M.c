@@ -18,6 +18,8 @@
 #include "PWMDual.h"
 #include "Mailbox.hpp"
 
+#define WithMedian 0
+
 #define TooClose 1200
 #define TooFar 600
 #define OkRangeMin 600
@@ -77,7 +79,6 @@ void GPIOPortC_Handler(void);
 }
 #endif
 
-#define WithMedian 1
 /*----------------------------------------------
 SENSOR BOARD CODE
 -----------------------------------------------*/
@@ -464,7 +465,7 @@ void IR2(void){
     while(ADC_Status(2)){}
     OS_Signal(&ADC_Collection);
 		for(int i = 0; i < buffSIZE; i++){
-      SendData += &Res_buffer2[i];
+      SendData += Res_buffer2[i];
     }
     SendData = SendData/(buffSIZE);
     msg.mId = IR_2_ID;
@@ -489,7 +490,7 @@ void IR3(void){
     while(ADC_Status(3)){}
 		OS_Signal(&ADC_Collection);
     for(int i = 0; i < buffSIZE; i++){
-      SendData += &Res_buffer3[i];
+      SendData += Res_buffer3[i];
     }
     SendData = SendData/(buffSIZE);
     msg.mId = IR_3_ID;

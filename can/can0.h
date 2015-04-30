@@ -29,7 +29,7 @@
 #ifndef __CAN0_H__
 #define __CAN0_H__
 #define CAN_BITRATE             1000000
-
+#include <stdint.h>
 #define SENSOR_BOARD 0
 
 #if SENSOR_BOARD
