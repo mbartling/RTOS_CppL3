@@ -72,6 +72,7 @@ void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 // void PendSV_Handler(void);
 void GPIOPortA_Handler(void);
+void GPIOPortC_Handler(void);
 #ifdef __cplusplus
 }
 #endif
@@ -79,8 +80,8 @@ void GPIOPortA_Handler(void);
 /*----------------------------------------------
 SENSOR BOARD CODE
 -----------------------------------------------*/
-Mailbox<uint32_t> Ping1Mail;
-Mailbox<uint32_t> Ping2Mail;
+BGMailbox<uint32_t> Ping1Mail;
+BGMailbox<uint32_t> Ping2Mail;
 
 void PortD_Init(void){ unsigned long volatile delay;
   //SYSCTL_RCGC2_R |= 0x10;       // activate port D
@@ -100,7 +101,7 @@ void PortD_Init(void){ unsigned long volatile delay;
   GPIO_PORTD_IM_R |= (1 << 6);    // enable interrupt on PD6
 
   //Priority Level 3
-  NVIC_PRI0_R = (NVIC_PRI0_R&0x00FFFFFF)| (3 << 29);
+  NVIC_PRI0_R = (NVIC_PRI0_R&0x00FFFFFF)| (0 << 29);
   NVIC_EN0_R = 1 << 3;
  
 }
@@ -114,7 +115,7 @@ void GPIOPortA_Handler(void){
   if(PA6 != 0)  pingStartTime = OS_GetUsTime();
   else if(PA6 == 0){
     pingEndTime = OS_GetUsTime();
-    uint32_t delta =  ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
+    uint32_t delta =  ((pingEndTime - pingStartTime) >> 1)*34300/1000000;
     if(pingEndTime > pingStartTime){
       Ping1Mail.Send(delta);
     }
@@ -126,10 +127,10 @@ void GPIOPortC_Handler(void){
   static uint32_t pingStartTime; 
   static uint32_t pingEndTime;
 
-  if(PA6 != 0)  pingStartTime = OS_GetUsTime();
-  else if(PA6 == 0){
+  if(PC6 != 0)  pingStartTime = OS_GetUsTime();
+  else if(PC6 == 0){
     pingEndTime = OS_GetUsTime();
-    uint32_t delta =  ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
+    uint32_t delta =  ((pingEndTime - pingStartTime) >> 1)*34300/1000000;
     if(pingEndTime > pingStartTime){
       Ping2Mail.Send(delta);
     }
@@ -152,7 +153,7 @@ void PortC_SensorBoard_Init(void){ unsigned long volatile delay;
   GPIO_PORTC_IM_R |= (1 << 6);    // enable interrupt on PA6
 
   //Priority Level 3
-  NVIC_PRI0_R = (NVIC_PRI0_R&0xFF00FFFFF)| (3 << 21);
+  NVIC_PRI0_R = (NVIC_PRI0_R&0xFF00FFFFF)| (1 << 21);
   NVIC_EN0_R = 1 << 2;
 }
 
@@ -180,7 +181,7 @@ uint32_t Ping1(void){
 	// uint32_t pingStartTime; 
 	// uint32_t pingEndTime;
 	//Write GPIO_Pin High
-	// long sr = StartCritical();
+	long sr = StartCritical();
   PA7 = 0x80;
 	OS_DelayUS(5);
 	//Write GPIO Pin Low
@@ -197,7 +198,7 @@ uint32_t Ping1(void){
 	// OS_DelayUS(200);
 	// //Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)
 	// //Then the ping time is c*dT/2
-	// 	EndCritical(sr);
+	 	EndCritical(sr);
 	// return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
 
   uint32_t delta;
@@ -210,6 +211,7 @@ uint32_t Ping2(void){
   // uint32_t pingStartTime; 
   // uint32_t pingEndTime;
   //Write GPIO_Pin High
+	long sr = StartCritical();
   PC7 = 0x80;
   OS_DelayUS(5);
   //Write GPIO Pin Low
@@ -221,6 +223,8 @@ uint32_t Ping2(void){
 
   // //while(gpio_Pin_High){}
   // while(PC6 != 0){}
+
+	EndCritical(sr);
 
   // pingEndTime = OS_GetUsTime();
   // OS_DelayUS(200);
@@ -459,12 +463,19 @@ void CAN_Listener(void){
   }// End While 
 }//End CAN_Listener
 //int turned_left = 0;
+int turningMode = 0;
+#define TURNTHRESHR 20
+#define TURNTHRESHL 60
+#define rightClose 950
+#define leftClose 750
+uint32_t WobbleR[] = {200, 205, 200, 195};
+uint32_t WobbleL[] = {200, 195, 200, 205};
 void Controller(void){
 	while(1){
 		  
 			int difference = IR3Val-IR2Val;
 			int threshold = 400;
-			
+			static int i = 0;
 		  //IR1 - front. IR2 - right back IR3- right front
 		  //Too close to front wall, turn left
 			/*if(IR1Val > TooClose) //IR0 is on Right side and IR1 in front
@@ -473,7 +484,8 @@ void Controller(void){
 				motorMovement(RIGHTMOTOR, STOP, FORWARD,120);
 			}*/
 //			else
-				if((IR3Val>IR2Val) && ((IR3Val-IR2Val) > threshold))
+/*
+		if((IR3Val>IR2Val) && ((IR3Val-IR2Val) > threshold))
       { //Right front is closer, turn left
 				motorMovement(LEFTMOTOR, STOP, FORWARD,150);
 				motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);	
@@ -489,6 +501,43 @@ void Controller(void){
 				motorMovement(LEFTMOTOR, MOVE, FORWARD,200);
 			  motorMovement(RIGHTMOTOR, MOVE, FORWARD,200);
 			}
+			*/
+			if(!turningMode){
+			if( PingRVal < TURNTHRESHR && PingLVal < TURNTHRESHL ){
+				if(IR1Val> TooClose){
+					motorMovement(LEFTMOTOR, MOVE, FORWARD, 200);
+					motorMovement(RIGHTMOTOR, MOVE, FORWARD, 50);
+					//turningMode = 1;
+				}else{
+					if(PingRVal < 10 || IR2Val > rightClose){
+					motorMovement(LEFTMOTOR, MOVE, FORWARD, 190);
+					motorMovement(RIGHTMOTOR, MOVE, FORWARD, 210);
+					}else if(PingLVal < 10 || IR3Val > leftClose){
+					motorMovement(LEFTMOTOR, MOVE, FORWARD, 210);
+					motorMovement(RIGHTMOTOR, MOVE, FORWARD, 190);	
+					}else{
+					motorMovement(LEFTMOTOR, MOVE, FORWARD, WobbleL[i]);
+					motorMovement(RIGHTMOTOR, MOVE, FORWARD, WobbleR[i]);
+					}
+				}
+		
+			} else{		
+			if(PingRVal >= TURNTHRESHR ){
+				//turningMode = 1;
+				motorMovement(LEFTMOTOR, MOVE, FORWARD, 180);
+				motorMovement(RIGHTMOTOR, MOVE, FORWARD, 70);
+			}else if(PingLVal >= TURNTHRESHL ){
+				//turningMode = 1;
+				motorMovement(LEFTMOTOR, MOVE, FORWARD, 70);
+				motorMovement(RIGHTMOTOR, MOVE, FORWARD, 180);
+			}
+		}
+			i = (i + 1) % 4;
+	} else{
+		
+	}
+
+			
 			/*
 			//Too close to right wall, turn left
 			else if((IR2Val > TooClose)&&(IR3Val < OkRangeMax)) //IR0 is on Right side and IR1 in front
@@ -535,10 +584,12 @@ int main(void){   // testmain1
 	OS_InitSemaphore(&ADC_Collection, 1);
 // create initial foreground threads
   NumCreated += OS_AddThread(&PingR, 128, 1);
-  NumCreated += OS_AddThread(&IR0, 128, 1);
-  NumCreated += OS_AddThread(&IR1, 128, 1);
-  NumCreated += OS_AddThread(&IR2, 128, 1);
-  NumCreated += OS_AddThread(&IR3, 128, 1);
+	NumCreated += OS_AddThread(&PingL, 128, 1);
+
+  NumCreated += OS_AddThread(&IR0, 128, 2);
+  NumCreated += OS_AddThread(&IR1, 128, 2);
+  NumCreated += OS_AddThread(&IR2, 128, 2);
+  NumCreated += OS_AddThread(&IR3, 128, 2);
   OS_Launch(2*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
@@ -557,7 +608,7 @@ int main(void){   // testmain1
 // create initial foreground threads
   NumCreated += OS_AddThread(&CAN_Listener, 128, 2);
   NumCreated += OS_AddThread(&Controller, 128, 1);
-  OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
+  OS_Launch(2*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
 
