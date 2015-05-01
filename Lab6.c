@@ -76,7 +76,18 @@ void GPIOPortC_Handler(void);
 #ifdef __cplusplus
 }
 #endif
-
+// Newton's method
+// s is an integer
+// sqrt(s) is an integer
+unsigned long sqrt(unsigned long s){
+unsigned long t;         // t*t will become s
+int n;                   // loop counter to make sure it stops running
+  t = s/10+1;            // initial guess 
+  for(n = 16; n; --n){   // guaranteed to finish
+    t = ((t*t+s)/t)/2;  
+  }
+  return t; 
+}
 /*----------------------------------------------
 SENSOR BOARD CODE
 -----------------------------------------------*/
@@ -474,8 +485,7 @@ uint32_t WobbleR[] = {200, 205, 200, 195};
 uint32_t WobbleL[] = {200, 195, 200, 205};
 //#define frontClose 1100
 #define frontClose 950
-int KI = .4; 
-
+float KI =  0;
 int leftMotorSpeed = 0;
 int rightMotorSpeed = 0;
 #define lowSpeedFixed 30
@@ -504,8 +514,10 @@ int red_counter = 0;
 float Correction = 0;
 float longSideIRValue = 1; //corresponds to the shorter Distance
 float shortSideIRValue = 1; //corresponds to the longer Distance
-float Error = 1;
-float rightError = 0;
+float sinAlpha = .5;
+float frontError = 0;
+float sideError = 0;
+float P = 0;
 bool turnRight = 0;
 bool turnLeft = 0;
 bool goStraight = 0;
@@ -524,7 +536,6 @@ void Controller(void){
             turnLeft = 1; 
             turnRight = 0; 
             goStraight = 0; 
-            rightError = 1 - (longSideIRValue/shortSideIRValue);
         }
         //leftWheele closer 
         if(IR3Val > IR2Val){
@@ -533,7 +544,6 @@ void Controller(void){
             turnLeft = 0; 
             turnRight = 1; 
             goStraight = 0; 
-            rightError = (longSideIRValue/shortSideIRValue) - 1;
         }
         //equal distance 
         if(IR3Val == IR2Val){
@@ -543,93 +553,108 @@ void Controller(void){
             turnRight = 0; 
             goStraight = 1; 
         }
+        
+        //setting up the the side Error (P)
+        sideError = 1 - (longSideIRValue/shortSideIRValue);
+       
+        //size comparison of the front sensor with the longSideIR 
+        if (IR1Val > longSideIRValue) {
+            frontError = 1 - (longSideIRValue/IR1Val);
+        }else{
+            frontError =   (IR1Val/longSideIRValue);
+        }
       
-        //is front too close
-        if(IR1Val >= frontClose){
-            frontCloseCounter++; 
-            tooCloseInFront = 1;
-            smoothnessWeight = 1; //smoothnessWeight doesn't matter in this case
-            rightError = 0;
-        }
-        if (IR1Val < frontClose) {
-            if (frontCloseCounter >= 1) {
-                tooCloseInFront = 0;
-                frontCloseCounter--; 
-                smoothnessWeight = 1.4;
-            }else{
-                tooCloseInFront = 0;
-                frontCloseCounter = 0;
-                smoothnessWeight = 1;
-            } 
-        }
+               
+        
+//        if(IR1Val >= frontClose){
+//            frontCloseCounter++; 
+//            tooCloseInFront = 1;
+//            smoothnessWeight = 1; //smoothnessWeight doesn't matter in this case
+//        }
+//        if (IR1Val < frontClose) {
+//            if (frontCloseCounter > 1) {
+//                tooCloseInFront = 0;
+//                frontCloseCounter--; 
+//                smoothnessWeight = 2;
+//            }else{
+//                tooCloseInFront = 0;
+//                frontCloseCounter = 0;
+//                smoothnessWeight = 1;
+//            } 
+//        }
 
-        //setting up the Error (P)
-        Error = 1 - (longSideIRValue/shortSideIRValue);
-        //setting up The Correction (I)
-        if(rightError> 0) {
-            LEDS = RED;
-        }else {
-            LEDS = BLUE;
+        //(P)
+         
+        //P =  ((-1*sideError + 1)/(-1*sideError + 1 + -1*frontError +1))*(-1*sideError + 1) +  ((-1*frontError + 1)/(-1*sideError + 1 + -1*frontError +1))*(-1*frontError + 1);
+        
+        //P =  (1-((-1*sideError + 1)/(-1*sideError + 1 + -1*frontError +1)))*(-1*sideError + 1) + (1- ((-1*frontError + 1)/(-1*sideError + 1 + -1*frontError +1)))*(-1*frontError + 1);
+//setting up The Correction (I)
+        if (sideError  > frontError) {
+            P =  (-1*sideError + 1); 
+        }else{
+            P =  (-1*frontError + 1); 
         }
-        Correction =  Correction + KI * rightError; 
+       //Correction =  Correction + KI * (((sideError/(sideError + frontError))*sideError) +   ((frontError/(sideError  + frontError))*frontError));
+        Correction =  Correction + KI * ((sideError/(sideError + frontError))*sideError); 
         //navigate based on the sensor inputs so far
         //run all three in paralell, since mutually exclusive 
         //set the motorSpeed 
         if (turnLeft) {
-//            LEDS = GREEN; 
-            rightMotorSpeed = baseSpeed;  //might be set to highSpeed or Higher
-            if (((longSideIRValue*smoothnessWeight)/shortSideIRValue) > 1 ){ //regulate if multipliaction caps out
-                leftMotorSpeed = baseSpeed - 40;
-            }else{
-                leftMotorSpeed = baseSpeed*((longSideIRValue * smoothnessWeight)/shortSideIRValue) - Correction;
-            }
-            if(leftMotorSpeed > baseSpeed) {
+            //  LEDS = GREEN; 
+
+            leftMotorSpeed = P*baseSpeed + Correction;
+            if (leftMotorSpeed > baseSpeed) {
+                LEDS = RED;
+
+            } else {
                 LEDS = WHITE;
             }
+            rightMotorSpeed = baseSpeed;  //might be set to highSpeed or Higher
         }
         if (turnRight) {
-//            LEDS = BLUE; 
+            //LEDS = BLUE; 
+            rightMotorSpeed = P*baseSpeed + Correction;
             leftMotorSpeed = baseSpeed;  //might be set to highSpeed or Higher
-            if (((longSideIRValue*smoothnessWeight)/shortSideIRValue) > 1 ){ //if this multiplication causes maxing out the speedg
-                rightMotorSpeed = baseSpeed - 60;
-            }else{
-                rightMotorSpeed = baseSpeed*((longSideIRValue * smoothnessWeight)/shortSideIRValue) + Correction;
-            }
-        
-            if(rightMotorSpeed > baseSpeed) {
+            if (rightMotorSpeed > baseSpeed) {
+                LEDS = RED;
+            } else {
                 LEDS = WHITE;
             }
+
         }
         if  (goStraight) {
-           // LEDS = BLUE; 
-            //LEDS = WHITE; 
+            LEDS = WHITE; 
             leftMotorSpeed = baseSpeed;  //might be set to highSpeed or Higher
             rightMotorSpeed = baseSpeed ;
         }
       
         //run the Motors 
         //if too close, stop one wheele
-        if(tooCloseInFront == 1) { 
-            //LEDS = RED; 
-            frontCloseCounter +=1; 
-            if(turnRight) {
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
-                motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
+//        if(tooCloseInFront == 1) { 
+//            LEDS = RED; 
+//            frontCloseCounter +=1; 
+//            if(turnRight) {
+//                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+//                motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
+//
+//            }
+//            if(turnLeft) {
+//                motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
+//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+//
+//            }
+//        }
+//
+//        if(tooCloseInFront == 0) {
+//                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+//                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+//        }
+//        
 
-            }
-            if(turnLeft) {
-                motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+        motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+        motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
 
-            }
-        }
-
-        if(tooCloseInFront == 0) {
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
-        }
-        
-        //go to sleep for a while  
+                //go to sleep for a while  
         OS_Sleep(1);
     }
     OS_Kill();
