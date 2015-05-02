@@ -540,8 +540,8 @@ void Controller(void){
             goStraight = 0; 
 //          rightError = 1 - ((shortSideIRValue - longSideIRValue)/(shortSideIRValue + longSideIRValue));
 //          leftError = 1 - ((shortSideIRValue - longSideIRValue)/(shortSideIRValue + longSideIRValue));
-            rightError = 1 - (float)(longSideIRValue/shortSideIRValue);
-            leftError = (float)(longSideIRValue/shortSideIRValue) - 1; 
+            rightError = 1 - ((float)longSideIRValue)/((float)shortSideIRValue);
+            leftError =  ((float)longSideIRValue)/((float)shortSideIRValue) - 1.0;
         }
         //leftWheele closer 
         if(IR3Val > IR2Val){
@@ -550,8 +550,10 @@ void Controller(void){
             turnLeft = 0; 
             turnRight = 1; 
             goStraight = 0; 
-            leftError = 1 - (float)(longSideIRValue/shortSideIRValue);
-            rightError = (float)(longSideIRValue/shortSideIRValue) - 1; 
+            leftError = 1 - ((float)longSideIRValue)/((float)shortSideIRValue);
+            rightError =  ((float)longSideIRValue)/((float)shortSideIRValue) - 1.0;
+            
+        
         }
         //equal distance 
         if(IR3Val == IR2Val){
@@ -586,7 +588,7 @@ void Controller(void){
         
         //setting up the P 
         // P = (shortSideIRValue - longSideIRValue)/ (shortSideIRValue + longSideIRValue);
-        P = (float)((longSideIRValue)/ (shortSideIRValue ));
+        P = ((float)longSideIRValue)/ ((float)shortSideIRValue );
         
         //setting up the  I
         leftCorrection =  leftCorrection + KI * leftError; 
