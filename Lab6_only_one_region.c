@@ -521,7 +521,8 @@ bool turnLeft = 0;
 bool goStraight = 0;
 int highestSpeed = 290;
 int lowestSpeed = 40;
-
+int frontlowCap = 10;
+               
 bool tooCloseInFront = 0;
 float smoothnessWeight = 1; //modifies sharpnees due to the an observed front close barrier
 float P = 0;
@@ -662,14 +663,18 @@ void Controller(void){
             frontCloseCounter +=1; 
             if(turnRight) {
                 rightMotorSpeed = 100*(1.0 - frontError); 
-                if (rightMotorSpeed < 0) {
+                if (rightMotorSpeed < frontlowCap) {
                     LEDS= WHITE; 
                     rightMotorSpeed = 0;
-                }
+                    motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+                    motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
+                }else {
+                
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
                 motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+                }
                 //rightMotorSpeed = 1/ 
                 //motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
             }
             if(turnLeft) {
                 //motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
@@ -677,9 +682,12 @@ void Controller(void){
                 if (leftMotorSpeed < 0) {
                     LEDS= WHITE; 
                     leftMotorSpeed = 0;
+                    motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
+                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+                }else {
+                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+                    motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
                 }
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
 
             }
         }
