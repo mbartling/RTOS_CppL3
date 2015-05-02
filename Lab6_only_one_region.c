@@ -501,9 +501,10 @@ int rightMotorSpeed = 0;
 //
 #define rightClose 550
 #define leftClose 550 
-#define frontClose 950
+float tooCloseThreadshold = 900;
+float frontThreashold  = 700;
 float KI = 0;//.5; 
-float lowestP = .4;
+float lowestP = .1;
 
 
 int frontCloseCounter = 0;
@@ -514,6 +515,7 @@ int longSideIRValue = 0; //corresponds to the shorter Distance
 int shortSideIRValue = 0; //corresponds to the longer Distance
 float rightError = 0;
 float leftError = 0;
+float frontError = 0;
 bool turnRight = 0;
 bool turnLeft = 0;
 bool goStraight = 0;
@@ -540,7 +542,7 @@ void Controller(void){
             goStraight = 0; 
 //          rightError = 1 - ((shortSideIRValue - longSideIRValue)/(shortSideIRValue + longSideIRValue));
 //          leftError = 1 - ((shortSideIRValue - longSideIRValue)/(shortSideIRValue + longSideIRValue));
-            rightError = 1 - ((float)longSideIRValue)/((float)shortSideIRValue);
+            rightError = 1.0 - ((float)longSideIRValue)/((float)shortSideIRValue);
             leftError =  ((float)longSideIRValue)/((float)shortSideIRValue) - 1.0;
         }
         //leftWheele closer 
@@ -550,7 +552,7 @@ void Controller(void){
             turnLeft = 0; 
             turnRight = 1; 
             goStraight = 0; 
-            leftError = 1 - ((float)longSideIRValue)/((float)shortSideIRValue);
+            leftError = 1.0 - ((float)longSideIRValue)/((float)shortSideIRValue);
             rightError =  ((float)longSideIRValue)/((float)shortSideIRValue) - 1.0;
             
         
@@ -565,20 +567,22 @@ void Controller(void){
             turnRight = 0; 
             goStraight = 1; 
         }
-      
+         
+        frontError = (((float)IR1Val - frontThreashold)/ (float)tooCloseThreadshold);
+
         //is front too close
-        if(IR1Val >= frontClose){
+        if(IR1Val >= frontThreashold){
             frontCloseCounter++; 
             tooCloseInFront = 1;
             smoothnessWeight = 1; //smoothnessWeight doesn't matter in this case
             //rightError = 0;
             LEDS = RED;
         }
-        if (IR1Val < frontClose) {
+        if (IR1Val < frontThreashold) {
             if (frontCloseCounter >= 1) {
                 tooCloseInFront = 0;
                 frontCloseCounter--; 
-                smoothnessWeight = 1.4;
+                smoothnessWeight = 1.8;
             }else{
                 tooCloseInFront = 0;
                 frontCloseCounter = 0;
@@ -657,12 +661,16 @@ void Controller(void){
             LEDS = RED; 
             frontCloseCounter +=1; 
             if(turnRight) {
+                rightMotorSpeed = 100*(1.0 - frontError); 
                 motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
-                motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
-
+                //rightMotorSpeed = 1/ 
+                //motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
             }
             if(turnLeft) {
-                motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
+                //motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
+                leftMotorSpeed = 100*(1.0 - frontError); 
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
                 motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
 
             }
