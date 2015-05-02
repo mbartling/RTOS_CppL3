@@ -662,6 +662,10 @@ void Controller(void){
             frontCloseCounter +=1; 
             if(turnRight) {
                 rightMotorSpeed = 100*(1.0 - frontError); 
+                if (rightMotorSpeed < 0) {
+                    LEDS= WHITE; 
+                    rightMotorSpeed = 0;
+                }
                 motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
                 //rightMotorSpeed = 1/ 
                 //motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
@@ -670,6 +674,10 @@ void Controller(void){
             if(turnLeft) {
                 //motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
                 leftMotorSpeed = 100*(1.0 - frontError); 
+                if (leftMotorSpeed < 0) {
+                    LEDS= WHITE; 
+                    leftMotorSpeed = 0;
+                }
                 motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
                 motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
 
