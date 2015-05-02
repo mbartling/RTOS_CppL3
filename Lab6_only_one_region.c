@@ -501,13 +501,16 @@ int rightMotorSpeed = 0;
 //
 #define rightClose 550
 #define leftClose 550 
-float tooCloseThreadshold = 900;
-float frontThreashold  = 700;
+float tooCloseThreadshold = 800;
+float frontThreashold  = 600;
+float rightThreashold  = 1250;
+float leftThreashold  = 1250;
 float KI = 0;//.5; 
 float lowestP = .1;
+///
 
 
-int frontCloseCounter = 0;
+
 int red_counter = 0;
 float rightCorrection = 0;
 float leftCorrection = 0;
@@ -520,11 +523,15 @@ bool turnRight = 0;
 bool turnLeft = 0;
 bool goStraight = 0;
 int highestSpeed = 290;
+int frontHighestSpeed = 150;
+int frontLowestSpeed = 60;
 int lowestSpeed = 40;
-int frontlowCap = 10;
+int frontLowCap = 10;
                
 bool tooCloseInFront = 0;
-float smoothnessWeight = 1; //modifies sharpnees due to the an observed front close barrier
+bool tooCloseInLeft = 0;
+bool tooCloseInRight = 0;
+//float smoothnessWeight = 1; //modifies sharpnees due to the an observed front close barrier
 float P = 0;
 float highCorrectionCap = highestSpeed *(1 - lowestP); 
 float lowCorrectionCap = lowestSpeed - highestSpeed*(lowestP); 
@@ -570,27 +577,32 @@ void Controller(void){
         }
          
         frontError = (((float)IR1Val - frontThreashold)/ (float)tooCloseThreadshold);
-
+        frontError = (((float)IR1Val - frontThreashold)/ (float)tooCloseThreadshold);
+        frontError = (((float)IR1Val - frontThreashold)/ (float)tooCloseThreadshold);
+        
         //is front too close
         if(IR1Val >= frontThreashold){
-            frontCloseCounter++; 
             tooCloseInFront = 1;
-            smoothnessWeight = 1; //smoothnessWeight doesn't matter in this case
-            //rightError = 0;
             LEDS = RED;
-        }
-        if (IR1Val < frontThreashold) {
-            if (frontCloseCounter >= 1) {
-                tooCloseInFront = 0;
-                frontCloseCounter--; 
-                smoothnessWeight = 1.8;
-            }else{
-                tooCloseInFront = 0;
-                frontCloseCounter = 0;
-                smoothnessWeight = 1;
-            } 
+        }else{
+            tooCloseInFront = 0;
         }
         
+        if(IR2Val >= rightThreashold){
+            tooCloseInRight = 1;
+        }else{
+            tooCloseInRight = 0;
+        }
+        
+        
+        if(IR3Val >= leftThreashold){
+            tooCloseInLeft = 1;
+        }else{
+            tooCloseInLeft = 0;
+        }
+        
+        
+
         //setting up the P 
         // P = (shortSideIRValue - longSideIRValue)/ (shortSideIRValue + longSideIRValue);
         P = ((float)longSideIRValue)/ ((float)shortSideIRValue );
@@ -616,11 +628,11 @@ void Controller(void){
         if (turnLeft) {
             LEDS = GREEN; 
             rightMotorSpeed = highestSpeed;  //might be set to highestSpeed or Higher
-            if (P*smoothnessWeight > 1 ){ //regulate if multipliaction caps out
+            if (P > 1 ){ //regulate if multipliaction caps out
                 leftMotorSpeed = highestSpeed - 40;
                 //LEDS = WHITE;
             }else{
-                leftMotorSpeed = highestSpeed*(P*smoothnessWeight) + rightCorrection;
+                leftMotorSpeed = highestSpeed*(P) + rightCorrection;
             }
             
             //capping the speed 
@@ -635,10 +647,10 @@ void Controller(void){
         if (turnRight) {
             LEDS = BLUE; 
             leftMotorSpeed = highestSpeed;  //might be set to highestSpeed or Higher
-            if (P*smoothnessWeight > 1 ){ //if this multiplication causes maxing out the speedg
+            if (P > 1 ){ //if this multiplication causes maxing out the speedg
                 rightMotorSpeed = highestSpeed - 40;
             }else{
-                rightMotorSpeed = highestSpeed*(P * smoothnessWeight) + leftCorrection;
+                rightMotorSpeed = highestSpeed*(P) + leftCorrection;
             }
 
             //capping the speed 
@@ -660,39 +672,47 @@ void Controller(void){
         //if too close, stop one wheele
         if(tooCloseInFront == 1) { 
             LEDS = RED; 
-            frontCloseCounter +=1; 
             if(turnRight) {
-                rightMotorSpeed = 100*(1.0 - frontError); 
-                if (rightMotorSpeed < frontlowCap) {
+                leftMotorSpeed = frontHighestSpeed; 
+                rightMotorSpeed = 60*(1.0 - frontError); 
+                if (rightMotorSpeed < frontLowCap) {
                     LEDS= WHITE; 
-                    rightMotorSpeed = 0;
+                    //rightMotorSpeed = 0;
                     motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
                     motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
                 }else {
-                
-                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
-                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+                    motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+                    motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
                 }
                 //rightMotorSpeed = 1/ 
                 //motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
             }
             if(turnLeft) {
                 //motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
-                leftMotorSpeed = 100*(1.0 - frontError); 
-                if (leftMotorSpeed < 0) {
+                rightMotorSpeed = frontHighestSpeed; 
+                leftMotorSpeed = 60*(1.0 - frontError); 
+                if (leftMotorSpeed < frontLowCap) {
                     LEDS= WHITE; 
-                    leftMotorSpeed = 0;
+                    //leftMotorSpeed = 0;
                     motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
                     motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
                 }else {
                     motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
                     motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
                 }
-
             }
-        }
-
-        if(tooCloseInFront == 0) {
+        } else if (tooCloseInRight  == 1){
+            LEDS = RED+ BLUE;
+            rightMotorSpeed = frontHighestSpeed; 
+            motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
+            motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+           
+        } else if (tooCloseInLeft  == 1){
+            LEDS = RED + BLUE;
+            leftMotorSpeed = frontHighestSpeed; 
+            motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+            motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
+        }else{ 
             motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
             motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
         }
