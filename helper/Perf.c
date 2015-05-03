@@ -66,10 +66,17 @@ void dump_trace(){
 	sprintf(buff, "\n=============\n");
 	printf("Trace Loc: %d", traceLoc);
 }
+#define LEDS      (*((volatile uint32_t *)0x40025038))
+
+#define RED       0x02
+#define BLUE      0x04
+#define GREEN     0x08
+#define WHITE     0x0F
+
 
 void HardFault_Handler(void){
-	dump_trace();
-	
+    LEDS = BLUE + GREEN;	
+    dump_trace();
 	while(1){
 	}
 	

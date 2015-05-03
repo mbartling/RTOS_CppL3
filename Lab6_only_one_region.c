@@ -444,20 +444,20 @@ void CAN_Listener(void){
                     break;
                 case IR_0_ID: 
                     IR0Val = rxDat.data;
-//                    LEDS ^= BLUE;
+                    LEDS ^= BLUE;
                     break;
                 case IR_1_ID: 
                     IR1Val = rxDat.data;
-//                    LEDS ^= GREEN;
+                    LEDS ^= GREEN;
                     break;
                 case IR_2_ID: 
                     IR2Val = rxDat.data;
-//                    LEDS = RED;
+                    LEDS = RED;
                     break;
                 case IR_3_ID: 
                     IR3Val = rxDat.data;
-//                  LEDS = WHITE;
-                    break;
+                    LEDS = WHITE;
+                   break;
                 default:
                     break;
             } //End Switch
@@ -505,7 +505,10 @@ float tooCloseThreadshold = 800;
 float frontThreashold  = 600;
 float rightThreashold  = 1250;
 float leftThreashold  = 1250;
-float KI = 0;//.5; 
+float supercloseFront = 2000;
+float supercloseRight = 2300;
+float supercloseLeft = 2300;
+float KI = .01; 
 float lowestP = .1;
 ///
 
@@ -516,6 +519,8 @@ float rightCorrection = 0;
 float leftCorrection = 0;
 int longSideIRValue = 0; //corresponds to the shorter Distance
 int shortSideIRValue = 0; //corresponds to the longer Distance
+int tooCloseInRightCounter = 0;
+int tooCloseInLeftCounter = 0;
 float rightError = 0;
 float leftError = 0;
 float frontError = 0;
@@ -524,6 +529,7 @@ bool turnLeft = 0;
 bool goStraight = 0;
 int highestSpeed = 290;
 int frontHighestSpeed = 150;
+int sideHighestSpeed = 120;
 int frontLowestSpeed = 60;
 int lowestSpeed = 40;
 int frontLowCap = 10;
@@ -539,8 +545,19 @@ float lowCorrectionCap = lowestSpeed - highestSpeed*(lowestP);
 void Controller(void){
     while(1){
         
+        if((IR1Val > supercloseFront) || (IR2Val > supercloseRight) || (IR3Val > supercloseLeft))
+        {
+            motorMovement(LEFTMOTOR, MOVE, REVERSE, 100);
+            motorMovement(RIGHTMOTOR, MOVE, REVERSE, 100);
+//            LEDS = GREEN + RED;
+            OS_Sleep(1);
+            continue;
+        }
+        
+        //********************* 
         //compare the sides and assign size Values
         //run all three in parallel, since mutually exclusive 
+        
         //rightWheele closer 
         if(IR2Val > IR3Val){
             longSideIRValue = IR3Val;
@@ -548,12 +565,10 @@ void Controller(void){
             turnLeft = 1; 
             turnRight = 0; 
             goStraight = 0; 
-//          rightError = 1 - ((shortSideIRValue - longSideIRValue)/(shortSideIRValue + longSideIRValue));
-//          leftError = 1 - ((shortSideIRValue - longSideIRValue)/(shortSideIRValue + longSideIRValue));
             rightError = 1.0 - ((float)longSideIRValue)/((float)shortSideIRValue);
             leftError =  ((float)longSideIRValue)/((float)shortSideIRValue) - 1.0;
         }
-        //leftWheele closer 
+        //left Wheele closer 
         if(IR3Val > IR2Val){
             longSideIRValue = IR2Val;
             shortSideIRValue = IR3Val;
@@ -562,8 +577,6 @@ void Controller(void){
             goStraight = 0; 
             leftError = 1.0 - ((float)longSideIRValue)/((float)shortSideIRValue);
             rightError =  ((float)longSideIRValue)/((float)shortSideIRValue) - 1.0;
-            
-        
         }
         //equal distance 
         if(IR3Val == IR2Val){
@@ -577,9 +590,8 @@ void Controller(void){
         }
          
         frontError = (((float)IR1Val - frontThreashold)/ (float)tooCloseThreadshold);
-        frontError = (((float)IR1Val - frontThreashold)/ (float)tooCloseThreadshold);
-        frontError = (((float)IR1Val - frontThreashold)/ (float)tooCloseThreadshold);
-        
+       
+        //
         //is front too close
         if(IR1Val >= frontThreashold){
             tooCloseInFront = 1;
@@ -588,16 +600,18 @@ void Controller(void){
             tooCloseInFront = 0;
         }
         
-        if(IR2Val >= rightThreashold){
+        if(IR2Val >= rightThreashold + tooCloseInRightCounter){
             tooCloseInRight = 1;
         }else{
+            tooCloseInRightCounter = 0;
             tooCloseInRight = 0;
         }
         
         
-        if(IR3Val >= leftThreashold){
+        if(IR3Val >= leftThreashold + tooCloseInLeftCounter){
             tooCloseInLeft = 1;
         }else{
+            tooCloseInLeftCounter = 0;
             tooCloseInLeft = 0;
         }
         
@@ -626,7 +640,7 @@ void Controller(void){
         //run all three in paralell, since mutually exclusive 
         //set the motorSpeed 
         if (turnLeft) {
-            LEDS = GREEN; 
+            //LEDS = GREEN; 
             rightMotorSpeed = highestSpeed;  //might be set to highestSpeed or Higher
             if (P > 1 ){ //regulate if multipliaction caps out
                 leftMotorSpeed = highestSpeed - 40;
@@ -638,14 +652,14 @@ void Controller(void){
             //capping the speed 
             if(leftMotorSpeed > highestSpeed){ 
                 leftMotorSpeed  = highestSpeed; 
-                LEDS = WHITE;
+                //LEDS = WHITE;
             } else if (leftMotorSpeed < lowestSpeed) {
-                LEDS = WHITE;
+                //LEDS = WHITE;
                 leftMotorSpeed  = lowestSpeed; 
             }
         }
         if (turnRight) {
-            LEDS = BLUE; 
+//            LEDS = BLUE; 
             leftMotorSpeed = highestSpeed;  //might be set to highestSpeed or Higher
             if (P > 1 ){ //if this multiplication causes maxing out the speedg
                 rightMotorSpeed = highestSpeed - 40;
@@ -656,7 +670,7 @@ void Controller(void){
             //capping the speed 
             if(rightMotorSpeed > highestSpeed){ 
                 rightMotorSpeed  = highestSpeed; 
-                LEDS = WHITE;
+//                LEDS = WHITE;
             }  else if (rightMotorSpeed < lowestSpeed) {
                 rightMotorSpeed  = lowestSpeed; 
             }
@@ -671,12 +685,12 @@ void Controller(void){
         //run the Motors 
         //if too close, stop one wheele
         if(tooCloseInFront == 1) { 
-            LEDS = RED; 
+//            LEDS = RED; 
             if(turnRight) {
                 leftMotorSpeed = frontHighestSpeed; 
                 rightMotorSpeed = 60*(1.0 - frontError); 
                 if (rightMotorSpeed < frontLowCap) {
-                    LEDS= WHITE; 
+//                    LEDS= WHITE; 
                     //rightMotorSpeed = 0;
                     motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
                     motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
@@ -692,7 +706,7 @@ void Controller(void){
                 rightMotorSpeed = frontHighestSpeed; 
                 leftMotorSpeed = 60*(1.0 - frontError); 
                 if (leftMotorSpeed < frontLowCap) {
-                    LEDS= WHITE; 
+//                    LEDS= WHITE; 
                     //leftMotorSpeed = 0;
                     motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
                     motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
@@ -702,16 +716,33 @@ void Controller(void){
                 }
             }
         } else if (tooCloseInRight  == 1){
-            LEDS = RED+ BLUE;
-            rightMotorSpeed = frontHighestSpeed; 
-            motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
-            motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
-           
+            tooCloseInRightCounter +=30; 
+            rightMotorSpeed = sideHighestSpeed; 
+            leftMotorSpeed = 60*(1.0 - rightError); 
+            if (leftMotorSpeed < frontLowCap) {
+                //leftMotorSpeed = 0;
+//                LEDS= WHITE; 
+                motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+            }else {
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+//                LEDS = RED + BLUE;
+            }
         } else if (tooCloseInLeft  == 1){
-            LEDS = RED + BLUE;
-            leftMotorSpeed = frontHighestSpeed; 
-            motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
-            motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);
+            tooCloseInLeftCounter +=30; 
+            leftMotorSpeed = sideHighestSpeed; 
+            rightMotorSpeed = 60*(1.0 - leftError); 
+            if (leftMotorSpeed < frontLowCap) {
+//                LEDS= WHITE; 
+                //leftMotorSpeed = 0;
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+                motorMovement(RIGHTMOTOR,STOP , FORWARD,rightMotorSpeed);
+            }else {
+                motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
+                motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
+//                LEDS = RED + BLUE;
+            }
         }else{ 
             motorMovement(LEFTMOTOR, MOVE, FORWARD,leftMotorSpeed);
             motorMovement(RIGHTMOTOR, MOVE, FORWARD,rightMotorSpeed);
