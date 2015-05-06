@@ -362,7 +362,7 @@
               <MiscControls>--cpp</MiscControls>
               <Define>rvmdk PART_LM4F120H5QR</Define>
               <Undefine></Undefine>
-              <IncludePath>..;..\..\..;.\os;.\hardware;.\graphics;.\data_structures;.\helper</IncludePath>
+              <IncludePath>..\RTOS_CppL3;..\..\..;.\os;.\hardware;.\graphics;.\data_structures;.\helper;.\file_system;.\can;.\inc;.\driverlib;.\algorithms</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -541,9 +541,69 @@
               <FilePath>.\helper\priority.c</FilePath>
             </File>
             <File>
-              <FileName>Lab4.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\Lab4.cpp</FilePath>
+              <FileName>median.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\algorithms\median.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lab6M.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Lab6M.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>drivers</GroupName>
+          <Files>
+            <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driverlib\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>interrupt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driverlib\interrupt.c</FilePath>
+            </File>
+            <File>
+              <FileName>ssi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driverlib\ssi.c</FilePath>
+            </File>
+            <File>
+              <FileName>cpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driverlib\cpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>sysctl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driverlib\sysctl.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driverlib\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>can0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\can\can0.c</FilePath>
+            </File>
+            <File>
+              <FileName>can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driverlib\can.c</FilePath>
+            </File>
+            <File>
+              <FileName>PWMDual.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware\PWMDual.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware\UART1.c</FilePath>
             </File>
           </Files>
         </Group>

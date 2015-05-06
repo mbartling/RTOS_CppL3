@@ -9,16 +9,16 @@
 #include <stdio.h>
 #include <string.h>
 #include "inc/hw_types.h"
-#include "serial.h"
-#include "adc.h"
+#include "ADC.h"
 #include "os.h"
-#include "lm3s8962.h"
+#include "inc/tm4c123gh6pm.h"
 #include "edisk.h"
 #include "efile.h"
+#include "Perf.h"
 
-unsigned long NumCreated;   // number of foreground threads created
-unsigned long NumSamples;   // incremented every sample
-unsigned long DataLost;     // data sent by Producer, but not received by Consumer
+//unsigned long NumCreated;   // number of foreground threads created
+//unsigned long NumSamples;   // incremented every sample
+//unsigned long DataLost;     // data sent by Producer, but not received by Consumer
 
 int Running;                // true while robot is running
 
@@ -29,6 +29,24 @@ int Running;                // true while robot is running
 #define GPIO_PF2  (*((volatile unsigned long *)0x40025010))
 #define GPIO_PF3  (*((volatile unsigned long *)0x40025020))
 #define GPIO_PG1  (*((volatile unsigned long *)0x40026008))
+
+#define PE0  (*((volatile unsigned long *)0x40024004))
+#define PE1  (*((volatile unsigned long *)0x40024008))
+#define PE2  (*((volatile unsigned long *)0x40024010))
+#define PE3  (*((volatile unsigned long *)0x40024020))
+void PortE_Init(void){ unsigned long volatile delay;
+  //SYSCTL_RCGC2_R |= 0x10;       // activate port E
+  SYSCTL_RCGCGPIO_R |= 0x10;       
+  delay = SYSCTL_RCGC2_R;        
+  delay = SYSCTL_RCGC2_R;         
+  GPIO_PORTE_DIR_R |= 0x0F;    // make PE3-0 output heartbeats
+	GPIO_PORTE_DIR_R &= ~0x04;
+  GPIO_PORTE_AFSEL_R &= ~0x0F;   // disable alt funct on PE3-0
+  GPIO_PORTE_DEN_R |= 0x0F;     // enable digital I/O on PE3-0
+  GPIO_PORTE_PCTL_R = ~0x0000FFFF;
+  GPIO_PORTE_AMSEL_R &= ~0x0F;;      // disable analog functionality on PF
+}
+
 // PF1/IDX1 is user input select switch
 // PE1/PWM5 is user input down switch 
 // PF0/PWM0 is debugging output on Systick
@@ -92,7 +110,7 @@ void DownPush(void){
 // sends data to the Robot, runs periodically at 1 kHz
 // inputs:  none
 // outputs: none
-void Producer(unsigned short data){  
+void Producer(unsigned long data){  
   if(Running){
     if(OS_Fifo_Put(data)){     // send to Robot
       NumSamples++;
@@ -120,7 +138,13 @@ void IdleTask(void){
 // foreground thread, accepts input from serial port, outputs to serial port
 // inputs:  none
 // outputs: none
-extern void Interpreter(void); 
+extern void Interpreter(void);
+void Interpreter(){
+	char buff[10];
+	printf(">>\n\r");
+	scanf("%s\n", buff);
+	printf("%s\n\r", buff);
+}
 // add the following commands, remove commands that do not make sense anymore
 // 1) format 
 // 2) directory 
@@ -140,8 +164,8 @@ int realmain(void){        // lab 5 real main
   ADC_Collect(0, 1000, &Producer); // start ADC sampling, channel 0, 1000 Hz
 
 //*******attach background tasks***********
-  OS_AddButtonTask(&ButtonPush,2);
-  OS_AddButtonTask(&DownPush,3);
+//  OS_AddButtonTask(&ButtonPush,2);
+//  OS_AddButtonTask(&DownPush,3);
   OS_AddPeriodicThread(disk_timerproc,10*TIME_1MS,5);
 
   NumCreated = 0 ;
@@ -201,28 +225,29 @@ void RunTest(void){
 //******************* test main1 **********
 // SYSTICK interrupts, period established by OS_Launch
 // Timer interrupts, period established by first call to OS_AddPeriodicThread
+#ifdef testmain1
 int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
 
 //*******attach background tasks***********
   OS_AddPeriodicThread(&disk_timerproc,10*TIME_1MS,0);   // time out routines for disk
-  OS_AddButtonTask(&RunTest,2);
+//  OS_AddButtonTask(&RunTest,2);
   
   NumCreated = 0 ;
 // create initial foreground threads
   NumCreated += OS_AddThread(&TestDisk,128,1);  
-  NumCreated += OS_AddThread(&IdleTask,128,3); 
+  //NumCreated += OS_AddThread(&IdleTask,128,3); 
  
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }
-
+#endif
 void TestFile(void){   int i; char data; 
   printf("\n\rEE345M/EE380L, Lab 5 eFile test\n\r");
   // simple test of eFile
   if(eFile_Init())              diskError("eFile_Init",0); 
   if(eFile_Format())            diskError("eFile_Format",0); 
-  eFile_Directory(&Serial_OutChar);
+//  eFile_Directory(&Serial_OutChar);
   if(eFile_Create("file1"))     diskError("eFile_Create",0);
   if(eFile_WOpen("file1"))      diskError("eFile_WOpen",0);
   for(i=0;i<1000;i++){
@@ -233,14 +258,14 @@ void TestFile(void){   int i; char data;
     }
   }
   if(eFile_WClose())            diskError("eFile_Close",0);
-  eFile_Directory(&Serial_OutChar);
+//  eFile_Directory(&Serial_OutChar);
   if(eFile_ROpen("file1"))      diskError("eFile_ROpen",0);
   for(i=0;i<1000;i++){
     if(eFile_ReadNext(&data))   diskError("eFile_ReadNext",i);
-    Serial_OutChar(data);
+//    Serial_OutChar(data);
   }
   if(eFile_Delete("file1"))     diskError("eFile_Delete",0);
-  eFile_Directory(&Serial_OutChar);
+//  eFile_Directory(&Serial_OutChar);
   printf("Successful test of creating a file\n\r");
   OS_Kill();
 }
@@ -257,8 +282,99 @@ int testmain2(void){
   NumCreated = 0 ;
 // create initial foreground threads
   NumCreated += OS_AddThread(&TestFile,128,1);  
-  NumCreated += OS_AddThread(&IdleTask,128,3); 
+  //NumCreated += OS_AddThread(&IdleTask,128,3); 
  
+  OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
+  return 0;               // this never executes
+}
+void TestFAT(void){
+  // simple test of eDisk
+  eFile_Init();
+  printf("\n\rEE345M/EE380L, Lab 5 eDisk test\n\r");
+
+  printf("Successful test of %u blocks\n\r",MAXBLOCKS);
+  OS_Kill();
+}
+
+uint32_t Ping(void){
+	uint32_t pingStartTime; 
+	uint32_t pingEndTime;
+	//Write GPIO_Pin High
+  PE3 = 0x08;
+	OS_DelayUS(5);
+	//Write GPIO Pin Low
+	PE3 = 0x00;
+	//Could move into a ISR
+	//while(gpio_Pin_Low){}
+  //while(PE2 == 0){OS_DelayUS(1);}
+	while(PE2 == 0){}
+	pingStartTime = OS_GetUsTime();
+	//while(gpio_Pin_High){}
+  //while(PE2 != 0){OS_DelayUS(1);}
+	while(PE2 != 0){}
+//	OS_DelayUS(18500); //For Simulation
+
+	pingEndTime = OS_GetUsTime();
+	OS_DelayUS(200);
+	//Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)
+	//Then the ping time is c*dT/2
+	return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;
+	//return (uint32_t)(((float)((pingEndTime - pingStartTime) >> 1))*34000.0/1000000.0);
+}
+void TestUs(void){
+	
+	uint32_t currTime; 
+	uint32_t currTime2;
+	uint32_t distance;
+	//uint32_t distance_buff[4];
+	unsigned long id = OS_Id();
+	uint32_t i = 0;
+	uint32_t x = 5;
+	x--;
+	x--;
+	x--;
+	currTime = OS_GetUsTime();
+	OS_DelayUS(5);
+	currTime2 = OS_GetUsTime();
+	printf("Verifying Timing Conditions\n");
+	printf("%u\t%u\t%u\n", currTime, currTime2, currTime2-currTime);
+	
+	currTime = OS_GetUsTime();
+	currTime2 = OS_GetUsTime();
+	printf("Verifying Timing Conditions\n");
+	printf("%u\t%u\t%u\n", currTime, currTime2, currTime2-currTime);
+	
+		currTime = OS_GetUsTime();
+		currTime2 = OS_GetUsTime();
+		printf("Verifying Timing Conditions\n");
+		printf("%u\t%u\t%u\n", currTime, currTime2, currTime2-currTime);
+	while(1){
+		distance = 0;
+		for(i = 0; i < 4; i++){
+			currTime = OS_GetUsTime();
+			//distance_buff[i] = Ping();
+			distance += Ping();
+			currTime2 = OS_GetUsTime();
+		}
+		distance = distance >> 2;
+		printf("ID: %u\t\t%u\t\t%u\n\r", id, distance, currTime2-currTime);
+	}
+	OS_Kill();
+}
+int main(void){   // testmain1
+  OS_Init();           // initialize, disable interrupts
+  PortE_Init();
+  PE3 = 0x00;
+//*******attach background tasks***********
+//  OS_AddPeriodicThread(&disk_timerproc,10*TIME_1MS,0);   // time out routines for disk
+//  OS_AddButtonTask(&RunTest,2);
+  
+  NumCreated = 0 ;
+// create initial foreground threads
+//  NumCreated += OS_AddThread(&TestFAT,128,1);  
+  //NumCreated += OS_AddThread(&IdleTask,128,3); 
+  NumCreated += OS_AddThread(&TestUs, 128, 1);
+	//NumCreated += OS_AddThread(&TestUs, 128, 1);
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
   return 0;               // this never executes
 }

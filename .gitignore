@@ -4,6 +4,10 @@
 *.o
 *.obj
 
+*._*
+*.fed
+*.l2p
+*._2i
 # Precompiled Headers
 *.gch
 *.pch

@@ -1,3 +1,8 @@
+#ifndef __EFILE_H__
+#define __EFILE_H__
+
+#include <stdint.h>
+extern volatile int OUTPUT_redirected;
 // filename ************** eFile.h *****************************
 // Middle-level routines to implement a solid-state disk 
 // Jonathan W. Valvano 3/16/11
@@ -92,3 +97,8 @@ int eFile_RedirectToFile(char *name);
 // redirect printf data back to UART
 // Output: 0 if successful and 1 on failure (e.g., wasn't open)
 int eFile_EndRedirectToFile(void);
+
+uint8_t* eFile_FindFileInRoot(uint8_t* rootSector, char* FATfilename);
+uint8_t* eFile_FindFirstUnusedDirEntry(uint8_t* rootSector);
+#endif /*__EFILE_H__*/
+

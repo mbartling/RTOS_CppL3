@@ -16,7 +16,14 @@
 #include <stdio.h>
 #include <rt_misc.h>
 #include "UART0.h"
+#include "UART1.h"
+#include "can0.h"
 
+#if SENSOR_BOARD
+#define BT_MODE 0
+#else
+#define BT_MODE 1
+#endif
 //#pragma import(__use_no_semihosting_swi)
 
 #ifdef __cplusplus
@@ -30,27 +37,6 @@ FILE __stdout;
 FILE __stdin;
 FILE __stderr;
 
-// int fputc(int ch, FILE *f) {
-//   UART0_OutChar(ch);
-//   return (1);
-// }
-
-
-// int fgetc(FILE *f) {
-//   return (UART0_InChar());
-// }
-
-
-// int ferror(FILE *f) {
-//   /* Your implementation of ferror */
-//   return EOF;
-// }
-
-
-// void _ttywrch(int c) {
-//   UART0_OutChar(c);
-// }
-
 // Overriding fputc and fgetc for stdlib compatability
 // Taken from UART.c in Scanf_UART_4C123
 
@@ -61,7 +47,11 @@ int fputc(int ch, FILE *f){
 //     UART0_OutChar(10);
 //     return 1;
 //   }
+#if BT_MODE
+  UART1_OutChar(ch);
+#else
   UART0_OutChar(ch);
+#endif
   return 1;
 }
 // void _ttywrch(int ch){
@@ -70,8 +60,12 @@ int fputc(int ch, FILE *f){
 
 // Get input from UART, echo
 int fgetc (FILE *f){
+#if BT_MODE
+  char ch = UART1_InChar();  // receive from keyboard	
+#else
   char ch = UART0_InChar();  // receive from keyboard
-//  UART0_OutChar(ch);            // echo
+#endif
+
   return ch;
 }
 // Function called when file error occurs.

@@ -12,6 +12,7 @@
 #include "Mailbox.hpp"
 #include "sleepList.hpp"
 #include "Perf.h"
+#include "driverlib/sysctl.h"
 #define STACKSIZE 100
 #define SYSTICK_EN 1  
 #define MaxNumberOfPeriodicThreads 10
@@ -85,14 +86,16 @@ List<func, MAXNUMTHREADS> periodicTaskList[NUMPRIORITIES];
 void OS_Init(void)
 {
   DisableInterrupts();
-  PLL_Init();
+  //PLL_Init();
+  SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
   NVIC_SYS_PRI3_R = (NVIC_SYS_PRI3_R& ~NVIC_SYS_PRI3_PENDSV_M)|PendSVPriority; // priority 6
 #ifdef SYSTICK_EN
   SysTick_Init(160000); //2 Ms period default
 #endif
-  Timer1A_Init((uint32_t)Timer1APeriod);
   UART0_Init();
   //EnableInterrupts(); 
+	//Timer1A_Init((uint32_t)Timer1APeriod);
+	WTimer3A_Init();
   TCB_Configure_IdleThread(); //Set up the idle thread
 }
 
@@ -399,13 +402,13 @@ int OS_AddSW2Task(void(*task)(void), unsigned long priority) {
 }
 
 unsigned long OS_Time() {
-    //return systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R;
-		return systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R;
+  return systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R;
+		// return systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R;
    // return systemTime* (Timer1APeriod);
 }
 float OS_TimeF() {
-    //return systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R;
-		return (float)(systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R);
+    return (float)(systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R);
+		// return (float)(systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R);
    // return systemTime* (Timer1APeriod);
 }
 unsigned long OS_TimeDifference(unsigned long start, unsigned long stop) {
@@ -430,12 +433,12 @@ void OS_ClearMsTime(void) {
  * It is ok to make the resolution to match the first call to OS_AddPeriodicThread
  */
 unsigned long OS_MsTime(void) {
-    //return  (systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R)/TIME_1MS;
-	return (systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R)/TIME_1MS;
+  return  (systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R)/TIME_1MS;
+	// return (systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R)/TIME_1MS;
 }
 float OS_MsTimeF(void) {
-    //return  (float)(systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R)/((float)TIME_1MS);
-	return (float)(systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R)/((float)TIME_1MS);
+  return  (float)(systemTime3*(systemPeriod) + systemPeriod - NVIC_ST_CURRENT_R)/((float)TIME_1MS);
+	// return (float)(systemTime*(Timer1APeriod) + Timer1APeriod - TIMER1_TAR_R)/((float)TIME_1MS);
 }
  /********* OS_Fifo_Init ************
  * Initialize the Fifo to be empty
@@ -610,10 +613,10 @@ void Timer2A_Handler(void) {
 /**
  * @brief used for measuring the time (this timer is used in OS_Time();
  */
-void Timer1A_Handler(void) {
-   TIMER1_ICR_R = TIMER_ICR_TATOCINT ;   //clearing the interrupt 
-   systemTime++; 
-}
+// void Timer1A_Handler(void) {
+//    TIMER1_ICR_R = TIMER_ICR_TATOCINT ;   //clearing the interrupt 
+//    systemTime++; 
+// }
 
 void SysTick_Handler(void){
     long status;
@@ -627,12 +630,25 @@ void SysTick_Handler(void){
 
     // TCB_PushBackRunning();
 		unsigned long end = OS_Time();
+    systemTime3++;
+
 		EndCritical(status);
     Schedule_and_Context_Switch();
     
     //NVIC_INT_CTRL_R = NVIC_INT_CTRL_PEND_SV;
-    systemTime3++;
+
    
 }
 
-
+uint32_t OS_GetUsTime(void){
+	//volatile uint32_t currtime = WTIMER3_TAR_R;
+	//return currtime;
+	return 0xFFFFFFFF - WTIMER3_TAR_R;
+}
+void OS_DelayUS(uint32_t numUs){
+	volatile uint32_t currTime = WTIMER3_TAR_R;
+	uint32_t Target = currTime - numUs;
+	while(currTime > Target){
+		currTime = WTIMER3_TAR_R;
+	}
+}
