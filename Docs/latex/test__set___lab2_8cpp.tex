@@ -1,0 +1,1537 @@
+\hypertarget{test__set___lab2_8cpp}{\section{test\-\_\-set\-\_\-\-Lab2.\-cpp File Reference}
+\label{test__set___lab2_8cpp}\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+}
+{\ttfamily \#include \char`\"{}os.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}inc/tm4c123gh6pm.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}S\-T7735.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}A\-D\-C.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}Timer.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}interpreter.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Perf.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$math.\-h$>$}\\*
+Include dependency graph for test\-\_\-set\-\_\-\-Lab2.\-cpp\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__set___lab2_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_a3484e564d790057679a93f229b378cf7}{main\-Task\-Lab4}
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_a30588c5eca7c9cb6ebba02a0236f0119}{F\-S}~1500
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_a0a5d3a40dd240416eac380c183d95419}{R\-U\-N\-L\-E\-N\-G\-T\-H}~(20$\ast$\hyperlink{test__set___lab2_8cpp_a30588c5eca7c9cb6ebba02a0236f0119}{F\-S})
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_af281425e62298bac2df0fbe8690a4844}{P\-E\-R\-I\-O\-D}~T\-I\-M\-E\-\_\-500\-U\-S
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_ab9438454509c495abb6f0dac60d7ac02}{P\-E0}~($\ast$((volatile unsigned long $\ast$)0x40024004))
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_a2b333e81f2f724f5d0f6ff557f3a0b49}{P\-E1}~($\ast$((volatile unsigned long $\ast$)0x40024008))
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_ab9f47403c8a3489beafcac840b8fff7d}{P\-E2}~($\ast$((volatile unsigned long $\ast$)0x40024010))
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_a1ef39ee2274d28bab6daa26359630c57}{P\-E3}~($\ast$((volatile unsigned long $\ast$)0x40024020))
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}{U\-A\-R\-T\-\_\-\-Out\-String}(...)~printf(\-\_\-\-\_\-\-V\-A\-\_\-\-A\-R\-G\-S\-\_\-\-\_\-)
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_abaea41737bba4d5027630715a82731e6}{work\-A}~500
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_a9935e829d303c75fdcbc6a4ee837b971}{counts1us}~10
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_adf15d9df6fe565d63685f5798a71a1f3}{work\-B}~250
+\item 
+\#define \hyperlink{test__set___lab2_8cpp_a20651bf0d2fba0cc012cbe9d2cec3335}{M\-A\-X\-C\-O\-U\-N\-T}~20000
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{test__set___lab2_8cpp_a8355dffbed1d66311fa8dee927b0c2ed}{cr4\-\_\-fft\-\_\-64\-\_\-stm32} (void $\ast$pss\-O\-U\-T, void $\ast$pss\-I\-N, unsigned short Nbin)
+\item 
+short \hyperlink{test__set___lab2_8cpp_ae346a3f2d09f2cd2f68880299643232f}{P\-I\-D\-\_\-stm32} (short Error, short $\ast$\hyperlink{test__set___lab2_8cpp_ae565653acdb22c6ecafc27f671c9bd80}{Coeff})
+\item 
+void \hyperlink{test__set___lab2_8cpp_a46b01a398dcf8ba6639fb14456afd1db}{Interpreter} ()
+\item 
+void \hyperlink{test__set___lab2_8cpp_a075cf7301361417f66be1d5c22e36b0f}{Jitter} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a5b51a90348618cbd5eb0e65114ea0daf}{Port\-E\-\_\-\-Init} (void)
+\item 
+long \hyperlink{test__set___lab2_8cpp_ac57451b44c75bf70355aab6759d32231}{Filter} (long data)
+\item 
+short \hyperlink{test__set___lab2_8cpp_af02e7fe7fda65dfdfa71c7f4fc45aeee}{L\-P\-Filter} (long data)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a5194cf8b970b8b8967033e2a7764ffdf}{D\-A\-S} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_ac2c6cfb5cff3bf94358dc85ff8679668}{print} (int x, int y, char $\ast$z, int value)
+\item 
+void \hyperlink{test__set___lab2_8cpp_ae095e639788984cfbfbe18f23b9d3fc5}{Button\-Work} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a6b8269c9e5ea49f7375719e1df734444}{S\-W1\-Push} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_afc6acfb9c6159c838355e26563de607d}{print\-\_\-hist} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a2a25b53f5cd5df1c9cc570b8489ff142}{S\-W2\-Push} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a7eaf80f6bdd1fd573219220dbb7f8837}{Producer} (unsigned long data)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a9fdb7496922bfb0c2ae56d7104c04701}{Display} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a8682b891066f53eee33820a61fc692db}{Consumer} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a4127d1ea441e2c490317205bd68b6391}{P\-I\-D} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a50d77f7880df889183ae884b172ce933}{Pseudo\-Work} (unsigned short work)
+\item 
+void \hyperlink{test__set___lab2_8cpp_aadb493cdfdffe5f6f7ea3afff33766f5}{Thread6} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a840a24ec7dd2adfefab6f0e967062c6a}{Thread7} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a976685a26b182fc7b0ebaecae9b378cb}{Task\-A} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a0b0704510ea7b5c5093c48af6ec531bc}{Task\-B} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a873c4f324ade6bfd134ce697ad9146a9}{Output\-Thread} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_ac65e9e71f61e2ff297e5a787a3acf423}{Wait1} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a8d245bc60dbeeb932cfe024084e1411a}{Wait2} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a3dc6ba0acf6403057b2498ade60c3736}{Wait3} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_ace8559153114e9a978a5de591c413f67}{Signal1} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_ae370e5325de1138e0fa1a90de371a0ce}{Signal2} (void)
+\item 
+void \hyperlink{test__set___lab2_8cpp_add29eeba5d3e3a5821bc47ed48d85633}{Signal3} (void)
+\item 
+long \hyperlink{test__set___lab2_8cpp_abdb0a660415eb68d44045cad381fa02c}{add} (const long n, const long m)
+\item 
+void \hyperlink{test__set___lab2_8cpp_a99a0c980331cc74210b4de66b0080080}{Thread8} (void)
+\item 
+int \hyperlink{test__set___lab2_8cpp_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+long \hyperlink{test__set___lab2_8cpp_a676390bacb42568fbb85e40e3b25b459}{input\-Array} \mbox{[}64\mbox{]}
+\item 
+long \hyperlink{test__set___lab2_8cpp_a869759edbdb4b9fda1cdf0b055f6d6b8}{output\-Array\-Before\-F\-F\-T} \mbox{[}64\mbox{]}
+\item 
+long \hyperlink{test__set___lab2_8cpp_a4df027446370ccbd0e7a66bdabbc3277}{output\-Array} \mbox{[}64\mbox{]}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a44f48edfafc048ad9024faa8cccd0277}{Jitter\-Histogram} \mbox{[}J\-I\-T\-T\-E\-R\-S\-I\-Z\-E\mbox{]} =\{0,\}
+\item 
+const long \hyperlink{test__set___lab2_8cpp_a375d7b66d574911ec79e348d391fcb77}{h} \mbox{[}51\mbox{]}
+\item 
+int \hyperlink{test__set___lab2_8cpp_a8db175198f5f822f194bca7c5b316d09}{Random\-Delay}
+\item 
+int \hyperlink{test__set___lab2_8cpp_a40e5ac32a0a19b4d8746a9409ccfa6ff}{Jitter\-Values} \mbox{[}100\mbox{]}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a36d925dc89330a7b78a6c3740d43e6a0}{D\-A\-Soutput}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a44cb9f8a5f875da8da6abaec35923d6d}{last\-Ms\-Time1} = 0
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a3ba29a70098836c222d7aed7a0b77d71}{last\-Ms\-Time} = 0
+\item 
+int \hyperlink{test__set___lab2_8cpp_a750b5d744c39a06bfb13e6eb010e35d0}{index} = 0
+\item 
+short \hyperlink{test__set___lab2_8cpp_ad1aa76d5ba709c6d6c23c1c266cf24e5}{Int\-Term}
+\item 
+short \hyperlink{test__set___lab2_8cpp_ab6729be19626360285c908a5dc253ccd}{Prev\-Error}
+\item 
+short \hyperlink{test__set___lab2_8cpp_ae565653acdb22c6ecafc27f671c9bd80}{Coeff} \mbox{[}3\mbox{]}
+\item 
+short \hyperlink{test__set___lab2_8cpp_a64571bd9669e7026c44f24ab5dbe9b10}{Actuator}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_ae87ddb823b508a9fc6fa9ba2c0ece1e4}{Count1}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a9bddb444ce0582e2a83dd82361dd04ab}{Count2}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a7902edeb1c2249e5ff33999b36ab94f3}{Count3}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a1e8f32e9e15fb59603e4ae9800d413b4}{Count4}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a9edbd64c9e3bb29a5c23a4ff80f3a913}{Count5}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_adbcd079050b805312bc319f74ead6912}{Count\-A}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_aab2bfc2ccbde446edd2631795d487d8c}{Count\-B}
+\item 
+Sema4\-Type \hyperlink{test__set___lab2_8cpp_a884a77e70062997301563a31e5eeb62a}{s}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a5ca42b36cd991f66f87a9716b0245bdf}{Signal\-Count1}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a03f95620ccfa13cccdf18014825c178c}{Signal\-Count2}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a39eccc4d0596fb7405935b201b6d3849}{Signal\-Count3}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a4d3898e5e2aca4c1a3c007bd062747a9}{Wait\-Count1}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a625aedda3535574c179806c11f32d0d7}{Wait\-Count2}
+\item 
+unsigned long \hyperlink{test__set___lab2_8cpp_a8a455a4335bc4d3e23948dec6b888c30}{Wait\-Count3}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{test__set___lab2_8cpp_a9935e829d303c75fdcbc6a4ee837b971}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!counts1us@{counts1us}}
+\index{counts1us@{counts1us}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{counts1us}]{\setlength{\rightskip}{0pt plus 5cm}\#define counts1us~10}}\label{test__set___lab2_8cpp_a9935e829d303c75fdcbc6a4ee837b971}
+
+
+Definition at line 865 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a30588c5eca7c9cb6ebba02a0236f0119}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!F\-S@{F\-S}}
+\index{F\-S@{F\-S}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{F\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-S~1500}}\label{test__set___lab2_8cpp_a30588c5eca7c9cb6ebba02a0236f0119}
+
+
+Definition at line 51 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a3484e564d790057679a93f229b378cf7}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!main\-Task\-Lab4@{main\-Task\-Lab4}}
+\index{main\-Task\-Lab4@{main\-Task\-Lab4}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{main\-Task\-Lab4}]{\setlength{\rightskip}{0pt plus 5cm}\#define main\-Task\-Lab4}}\label{test__set___lab2_8cpp_a3484e564d790057679a93f229b378cf7}
+
+
+Definition at line 24 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a20651bf0d2fba0cc012cbe9d2cec3335}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!M\-A\-X\-C\-O\-U\-N\-T@{M\-A\-X\-C\-O\-U\-N\-T}}
+\index{M\-A\-X\-C\-O\-U\-N\-T@{M\-A\-X\-C\-O\-U\-N\-T}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{M\-A\-X\-C\-O\-U\-N\-T}]{\setlength{\rightskip}{0pt plus 5cm}\#define M\-A\-X\-C\-O\-U\-N\-T~20000}}\label{test__set___lab2_8cpp_a20651bf0d2fba0cc012cbe9d2cec3335}
+
+
+Definition at line 911 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_ab9438454509c495abb6f0dac60d7ac02}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!P\-E0@{P\-E0}}
+\index{P\-E0@{P\-E0}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{P\-E0}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E0~($\ast$((volatile unsigned long $\ast$)0x40024004))}}\label{test__set___lab2_8cpp_ab9438454509c495abb6f0dac60d7ac02}
+
+
+Definition at line 65 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a2b333e81f2f724f5d0f6ff557f3a0b49}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!P\-E1@{P\-E1}}
+\index{P\-E1@{P\-E1}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{P\-E1}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E1~($\ast$((volatile unsigned long $\ast$)0x40024008))}}\label{test__set___lab2_8cpp_a2b333e81f2f724f5d0f6ff557f3a0b49}
+
+
+Definition at line 66 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_ab9f47403c8a3489beafcac840b8fff7d}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!P\-E2@{P\-E2}}
+\index{P\-E2@{P\-E2}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{P\-E2}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E2~($\ast$((volatile unsigned long $\ast$)0x40024010))}}\label{test__set___lab2_8cpp_ab9f47403c8a3489beafcac840b8fff7d}
+
+
+Definition at line 67 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a1ef39ee2274d28bab6daa26359630c57}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!P\-E3@{P\-E3}}
+\index{P\-E3@{P\-E3}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{P\-E3}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E3~($\ast$((volatile unsigned long $\ast$)0x40024020))}}\label{test__set___lab2_8cpp_a1ef39ee2274d28bab6daa26359630c57}
+
+
+Definition at line 68 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_af281425e62298bac2df0fbe8690a4844}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!P\-E\-R\-I\-O\-D@{P\-E\-R\-I\-O\-D}}
+\index{P\-E\-R\-I\-O\-D@{P\-E\-R\-I\-O\-D}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{P\-E\-R\-I\-O\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-R\-I\-O\-D~T\-I\-M\-E\-\_\-500\-U\-S}}\label{test__set___lab2_8cpp_af281425e62298bac2df0fbe8690a4844}
+
+
+Definition at line 56 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a0a5d3a40dd240416eac380c183d95419}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!R\-U\-N\-L\-E\-N\-G\-T\-H@{R\-U\-N\-L\-E\-N\-G\-T\-H}}
+\index{R\-U\-N\-L\-E\-N\-G\-T\-H@{R\-U\-N\-L\-E\-N\-G\-T\-H}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{R\-U\-N\-L\-E\-N\-G\-T\-H}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\-U\-N\-L\-E\-N\-G\-T\-H~(20$\ast${\bf F\-S})}}\label{test__set___lab2_8cpp_a0a5d3a40dd240416eac380c183d95419}
+
+
+Definition at line 52 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!U\-A\-R\-T\-\_\-\-Out\-String@{U\-A\-R\-T\-\_\-\-Out\-String}}
+\index{U\-A\-R\-T\-\_\-\-Out\-String@{U\-A\-R\-T\-\_\-\-Out\-String}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{U\-A\-R\-T\-\_\-\-Out\-String}]{\setlength{\rightskip}{0pt plus 5cm}\#define U\-A\-R\-T\-\_\-\-Out\-String(
+\begin{DoxyParamCaption}
+\item[{}]{...}
+\end{DoxyParamCaption}
+)~printf(\-\_\-\-\_\-\-V\-A\-\_\-\-A\-R\-G\-S\-\_\-\-\_\-)}}\label{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}
+
+
+Definition at line 838 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_abaea41737bba4d5027630715a82731e6}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!work\-A@{work\-A}}
+\index{work\-A@{work\-A}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{work\-A}]{\setlength{\rightskip}{0pt plus 5cm}\#define work\-A~500}}\label{test__set___lab2_8cpp_abaea41737bba4d5027630715a82731e6}
+
+
+Definition at line 864 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_adf15d9df6fe565d63685f5798a71a1f3}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!work\-B@{work\-B}}
+\index{work\-B@{work\-B}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{work\-B}]{\setlength{\rightskip}{0pt plus 5cm}\#define work\-B~250}}\label{test__set___lab2_8cpp_adf15d9df6fe565d63685f5798a71a1f3}
+
+
+Definition at line 872 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{test__set___lab2_8cpp_abdb0a660415eb68d44045cad381fa02c}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!add@{add}}
+\index{add@{add}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{add}]{\setlength{\rightskip}{0pt plus 5cm}long add (
+\begin{DoxyParamCaption}
+\item[{const long}]{n, }
+\item[{const long}]{m}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_abdb0a660415eb68d44045cad381fa02c}
+
+
+Definition at line 963 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+963                                     \{
+964 \textcolor{keyword}{static} \textcolor{keywordtype}{long} result;
+965  result = m+n;
+966  \textcolor{keywordflow}{return} result;
+967 \}
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_ae095e639788984cfbfbe18f23b9d3fc5}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Button\-Work@{Button\-Work}}
+\index{Button\-Work@{Button\-Work}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Button\-Work}]{\setlength{\rightskip}{0pt plus 5cm}void Button\-Work (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_ae095e639788984cfbfbe18f23b9d3fc5}
+
+
+Definition at line 173 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+173                      \{
+174 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} myId = OS\_Id(); 
+175   \hyperlink{test__set___lab2_8cpp_a2b333e81f2f724f5d0f6ff557f3a0b49}{PE1} ^= 0x02;
+176   \textcolor{comment}{//ST7735\_Message(1,0,"NumCreated =",NumCreated); }
+177   \hyperlink{test__set___lab2_8cpp_a2b333e81f2f724f5d0f6ff557f3a0b49}{PE1} ^= 0x02;
+178   OS\_Sleep(50);     \textcolor{comment}{// set this to sleep for 50msec}
+179   \textcolor{comment}{//ST7735\_Message(1,1,"PIDWork     =",PIDWork);}
+180   \textcolor{comment}{//ST7735\_Message(1,2,"DataLost    =",DataLost);}
+181   \textcolor{comment}{//ST7735\_Message(1,3,"Jitter 0.1us=",MaxJitter);}
+182   \hyperlink{test__set___lab2_8cpp_a2b333e81f2f724f5d0f6ff557f3a0b49}{PE1} ^= 0x02;
+183   OS\_Kill();  \textcolor{comment}{// done, OS does not return from a Kill}
+184 \} 
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{test__set___lab2_8cpp_ae095e639788984cfbfbe18f23b9d3fc5_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a8682b891066f53eee33820a61fc692db}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Consumer@{Consumer}}
+\index{Consumer@{Consumer}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Consumer}]{\setlength{\rightskip}{0pt plus 5cm}void Consumer (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a8682b891066f53eee33820a61fc692db}
+
+
+Definition at line 264 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+264                    \{ 
+265 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} data,DCcomponent;   \textcolor{comment}{// 12-bit raw ADC sample, 0 to 4095}
+266 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} t;                  \textcolor{comment}{// time in 2.5 ms}
+267 \textcolor{comment}{//unsigned long myId = OS\_Id(); }
+268   \hyperlink{_a_d_c_8c_a9fdea7e06f4c4769ab22981dafb58477}{ADC\_Collect}(5, \hyperlink{test__set___lab2_8cpp_a30588c5eca7c9cb6ebba02a0236f0119}{FS}, &\hyperlink{test__set___lab2_8cpp_a7eaf80f6bdd1fd573219220dbb7f8837}{Producer}); \textcolor{comment}{// start ADC sampling, channel 5, PD2, 400 Hz}
+269   \textcolor{keywordtype}{int} mode = 0; 
+270   \textcolor{keywordflow}{while}(NumSamples < \hyperlink{test__set___lab2_8cpp_a0a5d3a40dd240416eac380c183d95419}{RUNLENGTH}) \{ 
+271     \hyperlink{test__set___lab2_8cpp_ab9f47403c8a3489beafcac840b8fff7d}{PE2} = 0x04;
+272     \textcolor{keywordflow}{for}(t = 0; t < 64; t++)\{   \textcolor{comment}{// collect 64 ADC samples}
+273       data = OS\_Fifo\_Get();    \textcolor{comment}{// get from producer}
+274       \hyperlink{test__set___lab2_8cpp_a676390bacb42568fbb85e40e3b25b459}{inputArray}[t] = data;             \textcolor{comment}{// real part is 0 to 4095, imaginary part is 0}
+275     \}
+276     \hyperlink{test__set___lab2_8cpp_ab9f47403c8a3489beafcac840b8fff7d}{PE2} = 0x00;
+277     \textcolor{keywordflow}{if} (mode == 0 || mode == 1) \{ 
+278         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 64; i++) \{
+279             \hyperlink{test__set___lab2_8cpp_a4df027446370ccbd0e7a66bdabbc3277}{outputArray}[i]= \hyperlink{test__set___lab2_8cpp_af02e7fe7fda65dfdfa71c7f4fc45aeee}{LPFilter}(3000*\hyperlink{test__set___lab2_8cpp_a676390bacb42568fbb85e40e3b25b459}{inputArray}[i]/4095); \textcolor{comment}{// Real part at
+       frequency 0, imaginary part should be zero}
+280             \textcolor{comment}{//outputArray[i]= (3000*inputArray[i]/4095); // Real part at frequency 0, imaginary part should
+       be zero}
+281 \textcolor{comment}{// printf("data %d\(\backslash\)n", outputArray[i]); }
+282             \textcolor{comment}{//printf("%d\(\backslash\)n", outputArray[i]); }
+283         \}
+284     \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(mode == 2) \{
+285         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 64; i++) \{
+286             \hyperlink{test__set___lab2_8cpp_a869759edbdb4b9fda1cdf0b055f6d6b8}{outputArrayBeforeFFT}[i]= \hyperlink{test__set___lab2_8cpp_af02e7fe7fda65dfdfa71c7f4fc45aeee}{LPFilter}(300*
+      \hyperlink{test__set___lab2_8cpp_a676390bacb42568fbb85e40e3b25b459}{inputArray}[i]/4095); \textcolor{comment}{// Real part at frequency 0, imaginary part should be zero}
+287       \}
+288        \hyperlink{test__set___lab2_8cpp_a8355dffbed1d66311fa8dee927b0c2ed}{cr4\_fft\_64\_stm32}(\hyperlink{test__set___lab2_8cpp_a4df027446370ccbd0e7a66bdabbc3277}{outputArray},
+      \hyperlink{test__set___lab2_8cpp_a869759edbdb4b9fda1cdf0b055f6d6b8}{outputArrayBeforeFFT},64);  \textcolor{comment}{// complex FFT of last 64 ADC values}
+289 \textcolor{comment}{//       for (int i = 0; i < 64; i++) \{}
+290 \textcolor{comment}{//           printf("%d\(\backslash\)n", outputArray[i] &0xFFFF); }
+291 \textcolor{comment}{//        \}}
+292    \} 
+293      
+294     plot(\hyperlink{test__set___lab2_8cpp_a4df027446370ccbd0e7a66bdabbc3277}{outputArray}, mode);
+295     ST7735\_PlotClear(0, 64);
+296   \}
+297   OS\_Kill();  \textcolor{comment}{// done}
+298 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__set___lab2_8cpp_a8682b891066f53eee33820a61fc692db_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{test__set___lab2_8cpp_a8682b891066f53eee33820a61fc692db_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a8355dffbed1d66311fa8dee927b0c2ed}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!cr4\-\_\-fft\-\_\-64\-\_\-stm32@{cr4\-\_\-fft\-\_\-64\-\_\-stm32}}
+\index{cr4\-\_\-fft\-\_\-64\-\_\-stm32@{cr4\-\_\-fft\-\_\-64\-\_\-stm32}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{cr4\-\_\-fft\-\_\-64\-\_\-stm32}]{\setlength{\rightskip}{0pt plus 5cm}void cr4\-\_\-fft\-\_\-64\-\_\-stm32 (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{pss\-O\-U\-T, }
+\item[{void $\ast$}]{pss\-I\-N, }
+\item[{unsigned short}]{Nbin}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a8355dffbed1d66311fa8dee927b0c2ed}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{test__set___lab2_8cpp_a8355dffbed1d66311fa8dee927b0c2ed_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a5194cf8b970b8b8967033e2a7764ffdf}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!D\-A\-S@{D\-A\-S}}
+\index{D\-A\-S@{D\-A\-S}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{D\-A\-S}]{\setlength{\rightskip}{0pt plus 5cm}void D\-A\-S (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a5194cf8b970b8b8967033e2a7764ffdf}
+
+
+Definition at line 128 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+128               \{ 
+129   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} input;  
+130   \textcolor{keywordtype}{unsigned} \textcolor{keyword}{static} \textcolor{keywordtype}{long} LastTime;  \textcolor{comment}{// time at previous ADC sample}
+131   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} thisTime;         \textcolor{comment}{// time at current ADC sample}
+132 \textcolor{comment}{//long jitter;                    // time between measured and expected, in us}
+133     \textcolor{keywordflow}{if}(NumSamples < \hyperlink{test__set___lab2_8cpp_a0a5d3a40dd240416eac380c183d95419}{RUNLENGTH})\{   \textcolor{comment}{// finite time run}
+134     \hyperlink{test__set___lab2_8cpp_ab9438454509c495abb6f0dac60d7ac02}{PE0} ^= 0x01;
+135     input = \hyperlink{_a_d_c_8h_a525c5b6cd9976e6405f0bb48cee3ed51}{ADC\_In}();           \textcolor{comment}{// channel set when calling ADC\_Init}
+136     \hyperlink{test__set___lab2_8cpp_ab9438454509c495abb6f0dac60d7ac02}{PE0} ^= 0x01;
+137     thisTime = OS\_Time();       \textcolor{comment}{// current time, 12.5 ns}
+138     \hyperlink{test__set___lab2_8cpp_a36d925dc89330a7b78a6c3740d43e6a0}{DASoutput} = \hyperlink{test__set___lab2_8cpp_ac57451b44c75bf70355aab6759d32231}{Filter}(input);
+139     FilterWork++;        \textcolor{comment}{// calculation finished}
+140     \textcolor{comment}{//adding to the jitter time }
+141     \textcolor{keywordflow}{if}(FilterWork>1)\{    \textcolor{comment}{// ignore timing of first interrupt}
+142       \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} diff = OS\_TimeDifference(LastTime,thisTime);
+143       \textcolor{keywordflow}{if}(diff>\hyperlink{test__set___lab2_8cpp_af281425e62298bac2df0fbe8690a4844}{PERIOD})\{
+144           jitter = (diff-\hyperlink{test__set___lab2_8cpp_af281425e62298bac2df0fbe8690a4844}{PERIOD}+4)/8;  \textcolor{comment}{// in 0.1 usec}
+145       \}\textcolor{keywordflow}{else}\{
+146         jitter = (\hyperlink{test__set___lab2_8cpp_af281425e62298bac2df0fbe8690a4844}{PERIOD}-diff+4)/8;  \textcolor{comment}{// in 0.1 usec}
+147       \}
+148       \textcolor{keywordflow}{if}(jitter > MaxJitter)\{
+149         MaxJitter = jitter; \textcolor{comment}{// in usec}
+150       \}       \textcolor{comment}{// jitter should be 0}
+151       \textcolor{keywordflow}{if}(jitter >= JitterSize)\{
+152         jitter = JITTERSIZE-1;
+153       \}
+154       \hyperlink{test__set___lab2_8cpp_a44f48edfafc048ad9024faa8cccd0277}{JitterHistogram}[jitter]++; 
+155     \}
+156      
+157     LastTime = thisTime;
+158     \hyperlink{test__set___lab2_8cpp_ab9438454509c495abb6f0dac60d7ac02}{PE0} ^= 0x01;
+159   \}
+160 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=206pt]{test__set___lab2_8cpp_a5194cf8b970b8b8967033e2a7764ffdf_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a9fdb7496922bfb0c2ae56d7104c04701}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Display@{Display}}
+\index{Display@{Display}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Display}]{\setlength{\rightskip}{0pt plus 5cm}void Display (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a9fdb7496922bfb0c2ae56d7104c04701}
+
+
+Definition at line 307 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+307                   \{ 
+308 \textcolor{comment}{//unsigned long data,voltage;}
+309    
+310 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} data;
+311 \textcolor{comment}{//long voltage[64];}
+312 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} voltage[64];
+313 \textcolor{comment}{//,voltage;}
+314   
+315   \textcolor{comment}{//ST7735\_Message(0,1,"Run length = ",(RUNLENGTH)/FS);   // top half used for Display}
+316   \textcolor{keywordflow}{while}(NumSamples < \hyperlink{test__set___lab2_8cpp_a0a5d3a40dd240416eac380c183d95419}{RUNLENGTH}) \{ 
+317     data = OS\_MailBox\_Recv();
+318     \hyperlink{test__set___lab2_8cpp_a750b5d744c39a06bfb13e6eb010e35d0}{index}+=1; 
+319 \textcolor{comment}{//    voltage[index] = 3000*data/4095;               // calibrate your device so voltage is in mV}
+320 \textcolor{comment}{//    printf("this is the data %d\(\backslash\)n", data); }
+321 \textcolor{comment}{//    voltage = 3000*data/4095;               // calibrate your device so voltage is in mV}
+322     \textcolor{comment}{//printf("volate is %ld\(\backslash\)n",voltage); }
+323 \textcolor{comment}{//    PE3 = 0x08;}
+324 \textcolor{comment}{//    ST7735\_Message(0,2,"v(mV) =",voltage);  }
+325 \textcolor{comment}{//    PE3 = 0x00;}
+326   
+327   \} 
+328 
+329     \textcolor{comment}{//plot(voltage, 1);}
+330   OS\_Kill();  \textcolor{comment}{// done}
+331 \} 
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_ac57451b44c75bf70355aab6759d32231}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Filter@{Filter}}
+\index{Filter@{Filter}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Filter}]{\setlength{\rightskip}{0pt plus 5cm}long Filter (
+\begin{DoxyParamCaption}
+\item[{long}]{data}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_ac57451b44c75bf70355aab6759d32231}
+
+
+Definition at line 86 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+86                       \{
+87 \textcolor{keyword}{static} \textcolor{keywordtype}{long} x[6]; \textcolor{comment}{// this MACQ needs twice}
+88 \textcolor{keyword}{static} \textcolor{keywordtype}{long} y[6];
+89 \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} n=3;   \textcolor{comment}{// 3, 4, or 5}
+90   n++;
+91   \textcolor{keywordflow}{if}(n==6) n=3;     
+92   x[n] = x[n-3] = data;  \textcolor{comment}{// two copies of new data}
+93   y[n] = (256*(x[n]+x[n-2])-503*x[n-1]+498*y[n-1]-251*y[n-2]+128)/256;
+94   y[n-3] = y[n];         \textcolor{comment}{// two copies of filter outputs too}
+95   \textcolor{keywordflow}{return} y[n];
+96 \} 
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{test__set___lab2_8cpp_ac57451b44c75bf70355aab6759d32231_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a46b01a398dcf8ba6639fb14456afd1db}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Interpreter@{Interpreter}}
+\index{Interpreter@{Interpreter}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Interpreter}]{\setlength{\rightskip}{0pt plus 5cm}void Interpreter (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a46b01a398dcf8ba6639fb14456afd1db}
+
+
+Definition at line 35 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+35                    \{
+36     \textcolor{keywordflow}{while}(1) \{
+37         \hyperlink{interpreter_8h_a08a98a5503e4f3e1a5a19222d425275a}{interpreter}();
+38     \}
+39 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{test__set___lab2_8cpp_a46b01a398dcf8ba6639fb14456afd1db_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a075cf7301361417f66be1d5c22e36b0f}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Jitter@{Jitter}}
+\index{Jitter@{Jitter}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Jitter}]{\setlength{\rightskip}{0pt plus 5cm}void Jitter (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a075cf7301361417f66be1d5c22e36b0f}
+
+
+Definition at line 40 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+40                  \{
+41   \textcolor{keywordtype}{int} i;
+42   \textcolor{keywordflow}{for}(i = 0; i < 64; i++)\{
+43     printf(\textcolor{stringliteral}{"%d\(\backslash\)t"}, jitter);
+44   \}
+45   
+46 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=206pt]{test__set___lab2_8cpp_a075cf7301361417f66be1d5c22e36b0f_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_af02e7fe7fda65dfdfa71c7f4fc45aeee}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!L\-P\-Filter@{L\-P\-Filter}}
+\index{L\-P\-Filter@{L\-P\-Filter}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{L\-P\-Filter}]{\setlength{\rightskip}{0pt plus 5cm}short L\-P\-Filter (
+\begin{DoxyParamCaption}
+\item[{long}]{data}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_af02e7fe7fda65dfdfa71c7f4fc45aeee}
+
+
+Definition at line 103 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+103                          \{\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} k;
+104     \textcolor{keyword}{static} \textcolor{keywordtype}{long} filterArray[102]; \textcolor{comment}{// this MACQ needs twice}
+105     \textcolor{keywordtype}{long} y;
+106     n++;
+107     \textcolor{keywordflow}{if}(n==102) n=51;
+108     filterArray[n] = filterArray[n-51] = data; \textcolor{comment}{// two copies of new data}
+109     y = 0;
+110     \textcolor{keywordflow}{for}(k=0;k<51;k++)\{
+111         y = y + \hyperlink{test__set___lab2_8cpp_a375d7b66d574911ec79e348d391fcb77}{h}[k]*filterArray[n-k]; \textcolor{comment}{// convolution}
+112     \}
+113     y = y/256; \textcolor{comment}{// fixed point}
+114     \textcolor{keywordflow}{return} y;
+115 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=302pt]{test__set___lab2_8cpp_af02e7fe7fda65dfdfa71c7f4fc45aeee_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a840291bc02cba5474a4cb46a9b9566fe}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!main@{main}}
+\index{main@{main}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a840291bc02cba5474a4cb46a9b9566fe}
+
+
+Definition at line 1180 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+1180               \{ 
+1181   OS\_Init();           \textcolor{comment}{// initialize, disable interrupts}
+1182   \hyperlink{test__set___lab2_8cpp_a5b51a90348618cbd5eb0e65114ea0daf}{PortE\_Init}();
+1183   DataLost = 0;        \textcolor{comment}{// lost data between producer and consumer}
+1184   NumSamples = 0;
+1185   MaxJitter = 0;       \textcolor{comment}{// in 1us units}
+1186   ST7735\_InitR(INITR\_REDTAB); 
+1187   \textcolor{comment}{//ST7735\_LCD\_Init();}
+1188 \textcolor{comment}{//********initialize communication channels}
+1189   OS\_MailBox\_Init();
+1190   OS\_Fifo\_Init(64);    \textcolor{comment}{// ***note*** 4 is not big enough*****}
+1191 
+1192 \textcolor{comment}{//*******attach background tasks***********}
+1193 \textcolor{comment}{//  OS\_AddSW1Task(&SW1Push,2);}
+1194 \textcolor{comment}{//  OS\_AddSW2Task(&SW2Push,2);  // add this line in Lab 3}
+1195   \hyperlink{_a_d_c_8h_a9b319827131872257b8c6a8658852cc0}{ADC\_Open}(4);  \textcolor{comment}{// sequencer 3, channel 4, PD3, sampling in DAS()}
+1196 \textcolor{comment}{//  OS\_AddPeriodicThread(&DAS,PERIOD,1); // 2 kHz real time sampling of PD3}
+1197 
+1198   NumCreated = 0 ;
+1199 \textcolor{comment}{// create initial foreground threads}
+1200 \textcolor{comment}{//  NumCreated += OS\_AddThread(&Interpreter,128,2); }
+1201 \textcolor{comment}{//  NumCreated += OS\_AddThread(&Consumer,128,1); }
+1202 \textcolor{comment}{//  NumCreated += OS\_AddThread(&PID,128,3);  // Lab 3, make this lowest priority}
+1203 \textcolor{comment}{//  NumCreated += OS\_AddThread(&Interpreter,128,2); }
+1204   NumCreated += OS\_AddThread(&\hyperlink{test__set___lab2_8cpp_a8682b891066f53eee33820a61fc692db}{Consumer},128,1); 
+1205   \textcolor{comment}{//NumCreated += OS\_AddThread(&PID,128,3);  // Lab 3, make this lowest priority}
+1206   OS\_Launch(TIME\_1MS*10); \textcolor{comment}{// doesn't return, interrupts enabled in here}
+1207   \textcolor{keywordflow}{return} 0;            \textcolor{comment}{// this never executes}
+1208 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__set___lab2_8cpp_a840291bc02cba5474a4cb46a9b9566fe_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a873c4f324ade6bfd134ce697ad9146a9}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Output\-Thread@{Output\-Thread}}
+\index{Output\-Thread@{Output\-Thread}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Output\-Thread}]{\setlength{\rightskip}{0pt plus 5cm}void Output\-Thread (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a873c4f324ade6bfd134ce697ad9146a9}
+
+
+Definition at line 912 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+912                        \{  \textcolor{comment}{// foreground thread}
+913  \hyperlink{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}{UART\_OutString}(\textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)rEE345M/EE380L, Lab 3 Preparation 4\(\backslash\)n\(\backslash\)r"});
+914  \textcolor{keywordflow}{while}(\hyperlink{test__set___lab2_8cpp_a5ca42b36cd991f66f87a9716b0245bdf}{SignalCount1}+\hyperlink{test__set___lab2_8cpp_a03f95620ccfa13cccdf18014825c178c}{SignalCount2}+\hyperlink{test__set___lab2_8cpp_a39eccc4d0596fb7405935b201b6d3849}{SignalCount3}<100*
+      \hyperlink{test__set___lab2_8cpp_a20651bf0d2fba0cc012cbe9d2cec3335}{MAXCOUNT})\{
+915    OS\_Sleep(1000);   \textcolor{comment}{// 1 second}
+916    \hyperlink{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}{UART\_OutString}(\textcolor{stringliteral}{"."});
+917  \}       
+918  \hyperlink{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}{UART\_OutString}(\textcolor{stringliteral}{" done\(\backslash\)n\(\backslash\)r"});
+919  \hyperlink{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}{UART\_OutString}(\textcolor{stringliteral}{"Signalled=%d"}, \hyperlink{test__set___lab2_8cpp_a5ca42b36cd991f66f87a9716b0245bdf}{SignalCount1}+
+      \hyperlink{test__set___lab2_8cpp_a03f95620ccfa13cccdf18014825c178c}{SignalCount2}+\hyperlink{test__set___lab2_8cpp_a39eccc4d0596fb7405935b201b6d3849}{SignalCount3});
+920  \hyperlink{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}{UART\_OutString}(\textcolor{stringliteral}{", Waited=%d"}, \hyperlink{test__set___lab2_8cpp_a4d3898e5e2aca4c1a3c007bd062747a9}{WaitCount1}+\hyperlink{test__set___lab2_8cpp_a625aedda3535574c179806c11f32d0d7}{WaitCount2}+
+      \hyperlink{test__set___lab2_8cpp_a8a455a4335bc4d3e23948dec6b888c30}{WaitCount3});
+921  \hyperlink{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}{UART\_OutString}(\textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)r"});
+922  OS\_Kill();
+923 \}
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_a4127d1ea441e2c490317205bd68b6391}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!P\-I\-D@{P\-I\-D}}
+\index{P\-I\-D@{P\-I\-D}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{P\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}void P\-I\-D (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a4127d1ea441e2c490317205bd68b6391}
+
+
+Definition at line 350 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+350               \{ 
+351 \textcolor{keywordtype}{short} err;  \textcolor{comment}{// speed error, range -100 to 100 RPM}
+352 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} myId = OS\_Id(); 
+353   PIDWork = 0;
+354   \hyperlink{test__set___lab2_8cpp_ad1aa76d5ba709c6d6c23c1c266cf24e5}{IntTerm} = 0;
+355   \hyperlink{test__set___lab2_8cpp_ab6729be19626360285c908a5dc253ccd}{PrevError} = 0;
+356   \hyperlink{test__set___lab2_8cpp_ae565653acdb22c6ecafc27f671c9bd80}{Coeff}[0] = 384;   \textcolor{comment}{// 1.5 = 384/256 proportional coefficient}
+357   \hyperlink{test__set___lab2_8cpp_ae565653acdb22c6ecafc27f671c9bd80}{Coeff}[1] = 128;   \textcolor{comment}{// 0.5 = 128/256 integral coefficient}
+358   \hyperlink{test__set___lab2_8cpp_ae565653acdb22c6ecafc27f671c9bd80}{Coeff}[2] = 64;    \textcolor{comment}{// 0.25 = 64/256 derivative coefficient*}
+359   \textcolor{keywordflow}{while}(NumSamples < \hyperlink{test__set___lab2_8cpp_a0a5d3a40dd240416eac380c183d95419}{RUNLENGTH}) \{ 
+360     \textcolor{keywordflow}{for}(err = -1000; err <= 1000; err++)\{    \textcolor{comment}{// made-up data}
+361       \hyperlink{test__set___lab2_8cpp_a64571bd9669e7026c44f24ab5dbe9b10}{Actuator} = \hyperlink{test__set___lab2_8cpp_ae346a3f2d09f2cd2f68880299643232f}{PID\_stm32}(err,\hyperlink{test__set___lab2_8cpp_ae565653acdb22c6ecafc27f671c9bd80}{Coeff})/256;
+362     \}
+363     PIDWork++;        \textcolor{comment}{// calculation finished}
+364   \}
+365   \textcolor{keywordflow}{for}(;;)\{ \}          \textcolor{comment}{// done}
+366   \textcolor{comment}{//OS\_Kill();}
+367 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{test__set___lab2_8cpp_a4127d1ea441e2c490317205bd68b6391_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_ae346a3f2d09f2cd2f68880299643232f}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!P\-I\-D\-\_\-stm32@{P\-I\-D\-\_\-stm32}}
+\index{P\-I\-D\-\_\-stm32@{P\-I\-D\-\_\-stm32}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{P\-I\-D\-\_\-stm32}]{\setlength{\rightskip}{0pt plus 5cm}short P\-I\-D\-\_\-stm32 (
+\begin{DoxyParamCaption}
+\item[{short}]{Error, }
+\item[{short $\ast$}]{Coeff}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_ae346a3f2d09f2cd2f68880299643232f}
+
+
+Definition at line 335 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+335                                            \{
+336     \textcolor{keywordflow}{return} 0;
+337 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{test__set___lab2_8cpp_ae346a3f2d09f2cd2f68880299643232f_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a5b51a90348618cbd5eb0e65114ea0daf}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Port\-E\-\_\-\-Init@{Port\-E\-\_\-\-Init}}
+\index{Port\-E\-\_\-\-Init@{Port\-E\-\_\-\-Init}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Port\-E\-\_\-\-Init}]{\setlength{\rightskip}{0pt plus 5cm}void Port\-E\-\_\-\-Init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a5b51a90348618cbd5eb0e65114ea0daf}
+
+
+Definition at line 69 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+69                      \{ \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keyword}{volatile} delay;
+70   \textcolor{comment}{//SYSCTL\_RCGC2\_R |= 0x10;       // activate port E}
+71   SYSCTL\_RCGCGPIO\_R |= 0x10;       
+72   delay = SYSCTL\_RCGC2\_R;        
+73   delay = SYSCTL\_RCGC2\_R;         
+74   GPIO\_PORTE\_DIR\_R |= 0x0F;    \textcolor{comment}{// make PE3-0 output heartbeats}
+75   GPIO\_PORTE\_AFSEL\_R &= ~0x0F;   \textcolor{comment}{// disable alt funct on PE3-0}
+76   GPIO\_PORTE\_DEN\_R |= 0x0F;     \textcolor{comment}{// enable digital I/O on PE3-0}
+77   GPIO\_PORTE\_PCTL\_R = ~0x0000FFFF;
+78   GPIO\_PORTE\_AMSEL\_R &= ~0x0F;;      \textcolor{comment}{// disable analog functionality on PF}
+79 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{test__set___lab2_8cpp_a5b51a90348618cbd5eb0e65114ea0daf_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_ac2c6cfb5cff3bf94358dc85ff8679668}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!print@{print}}
+\index{print@{print}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}void print (
+\begin{DoxyParamCaption}
+\item[{int}]{x, }
+\item[{int}]{y, }
+\item[{char $\ast$}]{z, }
+\item[{int}]{value}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_ac2c6cfb5cff3bf94358dc85ff8679668}
+
+
+Definition at line 168 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+168                                             \{
+169      printf(\textcolor{stringliteral}{"%s: "}, z); 
+170      printf(\textcolor{stringliteral}{"%d\(\backslash\)t"}, value);
+171  \}
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_afc6acfb9c6159c838355e26563de607d}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!print\-\_\-hist@{print\-\_\-hist}}
+\index{print\-\_\-hist@{print\-\_\-hist}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{print\-\_\-hist}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-hist (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_afc6acfb9c6159c838355e26563de607d}
+
+
+Definition at line 203 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+203                      \{
+204   printf(\textcolor{stringliteral}{"\(\backslash\)n====================\(\backslash\)n"});
+205   printf(\textcolor{stringliteral}{"Jitter Histogram\(\backslash\)n"});
+206   \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < 64; i++)\{
+207     printf(\textcolor{stringliteral}{"%ld\(\backslash\)t"}, \hyperlink{test__set___lab2_8cpp_a44f48edfafc048ad9024faa8cccd0277}{JitterHistogram}[i]);
+208   \}
+209   printf(\textcolor{stringliteral}{"\(\backslash\)n====================\(\backslash\)n"});
+210   OS\_Kill();
+211 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{test__set___lab2_8cpp_afc6acfb9c6159c838355e26563de607d_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a7eaf80f6bdd1fd573219220dbb7f8837}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Producer@{Producer}}
+\index{Producer@{Producer}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Producer}]{\setlength{\rightskip}{0pt plus 5cm}void Producer (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{data}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a7eaf80f6bdd1fd573219220dbb7f8837}
+
+
+Definition at line 250 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+250                                  \{  
+251     \textcolor{keywordflow}{if}(NumSamples < \hyperlink{test__set___lab2_8cpp_a0a5d3a40dd240416eac380c183d95419}{RUNLENGTH})\{   \textcolor{comment}{// finite time run}
+252         \textcolor{comment}{//NumSamples++;               // number of samples}
+253         \textcolor{keywordflow}{if}(OS\_Fifo\_Put(data) == 0)\{ \textcolor{comment}{// send to consumer}
+254             DataLost++;
+255         \} 
+256     \} 
+257 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{test__set___lab2_8cpp_a7eaf80f6bdd1fd573219220dbb7f8837_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a50d77f7880df889183ae884b172ce933}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Pseudo\-Work@{Pseudo\-Work}}
+\index{Pseudo\-Work@{Pseudo\-Work}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Pseudo\-Work}]{\setlength{\rightskip}{0pt plus 5cm}void Pseudo\-Work (
+\begin{DoxyParamCaption}
+\item[{unsigned short}]{work}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a50d77f7880df889183ae884b172ce933}
+
+
+Definition at line 843 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+843                                     \{
+844 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{short} startTime;
+845  startTime = OS\_Time();    \textcolor{comment}{// time in 100ns units}
+846  \textcolor{keywordflow}{while}(OS\_TimeDifference(startTime,OS\_Time()) <= work)\{\} 
+847 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{test__set___lab2_8cpp_a50d77f7880df889183ae884b172ce933_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_ace8559153114e9a978a5de591c413f67}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Signal1@{Signal1}}
+\index{Signal1@{Signal1}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Signal1}]{\setlength{\rightskip}{0pt plus 5cm}void Signal1 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_ace8559153114e9a978a5de591c413f67}
+
+
+Definition at line 942 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+942                   \{      \textcolor{comment}{// called every 799us in background}
+943  \textcolor{keywordflow}{if}(\hyperlink{test__set___lab2_8cpp_a5ca42b36cd991f66f87a9716b0245bdf}{SignalCount1}<\hyperlink{test__set___lab2_8cpp_a20651bf0d2fba0cc012cbe9d2cec3335}{MAXCOUNT})\{
+944    OS\_Signal(&\hyperlink{test__set___lab2_8cpp_a884a77e70062997301563a31e5eeb62a}{s});
+945    \hyperlink{test__set___lab2_8cpp_a5ca42b36cd991f66f87a9716b0245bdf}{SignalCount1}++;
+946  \}
+947 \}
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_ae370e5325de1138e0fa1a90de371a0ce}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Signal2@{Signal2}}
+\index{Signal2@{Signal2}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Signal2}]{\setlength{\rightskip}{0pt plus 5cm}void Signal2 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_ae370e5325de1138e0fa1a90de371a0ce}
+
+
+Definition at line 949 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+949                   \{       \textcolor{comment}{// called every 1111us in background}
+950  \textcolor{keywordflow}{if}(\hyperlink{test__set___lab2_8cpp_a03f95620ccfa13cccdf18014825c178c}{SignalCount2}<\hyperlink{test__set___lab2_8cpp_a20651bf0d2fba0cc012cbe9d2cec3335}{MAXCOUNT})\{
+951    OS\_Signal(&\hyperlink{test__set___lab2_8cpp_a884a77e70062997301563a31e5eeb62a}{s});
+952    \hyperlink{test__set___lab2_8cpp_a03f95620ccfa13cccdf18014825c178c}{SignalCount2}++;
+953  \}
+954 \}
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_add29eeba5d3e3a5821bc47ed48d85633}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Signal3@{Signal3}}
+\index{Signal3@{Signal3}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Signal3}]{\setlength{\rightskip}{0pt plus 5cm}void Signal3 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_add29eeba5d3e3a5821bc47ed48d85633}
+
+
+Definition at line 955 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+955                   \{       \textcolor{comment}{// foreground}
+956  \textcolor{keywordflow}{while}(\hyperlink{test__set___lab2_8cpp_a39eccc4d0596fb7405935b201b6d3849}{SignalCount3}<98*\hyperlink{test__set___lab2_8cpp_a20651bf0d2fba0cc012cbe9d2cec3335}{MAXCOUNT})\{
+957    OS\_Signal(&\hyperlink{test__set___lab2_8cpp_a884a77e70062997301563a31e5eeb62a}{s});
+958    \hyperlink{test__set___lab2_8cpp_a39eccc4d0596fb7405935b201b6d3849}{SignalCount3}++;
+959  \}
+960  OS\_Kill();
+961 \}
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_a6b8269c9e5ea49f7375719e1df734444}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!S\-W1\-Push@{S\-W1\-Push}}
+\index{S\-W1\-Push@{S\-W1\-Push}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{S\-W1\-Push}]{\setlength{\rightskip}{0pt plus 5cm}void S\-W1\-Push (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a6b8269c9e5ea49f7375719e1df734444}
+
+
+Definition at line 191 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+191                   \{
+192   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} currentMsTime = OS\_MsTime();
+193     \textcolor{keywordflow}{if}(currentMsTime - \hyperlink{test__set___lab2_8cpp_a44cb9f8a5f875da8da6abaec35923d6d}{lastMsTime1} > 20)\{ \textcolor{comment}{// debounce}
+194     \textcolor{comment}{//if(OS\_MsTime() > 20)\{ // debounce}
+195     \textcolor{keywordflow}{if}(OS\_AddThread(&\hyperlink{test__set___lab2_8cpp_ae095e639788984cfbfbe18f23b9d3fc5}{ButtonWork},100,4))\{
+196       NumCreated++; 
+197     \}
+198     OS\_ClearMsTime();  \textcolor{comment}{// at least 20ms between touches}
+199   \}
+200   \hyperlink{test__set___lab2_8cpp_a44cb9f8a5f875da8da6abaec35923d6d}{lastMsTime1} = currentMsTime;
+201 
+202 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{test__set___lab2_8cpp_a6b8269c9e5ea49f7375719e1df734444_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a2a25b53f5cd5df1c9cc570b8489ff142}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!S\-W2\-Push@{S\-W2\-Push}}
+\index{S\-W2\-Push@{S\-W2\-Push}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{S\-W2\-Push}]{\setlength{\rightskip}{0pt plus 5cm}void S\-W2\-Push (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a2a25b53f5cd5df1c9cc570b8489ff142}
+
+
+Definition at line 218 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+218                   \{
+219    \textcolor{comment}{//fputc('c', stdout);}
+220     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} currentMsTime = OS\_MsTime();
+221     \textcolor{keywordflow}{if}(currentMsTime - \hyperlink{test__set___lab2_8cpp_a3ba29a70098836c222d7aed7a0b77d71}{lastMsTime} > 20)\{ \textcolor{comment}{// debounce}
+222     \textcolor{keywordflow}{if}(OS\_AddThread(&\hyperlink{test__set___lab2_8cpp_afc6acfb9c6159c838355e26563de607d}{print\_hist},100,3))\{
+223       NumCreated++; 
+224     \}
+225     \textcolor{comment}{//OS\_ClearMsTime();  // at least 20ms between touches}
+226     \hyperlink{test__set___lab2_8cpp_a3ba29a70098836c222d7aed7a0b77d71}{lastMsTime} = currentMsTime;
+227   \}
+228     
+229 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{test__set___lab2_8cpp_a2a25b53f5cd5df1c9cc570b8489ff142_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a976685a26b182fc7b0ebaecae9b378cb}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Task\-A@{Task\-A}}
+\index{Task\-A@{Task\-A}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Task\-A}]{\setlength{\rightskip}{0pt plus 5cm}void Task\-A (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a976685a26b182fc7b0ebaecae9b378cb}
+
+
+Definition at line 866 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+866                 \{       \textcolor{comment}{// called every \{1000, 2990us\} in background}
+867  \hyperlink{test__set___lab2_8cpp_a2b333e81f2f724f5d0f6ff557f3a0b49}{PE1} = 0x02;      \textcolor{comment}{// debugging profile  }
+868  \hyperlink{test__set___lab2_8cpp_adbcd079050b805312bc319f74ead6912}{CountA}++;
+869  \hyperlink{test__set___lab2_8cpp_a50d77f7880df889183ae884b172ce933}{PseudoWork}(\hyperlink{test__set___lab2_8cpp_abaea41737bba4d5027630715a82731e6}{workA}*\hyperlink{test__set___lab2_8cpp_a9935e829d303c75fdcbc6a4ee837b971}{counts1us}); \textcolor{comment}{//  do work (100ns time resolution)}
+870  \hyperlink{test__set___lab2_8cpp_a2b333e81f2f724f5d0f6ff557f3a0b49}{PE1} = 0x00;      \textcolor{comment}{// debugging profile  }
+871 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{test__set___lab2_8cpp_a976685a26b182fc7b0ebaecae9b378cb_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a0b0704510ea7b5c5093c48af6ec531bc}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Task\-B@{Task\-B}}
+\index{Task\-B@{Task\-B}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Task\-B}]{\setlength{\rightskip}{0pt plus 5cm}void Task\-B (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a0b0704510ea7b5c5093c48af6ec531bc}
+
+
+Definition at line 873 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+873                 \{       \textcolor{comment}{// called every pB in background}
+874  \hyperlink{test__set___lab2_8cpp_ab9f47403c8a3489beafcac840b8fff7d}{PE2} = 0x04;      \textcolor{comment}{// debugging profile  }
+875  \hyperlink{test__set___lab2_8cpp_aab2bfc2ccbde446edd2631795d487d8c}{CountB}++;
+876  \hyperlink{test__set___lab2_8cpp_a50d77f7880df889183ae884b172ce933}{PseudoWork}(\hyperlink{test__set___lab2_8cpp_adf15d9df6fe565d63685f5798a71a1f3}{workB}*\hyperlink{test__set___lab2_8cpp_a9935e829d303c75fdcbc6a4ee837b971}{counts1us}); \textcolor{comment}{//  do work (100ns time resolution)}
+877  \hyperlink{test__set___lab2_8cpp_ab9f47403c8a3489beafcac840b8fff7d}{PE2} = 0x00;      \textcolor{comment}{// debugging profile  }
+878 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{test__set___lab2_8cpp_a0b0704510ea7b5c5093c48af6ec531bc_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_aadb493cdfdffe5f6f7ea3afff33766f5}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Thread6@{Thread6}}
+\index{Thread6@{Thread6}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Thread6}]{\setlength{\rightskip}{0pt plus 5cm}void Thread6 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_aadb493cdfdffe5f6f7ea3afff33766f5}
+
+
+Definition at line 848 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+848                   \{  \textcolor{comment}{// foreground thread}
+849  \hyperlink{test__set___lab2_8cpp_ae87ddb823b508a9fc6fa9ba2c0ece1e4}{Count1} = 0;          
+850  \textcolor{keywordflow}{for}(;;)\{
+851    \hyperlink{test__set___lab2_8cpp_ae87ddb823b508a9fc6fa9ba2c0ece1e4}{Count1}++; 
+852    \hyperlink{test__set___lab2_8cpp_ab9438454509c495abb6f0dac60d7ac02}{PE0} ^= 0x01;        \textcolor{comment}{// debugging toggle bit 0  }
+853  \}
+854 \}
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_a840a24ec7dd2adfefab6f0e967062c6a}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Thread7@{Thread7}}
+\index{Thread7@{Thread7}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Thread7}]{\setlength{\rightskip}{0pt plus 5cm}void Thread7 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a840a24ec7dd2adfefab6f0e967062c6a}
+
+
+Definition at line 856 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+856                   \{  \textcolor{comment}{// foreground thread}
+857  \hyperlink{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}{UART\_OutString}(\textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)rEE345M/EE380L, Lab 3 Preparation 2\(\backslash\)n\(\backslash\)r"});
+858  OS\_Sleep(5000);   \textcolor{comment}{// 10 seconds        }
+859  \hyperlink{test__set___lab2_8cpp_a075cf7301361417f66be1d5c22e36b0f}{Jitter}();         \textcolor{comment}{// print jitter information}
+860  printf(\textcolor{stringliteral}{"Done!\(\backslash\)n"});
+861  \hyperlink{test__set___lab2_8cpp_a6c567a936e78fb4047cf8ef8b13ddbcf}{UART\_OutString}(\textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)r\(\backslash\)n\(\backslash\)r"});
+862  OS\_Kill();
+863 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=206pt]{test__set___lab2_8cpp_a840a24ec7dd2adfefab6f0e967062c6a_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{test__set___lab2_8cpp_a99a0c980331cc74210b4de66b0080080}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Thread8@{Thread8}}
+\index{Thread8@{Thread8}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Thread8}]{\setlength{\rightskip}{0pt plus 5cm}void Thread8 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a99a0c980331cc74210b4de66b0080080}
+
+
+Definition at line 1006 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+1006                   \{       \textcolor{comment}{// only thread running}
+1007  \textcolor{keywordflow}{while}(1)\{
+1008    \hyperlink{test__set___lab2_8cpp_ab9438454509c495abb6f0dac60d7ac02}{PE0} ^= 0x01;      \textcolor{comment}{// debugging profile  }
+1009  \}
+1010 \}
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_ac65e9e71f61e2ff297e5a787a3acf423}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Wait1@{Wait1}}
+\index{Wait1@{Wait1}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Wait1}]{\setlength{\rightskip}{0pt plus 5cm}void Wait1 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_ac65e9e71f61e2ff297e5a787a3acf423}
+
+
+Definition at line 924 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+924                 \{  \textcolor{comment}{// foreground thread}
+925  \textcolor{keywordflow}{for}(;;)\{
+926    OS\_Wait(&\hyperlink{test__set___lab2_8cpp_a884a77e70062997301563a31e5eeb62a}{s});    \textcolor{comment}{// three threads waiting}
+927    \hyperlink{test__set___lab2_8cpp_a4d3898e5e2aca4c1a3c007bd062747a9}{WaitCount1}++; 
+928  \}
+929 \}
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_a8d245bc60dbeeb932cfe024084e1411a}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Wait2@{Wait2}}
+\index{Wait2@{Wait2}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Wait2}]{\setlength{\rightskip}{0pt plus 5cm}void Wait2 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a8d245bc60dbeeb932cfe024084e1411a}
+
+
+Definition at line 930 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+930                 \{  \textcolor{comment}{// foreground thread}
+931  \textcolor{keywordflow}{for}(;;)\{
+932    OS\_Wait(&\hyperlink{test__set___lab2_8cpp_a884a77e70062997301563a31e5eeb62a}{s});    \textcolor{comment}{// three threads waiting}
+933    \hyperlink{test__set___lab2_8cpp_a625aedda3535574c179806c11f32d0d7}{WaitCount2}++; 
+934  \}
+935 \}
+\end{DoxyCode}
+\hypertarget{test__set___lab2_8cpp_a3dc6ba0acf6403057b2498ade60c3736}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Wait3@{Wait3}}
+\index{Wait3@{Wait3}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Wait3}]{\setlength{\rightskip}{0pt plus 5cm}void Wait3 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{test__set___lab2_8cpp_a3dc6ba0acf6403057b2498ade60c3736}
+
+
+Definition at line 936 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+
+\begin{DoxyCode}
+936                 \{   \textcolor{comment}{// foreground thread}
+937  \textcolor{keywordflow}{for}(;;)\{
+938    OS\_Wait(&\hyperlink{test__set___lab2_8cpp_a884a77e70062997301563a31e5eeb62a}{s});    \textcolor{comment}{// three threads waiting}
+939    \hyperlink{test__set___lab2_8cpp_a8a455a4335bc4d3e23948dec6b888c30}{WaitCount3}++; 
+940  \}
+941 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{test__set___lab2_8cpp_a64571bd9669e7026c44f24ab5dbe9b10}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Actuator@{Actuator}}
+\index{Actuator@{Actuator}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Actuator}]{\setlength{\rightskip}{0pt plus 5cm}short Actuator}}\label{test__set___lab2_8cpp_a64571bd9669e7026c44f24ab5dbe9b10}
+
+
+Definition at line 349 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_ae565653acdb22c6ecafc27f671c9bd80}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Coeff@{Coeff}}
+\index{Coeff@{Coeff}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Coeff}]{\setlength{\rightskip}{0pt plus 5cm}short Coeff\mbox{[}3\mbox{]}}}\label{test__set___lab2_8cpp_ae565653acdb22c6ecafc27f671c9bd80}
+
+
+Definition at line 348 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_ae87ddb823b508a9fc6fa9ba2c0ece1e4}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Count1@{Count1}}
+\index{Count1@{Count1}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Count1}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Count1}}\label{test__set___lab2_8cpp_ae87ddb823b508a9fc6fa9ba2c0ece1e4}
+
+
+Definition at line 441 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a9bddb444ce0582e2a83dd82361dd04ab}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Count2@{Count2}}
+\index{Count2@{Count2}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Count2}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Count2}}\label{test__set___lab2_8cpp_a9bddb444ce0582e2a83dd82361dd04ab}
+
+
+Definition at line 442 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a7902edeb1c2249e5ff33999b36ab94f3}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Count3@{Count3}}
+\index{Count3@{Count3}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Count3}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Count3}}\label{test__set___lab2_8cpp_a7902edeb1c2249e5ff33999b36ab94f3}
+
+
+Definition at line 443 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a1e8f32e9e15fb59603e4ae9800d413b4}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Count4@{Count4}}
+\index{Count4@{Count4}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Count4}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Count4}}\label{test__set___lab2_8cpp_a1e8f32e9e15fb59603e4ae9800d413b4}
+
+
+Definition at line 444 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a9edbd64c9e3bb29a5c23a4ff80f3a913}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Count5@{Count5}}
+\index{Count5@{Count5}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Count5}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Count5}}\label{test__set___lab2_8cpp_a9edbd64c9e3bb29a5c23a4ff80f3a913}
+
+
+Definition at line 445 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_adbcd079050b805312bc319f74ead6912}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Count\-A@{Count\-A}}
+\index{Count\-A@{Count\-A}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Count\-A}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Count\-A}}\label{test__set___lab2_8cpp_adbcd079050b805312bc319f74ead6912}
+
+
+Definition at line 834 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_aab2bfc2ccbde446edd2631795d487d8c}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Count\-B@{Count\-B}}
+\index{Count\-B@{Count\-B}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Count\-B}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Count\-B}}\label{test__set___lab2_8cpp_aab2bfc2ccbde446edd2631795d487d8c}
+
+
+Definition at line 835 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a36d925dc89330a7b78a6c3740d43e6a0}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!D\-A\-Soutput@{D\-A\-Soutput}}
+\index{D\-A\-Soutput@{D\-A\-Soutput}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{D\-A\-Soutput}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long D\-A\-Soutput}}\label{test__set___lab2_8cpp_a36d925dc89330a7b78a6c3740d43e6a0}
+
+
+Definition at line 127 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a375d7b66d574911ec79e348d391fcb77}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!h@{h}}
+\index{h@{h}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{h}]{\setlength{\rightskip}{0pt plus 5cm}const long h\mbox{[}51\mbox{]}}}\label{test__set___lab2_8cpp_a375d7b66d574911ec79e348d391fcb77}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+=\{4,-2,-5,-1,5,4,-3,-5,0,6,3,
+     -4,-6,1,8,3,-8,-8,4,14,3,-18,-18,22,78,
+     105,78,22,-18,-18,3,14,4,-8,-8,3,8,1,-6,
+     -4,3,6,0,-5,-3,4,5,-1,-5,-2,4\}
+\end{DoxyCode}
+
+
+Definition at line 98 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a750b5d744c39a06bfb13e6eb010e35d0}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!index@{index}}
+\index{index@{index}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{index}]{\setlength{\rightskip}{0pt plus 5cm}int index = 0}}\label{test__set___lab2_8cpp_a750b5d744c39a06bfb13e6eb010e35d0}
+
+
+Definition at line 306 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a676390bacb42568fbb85e40e3b25b459}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!input\-Array@{input\-Array}}
+\index{input\-Array@{input\-Array}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{input\-Array}]{\setlength{\rightskip}{0pt plus 5cm}long input\-Array\mbox{[}64\mbox{]}}}\label{test__set___lab2_8cpp_a676390bacb42568fbb85e40e3b25b459}
+
+
+Definition at line 57 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_ad1aa76d5ba709c6d6c23c1c266cf24e5}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Int\-Term@{Int\-Term}}
+\index{Int\-Term@{Int\-Term}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Int\-Term}]{\setlength{\rightskip}{0pt plus 5cm}short Int\-Term}}\label{test__set___lab2_8cpp_ad1aa76d5ba709c6d6c23c1c266cf24e5}
+
+
+Definition at line 346 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a44f48edfafc048ad9024faa8cccd0277}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Jitter\-Histogram@{Jitter\-Histogram}}
+\index{Jitter\-Histogram@{Jitter\-Histogram}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Jitter\-Histogram}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Jitter\-Histogram\mbox{[}J\-I\-T\-T\-E\-R\-S\-I\-Z\-E\mbox{]} =\{0,\}}}\label{test__set___lab2_8cpp_a44f48edfafc048ad9024faa8cccd0277}
+
+
+Definition at line 64 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a40e5ac32a0a19b4d8746a9409ccfa6ff}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Jitter\-Values@{Jitter\-Values}}
+\index{Jitter\-Values@{Jitter\-Values}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Jitter\-Values}]{\setlength{\rightskip}{0pt plus 5cm}int Jitter\-Values\mbox{[}100\mbox{]}}}\label{test__set___lab2_8cpp_a40e5ac32a0a19b4d8746a9409ccfa6ff}
+
+
+Definition at line 126 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a3ba29a70098836c222d7aed7a0b77d71}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!last\-Ms\-Time@{last\-Ms\-Time}}
+\index{last\-Ms\-Time@{last\-Ms\-Time}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{last\-Ms\-Time}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long last\-Ms\-Time = 0}}\label{test__set___lab2_8cpp_a3ba29a70098836c222d7aed7a0b77d71}
+
+
+Definition at line 217 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a44cb9f8a5f875da8da6abaec35923d6d}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!last\-Ms\-Time1@{last\-Ms\-Time1}}
+\index{last\-Ms\-Time1@{last\-Ms\-Time1}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{last\-Ms\-Time1}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long last\-Ms\-Time1 = 0}}\label{test__set___lab2_8cpp_a44cb9f8a5f875da8da6abaec35923d6d}
+
+
+Definition at line 190 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a4df027446370ccbd0e7a66bdabbc3277}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!output\-Array@{output\-Array}}
+\index{output\-Array@{output\-Array}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{output\-Array}]{\setlength{\rightskip}{0pt plus 5cm}long output\-Array\mbox{[}64\mbox{]}}}\label{test__set___lab2_8cpp_a4df027446370ccbd0e7a66bdabbc3277}
+
+
+Definition at line 57 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a869759edbdb4b9fda1cdf0b055f6d6b8}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!output\-Array\-Before\-F\-F\-T@{output\-Array\-Before\-F\-F\-T}}
+\index{output\-Array\-Before\-F\-F\-T@{output\-Array\-Before\-F\-F\-T}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{output\-Array\-Before\-F\-F\-T}]{\setlength{\rightskip}{0pt plus 5cm}long output\-Array\-Before\-F\-F\-T\mbox{[}64\mbox{]}}}\label{test__set___lab2_8cpp_a869759edbdb4b9fda1cdf0b055f6d6b8}
+
+
+Definition at line 57 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_ab6729be19626360285c908a5dc253ccd}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Prev\-Error@{Prev\-Error}}
+\index{Prev\-Error@{Prev\-Error}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Prev\-Error}]{\setlength{\rightskip}{0pt plus 5cm}short Prev\-Error}}\label{test__set___lab2_8cpp_ab6729be19626360285c908a5dc253ccd}
+
+
+Definition at line 347 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a8db175198f5f822f194bca7c5b316d09}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Random\-Delay@{Random\-Delay}}
+\index{Random\-Delay@{Random\-Delay}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Random\-Delay}]{\setlength{\rightskip}{0pt plus 5cm}int Random\-Delay}}\label{test__set___lab2_8cpp_a8db175198f5f822f194bca7c5b316d09}
+
+
+Definition at line 125 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a884a77e70062997301563a31e5eeb62a}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!s@{s}}
+\index{s@{s}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{s}]{\setlength{\rightskip}{0pt plus 5cm}Sema4\-Type s}}\label{test__set___lab2_8cpp_a884a77e70062997301563a31e5eeb62a}
+
+
+Definition at line 904 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a5ca42b36cd991f66f87a9716b0245bdf}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Signal\-Count1@{Signal\-Count1}}
+\index{Signal\-Count1@{Signal\-Count1}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Signal\-Count1}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Signal\-Count1}}\label{test__set___lab2_8cpp_a5ca42b36cd991f66f87a9716b0245bdf}
+
+
+Definition at line 905 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a03f95620ccfa13cccdf18014825c178c}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Signal\-Count2@{Signal\-Count2}}
+\index{Signal\-Count2@{Signal\-Count2}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Signal\-Count2}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Signal\-Count2}}\label{test__set___lab2_8cpp_a03f95620ccfa13cccdf18014825c178c}
+
+
+Definition at line 906 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a39eccc4d0596fb7405935b201b6d3849}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Signal\-Count3@{Signal\-Count3}}
+\index{Signal\-Count3@{Signal\-Count3}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Signal\-Count3}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Signal\-Count3}}\label{test__set___lab2_8cpp_a39eccc4d0596fb7405935b201b6d3849}
+
+
+Definition at line 907 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a4d3898e5e2aca4c1a3c007bd062747a9}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Wait\-Count1@{Wait\-Count1}}
+\index{Wait\-Count1@{Wait\-Count1}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Wait\-Count1}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Wait\-Count1}}\label{test__set___lab2_8cpp_a4d3898e5e2aca4c1a3c007bd062747a9}
+
+
+Definition at line 908 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a625aedda3535574c179806c11f32d0d7}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Wait\-Count2@{Wait\-Count2}}
+\index{Wait\-Count2@{Wait\-Count2}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Wait\-Count2}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Wait\-Count2}}\label{test__set___lab2_8cpp_a625aedda3535574c179806c11f32d0d7}
+
+
+Definition at line 909 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+
+\hypertarget{test__set___lab2_8cpp_a8a455a4335bc4d3e23948dec6b888c30}{\index{test\-\_\-set\-\_\-\-Lab2.\-cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}!Wait\-Count3@{Wait\-Count3}}
+\index{Wait\-Count3@{Wait\-Count3}!test_set_Lab2.cpp@{test\-\_\-set\-\_\-\-Lab2.\-cpp}}
+\subsubsection[{Wait\-Count3}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Wait\-Count3}}\label{test__set___lab2_8cpp_a8a455a4335bc4d3e23948dec6b888c30}
+
+
+Definition at line 910 of file test\-\_\-set\-\_\-\-Lab2.\-cpp.
+

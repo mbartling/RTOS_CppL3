@@ -1,0 +1,362 @@
+\hypertarget{interpreter_8h}{\section{interpreter.\-h File Reference}
+\label{interpreter_8h}\index{interpreter.\-h@{interpreter.\-h}}
+}
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}S\-T7735.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}A\-D\-C.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Perf.\-h\char`\"{}}\\*
+Include dependency graph for interpreter.\-h\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{interpreter_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=176pt]{interpreter_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcommand}{command}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{interpreter_8h_a8e475ce8cd5b8c3edf3635605063b571}{C\-O\-M\-M\-A\-N\-D}(N\-A\-M\-E)~\{ \#N\-A\-M\-E, Command\-\_\- \#\# N\-A\-M\-E \}
+\item 
+\#define \hyperlink{interpreter_8h_a7e897ab5c92350c25d5c49c93c9310f2}{D\-E\-C\-L\-\_\-\-C\-O\-M\-M\-A\-N\-D}(N\-A\-M\-E)~int Command\-\_\- \#\# N\-A\-M\-E \#\# ( char$\ast$ );
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{interpreter_8h_a10a2c7a55612469a62cd6553e680cdee}{Command\-\_\-disp\-\_\-message} (char $\ast$args)
+\item 
+int \hyperlink{interpreter_8h_a050e7a28ef711724ac2cba37b6ee4175}{Command\-\_\-list} (char $\ast$args)
+\item 
+int \hyperlink{interpreter_8h_ab3cd6214932a767bed5e247dedf138d9}{Command\-\_\-adc\-\_\-open} (char $\ast$args)
+\item 
+int \hyperlink{interpreter_8h_a057b02770d1b0af8a36acf57cbd6de0d}{Command\-\_\-adc\-\_\-in} (char $\ast$args)
+\item 
+int \hyperlink{interpreter_8h_a2c43f3538cb7b1c0374831eac7961b0d}{Command\-\_\-perf} (char $\ast$args)
+\item 
+int \hyperlink{interpreter_8h_a09c6bdd753e3c42daa8ef2594db57308}{Command\-\_\-x} (char $\ast$args)
+\item 
+int \hyperlink{interpreter_8h_a1c46337257556c160f6e6eb9a4259869}{Command\-\_\-y} (char $\ast$args)
+\item 
+void \hyperlink{interpreter_8h_a08a98a5503e4f3e1a5a19222d425275a}{interpreter} (void)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcommand}{command} \hyperlink{interpreter_8h_a18d732036173aa1e51a2e22a6ce78e23}{commands} \mbox{[}$\,$\mbox{]}
+\item 
+char \hyperlink{interpreter_8h_ab4a03da084e15d3319078d4f4a6bf3ff}{buffer} \mbox{[}64\mbox{]}
+\item 
+char \hyperlink{interpreter_8h_ad9be07c5c78595ecd8b182a0bde06b1f}{m\-\_\-command} \mbox{[}16\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{interpreter_8h_a8e475ce8cd5b8c3edf3635605063b571}{\index{interpreter.\-h@{interpreter.\-h}!C\-O\-M\-M\-A\-N\-D@{C\-O\-M\-M\-A\-N\-D}}
+\index{C\-O\-M\-M\-A\-N\-D@{C\-O\-M\-M\-A\-N\-D}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{C\-O\-M\-M\-A\-N\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-O\-M\-M\-A\-N\-D(
+\begin{DoxyParamCaption}
+\item[{}]{N\-A\-M\-E}
+\end{DoxyParamCaption}
+)~\{ \#N\-A\-M\-E, Command\-\_\- \#\# N\-A\-M\-E \}}}\label{interpreter_8h_a8e475ce8cd5b8c3edf3635605063b571}
+
+
+Definition at line 9 of file interpreter.\-h.
+
+\hypertarget{interpreter_8h_a7e897ab5c92350c25d5c49c93c9310f2}{\index{interpreter.\-h@{interpreter.\-h}!D\-E\-C\-L\-\_\-\-C\-O\-M\-M\-A\-N\-D@{D\-E\-C\-L\-\_\-\-C\-O\-M\-M\-A\-N\-D}}
+\index{D\-E\-C\-L\-\_\-\-C\-O\-M\-M\-A\-N\-D@{D\-E\-C\-L\-\_\-\-C\-O\-M\-M\-A\-N\-D}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{D\-E\-C\-L\-\_\-\-C\-O\-M\-M\-A\-N\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define D\-E\-C\-L\-\_\-\-C\-O\-M\-M\-A\-N\-D(
+\begin{DoxyParamCaption}
+\item[{}]{N\-A\-M\-E}
+\end{DoxyParamCaption}
+)~int Command\-\_\- \#\# N\-A\-M\-E \#\# ( char$\ast$ );}}\label{interpreter_8h_a7e897ab5c92350c25d5c49c93c9310f2}
+
+
+Definition at line 10 of file interpreter.\-h.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{interpreter_8h_a057b02770d1b0af8a36acf57cbd6de0d}{\index{interpreter.\-h@{interpreter.\-h}!Command\-\_\-adc\-\_\-in@{Command\-\_\-adc\-\_\-in}}
+\index{Command\-\_\-adc\-\_\-in@{Command\-\_\-adc\-\_\-in}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{Command\-\_\-adc\-\_\-in}]{\setlength{\rightskip}{0pt plus 5cm}int Command\-\_\-adc\-\_\-in (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{args}
+\end{DoxyParamCaption}
+)}}\label{interpreter_8h_a057b02770d1b0af8a36acf57cbd6de0d}
+
+
+Definition at line 116 of file interpreter.\-h.
+
+
+\begin{DoxyCode}
+117 \{
+118   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{short} result;
+119   result = \hyperlink{_a_d_c_8h_a525c5b6cd9976e6405f0bb48cee3ed51}{ADC\_In}();
+120   printf(\textcolor{stringliteral}{"ADC value: %f\(\backslash\)n"}, ((\textcolor{keywordtype}{float}) result) *3.3/4096.0);
+121   \textcolor{keywordflow}{return} result;
+122 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=264pt]{interpreter_8h_a057b02770d1b0af8a36acf57cbd6de0d_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{interpreter_8h_ab3cd6214932a767bed5e247dedf138d9}{\index{interpreter.\-h@{interpreter.\-h}!Command\-\_\-adc\-\_\-open@{Command\-\_\-adc\-\_\-open}}
+\index{Command\-\_\-adc\-\_\-open@{Command\-\_\-adc\-\_\-open}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{Command\-\_\-adc\-\_\-open}]{\setlength{\rightskip}{0pt plus 5cm}int Command\-\_\-adc\-\_\-open (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{args}
+\end{DoxyParamCaption}
+)}}\label{interpreter_8h_ab3cd6214932a767bed5e247dedf138d9}
+
+
+Definition at line 109 of file interpreter.\-h.
+
+
+\begin{DoxyCode}
+110 \{
+111   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} channel;
+112   sscanf(args, \textcolor{stringliteral}{"%u"}, &channel);
+113   \textcolor{keywordflow}{return} \hyperlink{_a_d_c_8h_a9b319827131872257b8c6a8658852cc0}{ADC\_Open}(channel);
+114 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=294pt]{interpreter_8h_ab3cd6214932a767bed5e247dedf138d9_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{interpreter_8h_a10a2c7a55612469a62cd6553e680cdee}{\index{interpreter.\-h@{interpreter.\-h}!Command\-\_\-disp\-\_\-message@{Command\-\_\-disp\-\_\-message}}
+\index{Command\-\_\-disp\-\_\-message@{Command\-\_\-disp\-\_\-message}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{Command\-\_\-disp\-\_\-message}]{\setlength{\rightskip}{0pt plus 5cm}int Command\-\_\-disp\-\_\-message (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{args}
+\end{DoxyParamCaption}
+)}}\label{interpreter_8h_a10a2c7a55612469a62cd6553e680cdee}
+
+
+Definition at line 96 of file interpreter.\-h.
+
+
+\begin{DoxyCode}
+97 \{
+98   \textcolor{comment}{//printf("Not implemented yet\(\backslash\)n");}
+99   \textcolor{keywordtype}{int} disp, line;\textcolor{comment}{//, n;}
+100   \textcolor{keywordtype}{char} str[64];
+101   sscanf(args, \textcolor{stringliteral}{"%d %d %[^\(\backslash\)t\(\backslash\)r\(\backslash\)n]"}, &disp, &line, str);
+102   \textcolor{comment}{//str = args + n;}
+103   printf(\textcolor{stringliteral}{"\(\backslash\)n Got disp=%d\(\backslash\)tline=%d, %s\(\backslash\)n"}, disp, line, str);
+104 \textcolor{comment}{//  ST7735\_Message(disp, line, str, 0);    }
+105 
+106   \textcolor{keywordflow}{return} -1;
+107 \}
+\end{DoxyCode}
+\hypertarget{interpreter_8h_a050e7a28ef711724ac2cba37b6ee4175}{\index{interpreter.\-h@{interpreter.\-h}!Command\-\_\-list@{Command\-\_\-list}}
+\index{Command\-\_\-list@{Command\-\_\-list}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{Command\-\_\-list}]{\setlength{\rightskip}{0pt plus 5cm}int Command\-\_\-list (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{args}
+\end{DoxyParamCaption}
+)}}\label{interpreter_8h_a050e7a28ef711724ac2cba37b6ee4175}
+
+
+Definition at line 84 of file interpreter.\-h.
+
+
+\begin{DoxyCode}
+85 \{
+86   \textcolor{keyword}{struct }\hyperlink{structcommand}{command}* command\_ptr = \hyperlink{interpreter_8h_a18d732036173aa1e51a2e22a6ce78e23}{commands};
+87   \textcolor{keyword}{struct }\hyperlink{structcommand}{command}* end\_ptr = command\_ptr + \textcolor{keyword}{sizeof}(\hyperlink{interpreter_8h_a18d732036173aa1e51a2e22a6ce78e23}{commands})/\textcolor{keyword}{sizeof}(
+      \hyperlink{interpreter_8h_a18d732036173aa1e51a2e22a6ce78e23}{commands}[0]);
+88 
+89   \textcolor{keywordflow}{while}(command\_ptr < end\_ptr)\{
+90     printf(\textcolor{stringliteral}{"%s\(\backslash\)n"}, command\_ptr->\hyperlink{structcommand_a556cd9d8b435c0017704254f3d9a3e57}{label});
+91     command\_ptr++;
+92   \}
+93   \textcolor{keywordflow}{return} 0;
+94 \}
+\end{DoxyCode}
+\hypertarget{interpreter_8h_a2c43f3538cb7b1c0374831eac7961b0d}{\index{interpreter.\-h@{interpreter.\-h}!Command\-\_\-perf@{Command\-\_\-perf}}
+\index{Command\-\_\-perf@{Command\-\_\-perf}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{Command\-\_\-perf}]{\setlength{\rightskip}{0pt plus 5cm}int Command\-\_\-perf (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{args}
+\end{DoxyParamCaption}
+)}}\label{interpreter_8h_a2c43f3538cb7b1c0374831eac7961b0d}
+
+
+Definition at line 125 of file interpreter.\-h.
+
+
+\begin{DoxyCode}
+125                             \{
+126   printf(\textcolor{stringliteral}{"\(\backslash\)nJitter: %d\(\backslash\)nNumSamples: %d\(\backslash\)nNumCreated: %d\(\backslash\)nDataLost: %d\(\backslash\)n"}, jitter, NumSamples, NumCreated, 
+      DataLost  );
+127   \textcolor{keywordflow}{return} 1;
+128 \}
+\end{DoxyCode}
+\hypertarget{interpreter_8h_a09c6bdd753e3c42daa8ef2594db57308}{\index{interpreter.\-h@{interpreter.\-h}!Command\-\_\-x@{Command\-\_\-x}}
+\index{Command\-\_\-x@{Command\-\_\-x}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{Command\-\_\-x}]{\setlength{\rightskip}{0pt plus 5cm}int Command\-\_\-x (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{args}
+\end{DoxyParamCaption}
+)}}\label{interpreter_8h_a09c6bdd753e3c42daa8ef2594db57308}
+
+
+Definition at line 129 of file interpreter.\-h.
+
+
+\begin{DoxyCode}
+129                          \{
+130   \textcolor{keywordtype}{int} i;
+131   \textcolor{keywordflow}{for}(i = 0; i < 64; i++)\{
+132     printf(\textcolor{stringliteral}{"\(\backslash\)n"});
+133     printf(\textcolor{stringliteral}{"%ld\(\backslash\)t"}, (3000*x[i])/4096);
+134   \}
+135   \textcolor{keywordflow}{return} 1;
+136 \}
+\end{DoxyCode}
+\hypertarget{interpreter_8h_a1c46337257556c160f6e6eb9a4259869}{\index{interpreter.\-h@{interpreter.\-h}!Command\-\_\-y@{Command\-\_\-y}}
+\index{Command\-\_\-y@{Command\-\_\-y}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{Command\-\_\-y}]{\setlength{\rightskip}{0pt plus 5cm}int Command\-\_\-y (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{args}
+\end{DoxyParamCaption}
+)}}\label{interpreter_8h_a1c46337257556c160f6e6eb9a4259869}
+
+
+Definition at line 137 of file interpreter.\-h.
+
+
+\begin{DoxyCode}
+137                          \{
+138   \textcolor{keywordtype}{int} i;
+139   \textcolor{keywordflow}{for}( i = 0; i < 64; i++)\{
+140     printf(\textcolor{stringliteral}{"\(\backslash\)n"});
+141     printf(\textcolor{stringliteral}{"%ld\(\backslash\)t"}, y[i]);
+142   \}
+143   \textcolor{keywordflow}{return} 1;
+144 \}
+\end{DoxyCode}
+\hypertarget{interpreter_8h_a08a98a5503e4f3e1a5a19222d425275a}{\index{interpreter.\-h@{interpreter.\-h}!interpreter@{interpreter}}
+\index{interpreter@{interpreter}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{interpreter}]{\setlength{\rightskip}{0pt plus 5cm}void interpreter (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{interpreter_8h_a08a98a5503e4f3e1a5a19222d425275a}
+
+
+Definition at line 53 of file interpreter.\-h.
+
+
+\begin{DoxyCode}
+53                       \{
+54   \textcolor{keywordtype}{char} *buff\_ptr = \hyperlink{interpreter_8h_ab4a03da084e15d3319078d4f4a6bf3ff}{buffer};
+55   \textcolor{keyword}{struct }\hyperlink{structcommand}{command}* command\_ptr = \hyperlink{interpreter_8h_a18d732036173aa1e51a2e22a6ce78e23}{commands};
+56   \textcolor{keyword}{struct }\hyperlink{structcommand}{command}* end\_ptr = command\_ptr + \textcolor{keyword}{sizeof}(\hyperlink{interpreter_8h_a18d732036173aa1e51a2e22a6ce78e23}{commands})/\textcolor{keyword}{sizeof}(
+      \hyperlink{interpreter_8h_a18d732036173aa1e51a2e22a6ce78e23}{commands}[0]);
+57   int (*\textcolor{keyword}{function})(\textcolor{keywordtype}{char} *);
+58   \textcolor{keywordtype}{int} n;
+59   printf(\textcolor{stringliteral}{">> "});
+60   \textcolor{comment}{//scanf("%s\(\backslash\)n", buffer); //, buffer);}
+61   fgets(\hyperlink{interpreter_8h_ab4a03da084e15d3319078d4f4a6bf3ff}{buffer}, 64, stdin);
+62   sscanf(buff\_ptr, \textcolor{stringliteral}{"%s%n"}, \hyperlink{interpreter_8h_ad9be07c5c78595ecd8b182a0bde06b1f}{m\_command}, &n);
+63   printf(\textcolor{stringliteral}{"m\_command: %s\(\backslash\)n"}, \hyperlink{interpreter_8h_ad9be07c5c78595ecd8b182a0bde06b1f}{m\_command});
+64     buff\_ptr += n;
+65   printf(\textcolor{stringliteral}{"%s\(\backslash\)n"}, buff\_ptr);
+66     \textcolor{comment}{//printf("Buffer: %s\(\backslash\)n", buff\_ptr);}
+67   \textcolor{keywordflow}{while} (command\_ptr < end\_ptr)\{
+68     \textcolor{keyword}{function} = command\_ptr->\hyperlink{structcommand_a217dfc1d06446ee6606a9a007fa6a7b6}{function};
+69     \textcolor{keywordflow}{if}(strcmp(\hyperlink{interpreter_8h_ad9be07c5c78595ecd8b182a0bde06b1f}{m\_command}, command\_ptr->\hyperlink{structcommand_a556cd9d8b435c0017704254f3d9a3e57}{label}) == 0)\{
+70 \textcolor{comment}{//      printf("Doing Command: %s\(\backslash\)n", command\_ptr->label);}
+71       \textcolor{keyword}{function}(buff\_ptr);
+72       
+73       \textcolor{keywordflow}{return};
+74     \}
+75 
+76     command\_ptr++;
+77   \}
+78   printf(\textcolor{stringliteral}{"[Warning] Interpreter Command not found\(\backslash\)n"});
+79   \textcolor{keywordflow}{return};
+80 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{interpreter_8h_a08a98a5503e4f3e1a5a19222d425275a_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{interpreter_8h_ab4a03da084e15d3319078d4f4a6bf3ff}{\index{interpreter.\-h@{interpreter.\-h}!buffer@{buffer}}
+\index{buffer@{buffer}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{buffer}]{\setlength{\rightskip}{0pt plus 5cm}char buffer\mbox{[}64\mbox{]}}}\label{interpreter_8h_ab4a03da084e15d3319078d4f4a6bf3ff}
+
+
+Definition at line 51 of file interpreter.\-h.
+
+\hypertarget{interpreter_8h_a18d732036173aa1e51a2e22a6ce78e23}{\index{interpreter.\-h@{interpreter.\-h}!commands@{commands}}
+\index{commands@{commands}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{commands}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf command} commands\mbox{[}$\,$\mbox{]}}}\label{interpreter_8h_a18d732036173aa1e51a2e22a6ce78e23}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+=
+\{
+  \{ \textcolor{stringliteral}{"list"}, \hyperlink{interpreter_8h_a050e7a28ef711724ac2cba37b6ee4175}{Command\_list}  \},
+  \{ \textcolor{stringliteral}{"disp\_message"}, \hyperlink{interpreter_8h_a10a2c7a55612469a62cd6553e680cdee}{Command\_disp\_message}  \},
+  \{ \textcolor{stringliteral}{"adc\_open"}, \hyperlink{interpreter_8h_ab3cd6214932a767bed5e247dedf138d9}{Command\_adc\_open}  \},
+  \{ \textcolor{stringliteral}{"adc\_in"}, \hyperlink{interpreter_8h_a057b02770d1b0af8a36acf57cbd6de0d}{Command\_adc\_in}  \},       
+  \{ \textcolor{stringliteral}{"perf"}, \hyperlink{interpreter_8h_a2c43f3538cb7b1c0374831eac7961b0d}{Command\_perf}  \},
+  \{ \textcolor{stringliteral}{"x"}, \hyperlink{interpreter_8h_a09c6bdd753e3c42daa8ef2594db57308}{Command\_x}  \},
+  \{ \textcolor{stringliteral}{"y"}, \hyperlink{interpreter_8h_a1c46337257556c160f6e6eb9a4259869}{Command\_y}  \}
+  
+
+\}
+\end{DoxyCode}
+
+
+Definition at line 32 of file interpreter.\-h.
+
+\hypertarget{interpreter_8h_ad9be07c5c78595ecd8b182a0bde06b1f}{\index{interpreter.\-h@{interpreter.\-h}!m\-\_\-command@{m\-\_\-command}}
+\index{m\-\_\-command@{m\-\_\-command}!interpreter.h@{interpreter.\-h}}
+\subsubsection[{m\-\_\-command}]{\setlength{\rightskip}{0pt plus 5cm}char m\-\_\-command\mbox{[}16\mbox{]}}}\label{interpreter_8h_ad9be07c5c78595ecd8b182a0bde06b1f}
+
+
+Definition at line 52 of file interpreter.\-h.
+

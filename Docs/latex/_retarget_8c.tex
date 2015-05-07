@@ -1,0 +1,144 @@
+\hypertarget{_retarget_8c}{\section{Retarget.\-c File Reference}
+\label{_retarget_8c}\index{Retarget.\-c@{Retarget.\-c}}
+}
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$rt\-\_\-misc.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}U\-A\-R\-T0.\-h\char`\"{}}\\*
+Include dependency graph for Retarget.\-c\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{_retarget_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_____f_i_l_e}{\-\_\-\-\_\-\-F\-I\-L\-E}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_retarget_8c_abac7707b6be5733e890091048fcb99a2}{fputc} (int ch, F\-I\-L\-E $\ast$f)
+\item 
+int \hyperlink{_retarget_8c_a2c4fad5f95f4c5242c3ea25d791df6e5}{fgetc} (F\-I\-L\-E $\ast$f)
+\item 
+int \hyperlink{_retarget_8c_a7d3d2b0c891c340cfaf0921aacfe392c}{ferror} (F\-I\-L\-E $\ast$f)
+\item 
+void \hyperlink{_retarget_8c_a7b9ac395975163ef0a591db5c48ad7ae}{\-\_\-sys\-\_\-exit} (int return\-\_\-code)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+F\-I\-L\-E \hyperlink{_retarget_8c_ac1f65ebf7d6f28fb49530ee0095306cb}{\-\_\-\-\_\-stdout}
+\item 
+F\-I\-L\-E \hyperlink{_retarget_8c_abb2a819d3c88269eba04ea62d759bef5}{\-\_\-\-\_\-stdin}
+\item 
+F\-I\-L\-E \hyperlink{_retarget_8c_a4c78cf3e794f2e14c8765bc41ef55b8d}{\-\_\-\-\_\-stderr}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{_retarget_8c_a7b9ac395975163ef0a591db5c48ad7ae}{\index{Retarget.\-c@{Retarget.\-c}!\-\_\-sys\-\_\-exit@{\-\_\-sys\-\_\-exit}}
+\index{\-\_\-sys\-\_\-exit@{\-\_\-sys\-\_\-exit}!Retarget.c@{Retarget.\-c}}
+\subsubsection[{\-\_\-sys\-\_\-exit}]{\setlength{\rightskip}{0pt plus 5cm}void \-\_\-sys\-\_\-exit (
+\begin{DoxyParamCaption}
+\item[{int}]{return\-\_\-code}
+\end{DoxyParamCaption}
+)}}\label{_retarget_8c_a7b9ac395975163ef0a591db5c48ad7ae}
+
+
+Definition at line 83 of file Retarget.\-c.
+
+
+\begin{DoxyCode}
+83                                 \{
+84 \hyperlink{structcommand_a556cd9d8b435c0017704254f3d9a3e57}{label}:  \textcolor{keywordflow}{goto} \hyperlink{structcommand_a556cd9d8b435c0017704254f3d9a3e57}{label};  \textcolor{comment}{/* endless loop */}
+85 \}
+\end{DoxyCode}
+\hypertarget{_retarget_8c_a7d3d2b0c891c340cfaf0921aacfe392c}{\index{Retarget.\-c@{Retarget.\-c}!ferror@{ferror}}
+\index{ferror@{ferror}!Retarget.c@{Retarget.\-c}}
+\subsubsection[{ferror}]{\setlength{\rightskip}{0pt plus 5cm}int ferror (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{_retarget_8c_a7d3d2b0c891c340cfaf0921aacfe392c}
+
+
+Definition at line 78 of file Retarget.\-c.
+
+
+\begin{DoxyCode}
+78                    \{
+79   \textcolor{comment}{/* Your implementation of ferror */}
+80   \textcolor{keywordflow}{return} EOF;
+81 \}
+\end{DoxyCode}
+\hypertarget{_retarget_8c_a2c4fad5f95f4c5242c3ea25d791df6e5}{\index{Retarget.\-c@{Retarget.\-c}!fgetc@{fgetc}}
+\index{fgetc@{fgetc}!Retarget.c@{Retarget.\-c}}
+\subsubsection[{fgetc}]{\setlength{\rightskip}{0pt plus 5cm}int fgetc (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{_retarget_8c_a2c4fad5f95f4c5242c3ea25d791df6e5}
+
+
+Definition at line 72 of file Retarget.\-c.
+
+
+\begin{DoxyCode}
+72                    \{
+73   \textcolor{keywordtype}{char} ch = UART0\_InChar();  \textcolor{comment}{// receive from keyboard}
+74 \textcolor{comment}{//  UART0\_OutChar(ch);            // echo}
+75   \textcolor{keywordflow}{return} ch;
+76 \}
+\end{DoxyCode}
+\hypertarget{_retarget_8c_abac7707b6be5733e890091048fcb99a2}{\index{Retarget.\-c@{Retarget.\-c}!fputc@{fputc}}
+\index{fputc@{fputc}!Retarget.c@{Retarget.\-c}}
+\subsubsection[{fputc}]{\setlength{\rightskip}{0pt plus 5cm}int fputc (
+\begin{DoxyParamCaption}
+\item[{int}]{ch, }
+\item[{F\-I\-L\-E $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{_retarget_8c_abac7707b6be5733e890091048fcb99a2}
+
+
+Definition at line 58 of file Retarget.\-c.
+
+
+\begin{DoxyCode}
+58                           \{
+59 \textcolor{comment}{//  if((ch == 10) || (ch == 13) || (ch == 27))\{}
+60 \textcolor{comment}{//     UART0\_OutChar(13);}
+61 \textcolor{comment}{//     UART0\_OutChar(10);}
+62 \textcolor{comment}{//     return 1;}
+63 \textcolor{comment}{//   \}}
+64   UART0\_OutChar(ch);
+65   \textcolor{keywordflow}{return} 1;
+66 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{_retarget_8c_a4c78cf3e794f2e14c8765bc41ef55b8d}{\index{Retarget.\-c@{Retarget.\-c}!\-\_\-\-\_\-stderr@{\-\_\-\-\_\-stderr}}
+\index{\-\_\-\-\_\-stderr@{\-\_\-\-\_\-stderr}!Retarget.c@{Retarget.\-c}}
+\subsubsection[{\-\_\-\-\_\-stderr}]{\setlength{\rightskip}{0pt plus 5cm}F\-I\-L\-E \-\_\-\-\_\-stderr}}\label{_retarget_8c_a4c78cf3e794f2e14c8765bc41ef55b8d}
+
+
+Definition at line 31 of file Retarget.\-c.
+
+\hypertarget{_retarget_8c_abb2a819d3c88269eba04ea62d759bef5}{\index{Retarget.\-c@{Retarget.\-c}!\-\_\-\-\_\-stdin@{\-\_\-\-\_\-stdin}}
+\index{\-\_\-\-\_\-stdin@{\-\_\-\-\_\-stdin}!Retarget.c@{Retarget.\-c}}
+\subsubsection[{\-\_\-\-\_\-stdin}]{\setlength{\rightskip}{0pt plus 5cm}F\-I\-L\-E \-\_\-\-\_\-stdin}}\label{_retarget_8c_abb2a819d3c88269eba04ea62d759bef5}
+
+
+Definition at line 30 of file Retarget.\-c.
+
+\hypertarget{_retarget_8c_ac1f65ebf7d6f28fb49530ee0095306cb}{\index{Retarget.\-c@{Retarget.\-c}!\-\_\-\-\_\-stdout@{\-\_\-\-\_\-stdout}}
+\index{\-\_\-\-\_\-stdout@{\-\_\-\-\_\-stdout}!Retarget.c@{Retarget.\-c}}
+\subsubsection[{\-\_\-\-\_\-stdout}]{\setlength{\rightskip}{0pt plus 5cm}F\-I\-L\-E \-\_\-\-\_\-stdout}}\label{_retarget_8c_ac1f65ebf7d6f28fb49530ee0095306cb}
+
+
+Definition at line 29 of file Retarget.\-c.
+

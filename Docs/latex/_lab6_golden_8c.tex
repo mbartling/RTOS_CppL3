@@ -1,0 +1,1992 @@
+\hypertarget{_lab6_golden_8c}{\section{Lab6\-Golden.\-c File Reference}
+\label{_lab6_golden_8c}\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}}
+}
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}inc/hw\-\_\-types.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}A\-D\-C.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}os.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}inc/tm4c123gh6pm.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Perf.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}can0.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}median.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}P\-W\-M\-Dual.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Mailbox.\-hpp\char`\"{}}\\*
+Include dependency graph for Lab6\-Golden.\-c\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab6_golden_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_lab6_golden_8c_a90bf9206ca8b60d62247464501fb9e89}{Too\-Close}~1200
+\item 
+\#define \hyperlink{_lab6_golden_8c_a930f8223aa964823168d8f4cf7418e44}{Too\-Far}~600
+\item 
+\#define \hyperlink{_lab6_golden_8c_a084f0cbd524691ad1a56acf4e2858259}{Ok\-Range\-Min}~600
+\item 
+\#define \hyperlink{_lab6_golden_8c_a45c01d393beae01b562c5cb6c26cc8ea}{Ok\-Range\-Max}~1200
+\item 
+\#define \hyperlink{_lab6_golden_8c_ae586204918bfbea259810829a239d886}{T\-I\-M\-E\-S\-L\-I\-C\-E}~2$\ast$T\-I\-M\-E\-\_\-1\-M\-S
+\item 
+\#define \hyperlink{_lab6_golden_8c_ab527c0e4b7c318dbae300412b03eed17}{G\-P\-I\-O\-\_\-\-P\-F0}~($\ast$((volatile unsigned long $\ast$)0x40025004))
+\item 
+\#define \hyperlink{_lab6_golden_8c_abbb42535d15ee2366af5a5b1e2124a05}{G\-P\-I\-O\-\_\-\-P\-F1}~($\ast$((volatile unsigned long $\ast$)0x40025008))
+\item 
+\#define \hyperlink{_lab6_golden_8c_a959a99608831fef309047e405b5059bc}{G\-P\-I\-O\-\_\-\-P\-F2}~($\ast$((volatile unsigned long $\ast$)0x40025010))
+\item 
+\#define \hyperlink{_lab6_golden_8c_aab864bd67f4cea10fd17ee13808668cd}{G\-P\-I\-O\-\_\-\-P\-F3}~($\ast$((volatile unsigned long $\ast$)0x40025020))
+\item 
+\#define \hyperlink{_lab6_golden_8c_a66dc5c770ec2c27da7ecceb303354ff4}{G\-P\-I\-O\-\_\-\-P\-G1}~($\ast$((volatile unsigned long $\ast$)0x40026008))
+\item 
+\#define \hyperlink{_lab6_golden_8c_aa1bdfe98b68dc6bf0934403577a69402}{P\-D6}~($\ast$((volatile unsigned long $\ast$)0x40007100))
+\item 
+\#define \hyperlink{_lab6_golden_8c_a3e427eea4be9cc64631d579b0d4c13ce}{P\-D7}~($\ast$((volatile unsigned long $\ast$)0x40007200))
+\item 
+\#define \hyperlink{_lab6_golden_8c_aea08c09063c5962f8f60044f1829d54c}{P\-C6}~($\ast$((volatile unsigned long $\ast$)0x40006100))
+\item 
+\#define \hyperlink{_lab6_golden_8c_a1194403dd24b90c5af73482c52ad1360}{P\-C7}~($\ast$((volatile unsigned long $\ast$)0x40006200))
+\item 
+\#define \hyperlink{_lab6_golden_8c_adaab1d0c061d12c9892583c9591a70af}{P\-A6}~($\ast$((volatile unsigned long $\ast$)0x40004100))
+\item 
+\#define \hyperlink{_lab6_golden_8c_ad55f1ce2962d3a43aeed74b5459214f6}{P\-A7}~($\ast$((volatile unsigned long $\ast$)0x40004200))
+\item 
+\#define \hyperlink{_lab6_golden_8c_a25b36259b474d6e7ff4c3eb00374f947}{P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D}~1
+\item 
+\#define \hyperlink{_lab6_golden_8c_a0d2937f7ce6f0370010af0183f2cfb24}{P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D}~2
+\item 
+\#define \hyperlink{_lab6_golden_8c_aa1f4dd702be8a41cbc308411ed021fd8}{I\-R\-\_\-0\-\_\-\-I\-D}~3
+\item 
+\#define \hyperlink{_lab6_golden_8c_acbefcdc837243e39a82a94631f2b316e}{I\-R\-\_\-1\-\_\-\-I\-D}~4
+\item 
+\#define \hyperlink{_lab6_golden_8c_a0d5d96d1cc5a801f9f28516b054b86b4}{I\-R\-\_\-2\-\_\-\-I\-D}~5
+\item 
+\#define \hyperlink{_lab6_golden_8c_ad375e12584c5cfd298113fb8e6901482}{I\-R\-\_\-3\-\_\-\-I\-D}~6
+\item 
+\#define \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{L\-E\-D\-S}~($\ast$((volatile uint32\-\_\-t $\ast$)0x40025038))
+\item 
+\#define \hyperlink{_lab6_golden_8c_a8d23feea868a983c8c2b661e1e16972f}{R\-E\-D}~0x02
+\item 
+\#define \hyperlink{_lab6_golden_8c_a79d10e672abb49ad63eeaa8aaef57c38}{B\-L\-U\-E}~0x04
+\item 
+\#define \hyperlink{_lab6_golden_8c_acfbc006ea433ad708fdee3e82996e721}{G\-R\-E\-E\-N}~0x08
+\item 
+\#define \hyperlink{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}{W\-H\-I\-T\-E}~0x0\-F
+\item 
+\#define \hyperlink{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{buff\-S\-I\-Z\-E}~8
+\item 
+\#define \hyperlink{_lab6_golden_8c_a325968afe6bf093a3cac03b375e147b2}{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R}~20
+\item 
+\#define \hyperlink{_lab6_golden_8c_a23f1b54309d3ad5bb058d17f0a968fd6}{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L}~60
+\item 
+\#define \hyperlink{_lab6_golden_8c_a800de448b37b6a5e31b412f95d8e6cda}{low\-Speed\-Fixed}~30
+\item 
+\#define \hyperlink{_lab6_golden_8c_ad3f1a412f3818d3e0c4afddea947e7c9}{super\-Low\-Speed\-Fixed}~30
+\item 
+\#define \hyperlink{_lab6_golden_8c_a874eae81427671e75eeff5fac568a367}{highest\-Speed\-Fixed}~300
+\item 
+\#define \hyperlink{_lab6_golden_8c_ad7ff2ce70eeedd3870032415356b5c0f}{right\-Close}~550
+\item 
+\#define \hyperlink{_lab6_golden_8c_ae43862274f636ec024aa03058d826ae4}{left\-Close}~550
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_lab6_golden_8c_ac866dbaf7b167e5c46bb33de42eee84d}{Disable\-Interrupts} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_ab712356331a62b04aebcb373865e68c4}{Enable\-Interrupts} (void)
+\item 
+long \hyperlink{_lab6_golden_8c_a6e7e2088607214bc15b17ac57b57df1b}{Start\-Critical} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_a670da3ff1aea0c7d54c40e9e40b5eeed}{End\-Critical} (long sr)
+\item 
+void \hyperlink{_lab6_golden_8c_a80ae22f2f73496246542c428c4bec38f}{Wait\-For\-Interrupt} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_a6f1889c3f5d0f35d0ca0f7aa03ed5cb1}{G\-P\-I\-O\-Port\-A\-\_\-\-Handler} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_a0b6c07c1a985f30a5ca41d59f8c22932}{G\-P\-I\-O\-Port\-C\-\_\-\-Handler} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_a04369a3281263e369b0cffb5658b24e3}{Port\-D\-\_\-\-Init} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_a5a2a2db7e83737739f577faafdf8cce7}{Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_ac079e51ee4b2d6294323419435982b5d}{Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init} (void)
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_a03c7899f3ff55164dfc955aed1b328f8}{Ping1} (void)
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_a88c85cf0752512429969dbc0b75626d0}{Ping2} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_abd66255c87de5710737f979da785c171}{Ping\-R} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_acbb551322fcba7749c8c40006cd9ffd8}{Ping\-L} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_a93e4ea9d9ef2ee60af1459a12b6e6d4c}{I\-R1} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_adc674087543a04e8700d2427322b8328}{I\-R2} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_a7c8ab9e9d2256a9f7ecee8fb0499cb91}{I\-R3} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_ae19ef8807dc64129635da5b3b781588a}{Port\-F\-\_\-\-Init} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_a43617af71ca5f26b8d87c7460ee110f4}{C\-A\-N\-\_\-\-Listener} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_abced8d67df156821551c29a1cb684a05}{Controller2} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_a8df88b108bf75863b97b46c603310d3c}{Controller} (void)
+\item 
+void \hyperlink{_lab6_golden_8c_a133f99d43fae8ab54b2f59e05239d009}{brown\-\_\-out} (void)
+\item 
+int \hyperlink{_lab6_golden_8c_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_lab6_golden_8c_a1e26c569f8ea4c8145952219697f181f}{Running}
+\item 
+Sema4\-Type \hyperlink{_lab6_golden_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{A\-D\-C\-\_\-\-Collection}
+\item 
+B\-G\-Mailbox$<$ uint32\-\_\-t $>$ \hyperlink{_lab6_golden_8c_a6b0304a7c2f611c97a1f4779a9bfb483}{Ping1\-Mail}
+\item 
+B\-G\-Mailbox$<$ uint32\-\_\-t $>$ \hyperlink{_lab6_golden_8c_a39dbfc1fca14892a7d8916d445fb4321}{Ping2\-Mail}
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_a844dbda1145dc770c5f3166773e5ac15}{Rcv\-Count} =0
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_af14aa8ade47f8475f91855e0dff8ecc7}{Ping\-R\-Val}
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_adfdf2447659006d4a3062e8e27f1f533}{Ping\-L\-Val}
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_ae9a74104294340225e2bbc7c1fa561ff}{I\-R0\-Val} = 4096
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_adcea3401f53cc2d69e4f667b19e6c196}{I\-R1\-Val} = 4096
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{I\-R2\-Val} = 4096
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{I\-R3\-Val} = 4096
+\item 
+uint16\-\_\-t \hyperlink{_lab6_golden_8c_aec9aecee730bddbe611ffd11cfe09692}{Res\-\_\-buffer1} \mbox{[}64\mbox{]}
+\item 
+uint16\-\_\-t \hyperlink{_lab6_golden_8c_a6a20659f3190002cee79b8ee18b012a7}{Res\-\_\-buffer2} \mbox{[}64\mbox{]}
+\item 
+uint16\-\_\-t \hyperlink{_lab6_golden_8c_ad382a86c210687cdebcb99093927c7d3}{Res\-\_\-buffer3} \mbox{[}64\mbox{]}
+\item 
+int \hyperlink{_lab6_golden_8c_ac3df666236b2a1eb5090dd3c71e9c82b}{turning\-Mode} = 0
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_aeccbe31b89cf90e9c9ee1a1fafefc5ff}{Wobble\-R} \mbox{[}$\,$\mbox{]} = \{200, 205, 200, 195\}
+\item 
+uint32\-\_\-t \hyperlink{_lab6_golden_8c_a76415045fcd9ad9ec248427e80572f9a}{Wobble\-L} \mbox{[}$\,$\mbox{]} = \{200, 195, 200, 205\}
+\item 
+int \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{left\-Motor\-Speed} = 0
+\item 
+int \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{right\-Motor\-Speed} = 0
+\item 
+float \hyperlink{_lab6_golden_8c_a82059da765869f30361bcd1248568240}{too\-Close\-Threadshold} = 800
+\item 
+float \hyperlink{_lab6_golden_8c_a3a69578ffb800441a624e2411824678a}{front\-Threashold} = 600
+\item 
+float \hyperlink{_lab6_golden_8c_a963dbd4c4a8ee1db8f2be5fbf95b9cd7}{right\-Threashold} = 1250
+\item 
+float \hyperlink{_lab6_golden_8c_ac78d4fe1eb5883199c0cb9fe89ff3d8c}{left\-Threashold} = 1250
+\item 
+float \hyperlink{_lab6_golden_8c_a2106b37bdba5fd8fa85a477f5a6cd219}{superclose\-Front} = 2000
+\item 
+float \hyperlink{_lab6_golden_8c_a70daf00b3818ebf7fd37f21c95e9def4}{superclose\-Right} = 2300
+\item 
+float \hyperlink{_lab6_golden_8c_ab61536514678e958524efe11a63b19c7}{superclose\-Left} = 2300
+\item 
+float \hyperlink{_lab6_golden_8c_aa7d5dd64817c03d067d0e922cd35d75c}{K\-I} = .\-04
+\item 
+float \hyperlink{_lab6_golden_8c_a7f5e753433afadc9ce544a3602c256cd}{lowest\-P} = .\-1
+\item 
+int \hyperlink{_lab6_golden_8c_aae5700ac6107cc795ae5a50da455a690}{red\-\_\-counter} = 0
+\item 
+float \hyperlink{_lab6_golden_8c_ae156e47c164a3c02c27a3117ce45696c}{right\-Correction} = 0
+\item 
+float \hyperlink{_lab6_golden_8c_ae141a7ed52ba64f2053069a723a6b1fb}{left\-Correction} = 0
+\item 
+int \hyperlink{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}{long\-Side\-I\-R\-Value} = 0
+\item 
+int \hyperlink{_lab6_golden_8c_a1a6f4bd929a31fce794281d3a5fece6f}{short\-Side\-I\-R\-Value} = 0
+\item 
+int \hyperlink{_lab6_golden_8c_ac62b880f4d9f55e7955e5865274708be}{too\-Close\-In\-Right\-Counter} = 0
+\item 
+int \hyperlink{_lab6_golden_8c_aea00d2299c013839953781c31d79a483}{too\-Close\-In\-Left\-Counter} = 0
+\item 
+float \hyperlink{_lab6_golden_8c_a0e75101dc7809e2492fe0f8daed22f0a}{right\-Error} = 0
+\item 
+float \hyperlink{_lab6_golden_8c_a8bbf6a7278a0b02cbd90723dc8f19bbe}{left\-Error} = 0
+\item 
+float \hyperlink{_lab6_golden_8c_aca879141a9e2660e4cd8e410208fc1ec}{front\-Error} = 0
+\item 
+bool \hyperlink{_lab6_golden_8c_adc8b36b959ce03ee202b7b33bb71655d}{turn\-Right} = 0
+\item 
+bool \hyperlink{_lab6_golden_8c_a32dba967fa49fbed99ed3c9531b3c3c4}{turn\-Left} = 0
+\item 
+bool \hyperlink{_lab6_golden_8c_ac17b395804882db11d8bd30dd0d5c9be}{go\-Straight} = 0
+\item 
+int \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highest\-Speed} = 290
+\item 
+int \hyperlink{_lab6_golden_8c_a08f684c971e5e14bcd9ded712ffc8e31}{front\-Highest\-Speed} = 150
+\item 
+int \hyperlink{_lab6_golden_8c_a4e956e2d600928dfbbe5b2440c53a223}{side\-Highest\-Speed} = 120
+\item 
+int \hyperlink{_lab6_golden_8c_a5fa41fb37330973b00a53519b43dc652}{front\-Lowest\-Speed} = 60
+\item 
+int \hyperlink{_lab6_golden_8c_a2ea64ff9e3f348639493e6ec84013d98}{lowest\-Speed} = 40
+\item 
+int \hyperlink{_lab6_golden_8c_a4e5311a153c7dc8b2e6160e3733ddb4d}{front\-Low\-Cap} = 10
+\item 
+bool \hyperlink{_lab6_golden_8c_ac3ef240984425a8e29bb603088b9a869}{too\-Close\-In\-Front} = 0
+\item 
+bool \hyperlink{_lab6_golden_8c_a6e7a0545c47884fe18d22fef9853eedb}{too\-Close\-In\-Left} = 0
+\item 
+bool \hyperlink{_lab6_golden_8c_a69f912c5367b8513e06ce33f7aa4b503}{too\-Close\-In\-Right} = 0
+\item 
+float \hyperlink{_lab6_golden_8c_aca74a684c7823144d7962beb8397621e}{P} = 0
+\item 
+float \hyperlink{_lab6_golden_8c_ab639d295e81c2bcff1a343f7cc1273f7}{high\-Correction\-Cap} = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highest\-Speed} $\ast$(1 -\/ \hyperlink{_lab6_golden_8c_a7f5e753433afadc9ce544a3602c256cd}{lowest\-P})
+\item 
+float \hyperlink{_lab6_golden_8c_ad567eeac9df9c00f413fb04eecc4d68b}{low\-Correction\-Cap} = \hyperlink{_lab6_golden_8c_a2ea64ff9e3f348639493e6ec84013d98}{lowest\-Speed} -\/ \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highest\-Speed}$\ast$(\hyperlink{_lab6_golden_8c_a7f5e753433afadc9ce544a3602c256cd}{lowest\-P})
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_lab6_golden_8c_a79d10e672abb49ad63eeaa8aaef57c38}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!B\-L\-U\-E@{B\-L\-U\-E}}
+\index{B\-L\-U\-E@{B\-L\-U\-E}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{B\-L\-U\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-L\-U\-E~0x04}}\label{_lab6_golden_8c_a79d10e672abb49ad63eeaa8aaef57c38}
+
+
+Definition at line 58 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!buff\-S\-I\-Z\-E@{buff\-S\-I\-Z\-E}}
+\index{buff\-S\-I\-Z\-E@{buff\-S\-I\-Z\-E}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{buff\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define buff\-S\-I\-Z\-E~8}}\label{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}
+
+
+Definition at line 302 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ab527c0e4b7c318dbae300412b03eed17}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!G\-P\-I\-O\-\_\-\-P\-F0@{G\-P\-I\-O\-\_\-\-P\-F0}}
+\index{G\-P\-I\-O\-\_\-\-P\-F0@{G\-P\-I\-O\-\_\-\-P\-F0}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F0}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F0~($\ast$((volatile unsigned long $\ast$)0x40025004))}}\label{_lab6_golden_8c_ab527c0e4b7c318dbae300412b03eed17}
+
+
+Definition at line 34 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_abbb42535d15ee2366af5a5b1e2124a05}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!G\-P\-I\-O\-\_\-\-P\-F1@{G\-P\-I\-O\-\_\-\-P\-F1}}
+\index{G\-P\-I\-O\-\_\-\-P\-F1@{G\-P\-I\-O\-\_\-\-P\-F1}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F1}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F1~($\ast$((volatile unsigned long $\ast$)0x40025008))}}\label{_lab6_golden_8c_abbb42535d15ee2366af5a5b1e2124a05}
+
+
+Definition at line 35 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a959a99608831fef309047e405b5059bc}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!G\-P\-I\-O\-\_\-\-P\-F2@{G\-P\-I\-O\-\_\-\-P\-F2}}
+\index{G\-P\-I\-O\-\_\-\-P\-F2@{G\-P\-I\-O\-\_\-\-P\-F2}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F2}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F2~($\ast$((volatile unsigned long $\ast$)0x40025010))}}\label{_lab6_golden_8c_a959a99608831fef309047e405b5059bc}
+
+
+Definition at line 36 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aab864bd67f4cea10fd17ee13808668cd}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!G\-P\-I\-O\-\_\-\-P\-F3@{G\-P\-I\-O\-\_\-\-P\-F3}}
+\index{G\-P\-I\-O\-\_\-\-P\-F3@{G\-P\-I\-O\-\_\-\-P\-F3}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F3}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F3~($\ast$((volatile unsigned long $\ast$)0x40025020))}}\label{_lab6_golden_8c_aab864bd67f4cea10fd17ee13808668cd}
+
+
+Definition at line 37 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a66dc5c770ec2c27da7ecceb303354ff4}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!G\-P\-I\-O\-\_\-\-P\-G1@{G\-P\-I\-O\-\_\-\-P\-G1}}
+\index{G\-P\-I\-O\-\_\-\-P\-G1@{G\-P\-I\-O\-\_\-\-P\-G1}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-G1}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-G1~($\ast$((volatile unsigned long $\ast$)0x40026008))}}\label{_lab6_golden_8c_a66dc5c770ec2c27da7ecceb303354ff4}
+
+
+Definition at line 38 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_acfbc006ea433ad708fdee3e82996e721}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!G\-R\-E\-E\-N@{G\-R\-E\-E\-N}}
+\index{G\-R\-E\-E\-N@{G\-R\-E\-E\-N}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{G\-R\-E\-E\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-R\-E\-E\-N~0x08}}\label{_lab6_golden_8c_acfbc006ea433ad708fdee3e82996e721}
+
+
+Definition at line 59 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a874eae81427671e75eeff5fac568a367}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!highest\-Speed\-Fixed@{highest\-Speed\-Fixed}}
+\index{highest\-Speed\-Fixed@{highest\-Speed\-Fixed}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{highest\-Speed\-Fixed}]{\setlength{\rightskip}{0pt plus 5cm}\#define highest\-Speed\-Fixed~300}}\label{_lab6_golden_8c_a874eae81427671e75eeff5fac568a367}
+
+
+Definition at line 486 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aa1f4dd702be8a41cbc308411ed021fd8}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R\-\_\-0\-\_\-\-I\-D@{I\-R\-\_\-0\-\_\-\-I\-D}}
+\index{I\-R\-\_\-0\-\_\-\-I\-D@{I\-R\-\_\-0\-\_\-\-I\-D}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R\-\_\-0\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\-R\-\_\-0\-\_\-\-I\-D~3}}\label{_lab6_golden_8c_aa1f4dd702be8a41cbc308411ed021fd8}
+
+
+Definition at line 48 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_acbefcdc837243e39a82a94631f2b316e}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R\-\_\-1\-\_\-\-I\-D@{I\-R\-\_\-1\-\_\-\-I\-D}}
+\index{I\-R\-\_\-1\-\_\-\-I\-D@{I\-R\-\_\-1\-\_\-\-I\-D}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R\-\_\-1\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\-R\-\_\-1\-\_\-\-I\-D~4}}\label{_lab6_golden_8c_acbefcdc837243e39a82a94631f2b316e}
+
+
+Definition at line 49 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a0d5d96d1cc5a801f9f28516b054b86b4}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R\-\_\-2\-\_\-\-I\-D@{I\-R\-\_\-2\-\_\-\-I\-D}}
+\index{I\-R\-\_\-2\-\_\-\-I\-D@{I\-R\-\_\-2\-\_\-\-I\-D}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R\-\_\-2\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\-R\-\_\-2\-\_\-\-I\-D~5}}\label{_lab6_golden_8c_a0d5d96d1cc5a801f9f28516b054b86b4}
+
+
+Definition at line 50 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ad375e12584c5cfd298113fb8e6901482}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R\-\_\-3\-\_\-\-I\-D@{I\-R\-\_\-3\-\_\-\-I\-D}}
+\index{I\-R\-\_\-3\-\_\-\-I\-D@{I\-R\-\_\-3\-\_\-\-I\-D}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R\-\_\-3\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\-R\-\_\-3\-\_\-\-I\-D~6}}\label{_lab6_golden_8c_ad375e12584c5cfd298113fb8e6901482}
+
+
+Definition at line 51 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!L\-E\-D\-S@{L\-E\-D\-S}}
+\index{L\-E\-D\-S@{L\-E\-D\-S}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{L\-E\-D\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-E\-D\-S~($\ast$((volatile uint32\-\_\-t $\ast$)0x40025038))}}\label{_lab6_golden_8c_a61686d33603491344883775b9b31e172}
+
+
+Definition at line 55 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ae43862274f636ec024aa03058d826ae4}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!left\-Close@{left\-Close}}
+\index{left\-Close@{left\-Close}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{left\-Close}]{\setlength{\rightskip}{0pt plus 5cm}\#define left\-Close~550}}\label{_lab6_golden_8c_ae43862274f636ec024aa03058d826ae4}
+
+
+Definition at line 510 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a800de448b37b6a5e31b412f95d8e6cda}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!low\-Speed\-Fixed@{low\-Speed\-Fixed}}
+\index{low\-Speed\-Fixed@{low\-Speed\-Fixed}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{low\-Speed\-Fixed}]{\setlength{\rightskip}{0pt plus 5cm}\#define low\-Speed\-Fixed~30}}\label{_lab6_golden_8c_a800de448b37b6a5e31b412f95d8e6cda}
+
+
+Definition at line 484 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a45c01d393beae01b562c5cb6c26cc8ea}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Ok\-Range\-Max@{Ok\-Range\-Max}}
+\index{Ok\-Range\-Max@{Ok\-Range\-Max}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Ok\-Range\-Max}]{\setlength{\rightskip}{0pt plus 5cm}\#define Ok\-Range\-Max~1200}}\label{_lab6_golden_8c_a45c01d393beae01b562c5cb6c26cc8ea}
+
+
+Definition at line 24 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a084f0cbd524691ad1a56acf4e2858259}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Ok\-Range\-Min@{Ok\-Range\-Min}}
+\index{Ok\-Range\-Min@{Ok\-Range\-Min}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Ok\-Range\-Min}]{\setlength{\rightskip}{0pt plus 5cm}\#define Ok\-Range\-Min~600}}\label{_lab6_golden_8c_a084f0cbd524691ad1a56acf4e2858259}
+
+
+Definition at line 23 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_adaab1d0c061d12c9892583c9591a70af}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!P\-A6@{P\-A6}}
+\index{P\-A6@{P\-A6}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{P\-A6}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-A6~($\ast$((volatile unsigned long $\ast$)0x40004100))}}\label{_lab6_golden_8c_adaab1d0c061d12c9892583c9591a70af}
+
+
+Definition at line 44 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ad55f1ce2962d3a43aeed74b5459214f6}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!P\-A7@{P\-A7}}
+\index{P\-A7@{P\-A7}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{P\-A7}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-A7~($\ast$((volatile unsigned long $\ast$)0x40004200))}}\label{_lab6_golden_8c_ad55f1ce2962d3a43aeed74b5459214f6}
+
+
+Definition at line 45 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aea08c09063c5962f8f60044f1829d54c}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!P\-C6@{P\-C6}}
+\index{P\-C6@{P\-C6}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{P\-C6}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-C6~($\ast$((volatile unsigned long $\ast$)0x40006100))}}\label{_lab6_golden_8c_aea08c09063c5962f8f60044f1829d54c}
+
+
+Definition at line 42 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a1194403dd24b90c5af73482c52ad1360}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!P\-C7@{P\-C7}}
+\index{P\-C7@{P\-C7}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{P\-C7}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-C7~($\ast$((volatile unsigned long $\ast$)0x40006200))}}\label{_lab6_golden_8c_a1194403dd24b90c5af73482c52ad1360}
+
+
+Definition at line 43 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aa1bdfe98b68dc6bf0934403577a69402}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!P\-D6@{P\-D6}}
+\index{P\-D6@{P\-D6}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{P\-D6}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-D6~($\ast$((volatile unsigned long $\ast$)0x40007100))}}\label{_lab6_golden_8c_aa1bdfe98b68dc6bf0934403577a69402}
+
+
+Definition at line 40 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a3e427eea4be9cc64631d579b0d4c13ce}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!P\-D7@{P\-D7}}
+\index{P\-D7@{P\-D7}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{P\-D7}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-D7~($\ast$((volatile unsigned long $\ast$)0x40007200))}}\label{_lab6_golden_8c_a3e427eea4be9cc64631d579b0d4c13ce}
+
+
+Definition at line 41 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a25b36259b474d6e7ff4c3eb00374f947}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D@{P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D}}
+\index{P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D@{P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D~1}}\label{_lab6_golden_8c_a25b36259b474d6e7ff4c3eb00374f947}
+
+
+Definition at line 46 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a0d2937f7ce6f0370010af0183f2cfb24}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D@{P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D}}
+\index{P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D@{P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D~2}}\label{_lab6_golden_8c_a0d2937f7ce6f0370010af0183f2cfb24}
+
+
+Definition at line 47 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a8d23feea868a983c8c2b661e1e16972f}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!R\-E\-D@{R\-E\-D}}
+\index{R\-E\-D@{R\-E\-D}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{R\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\-E\-D~0x02}}\label{_lab6_golden_8c_a8d23feea868a983c8c2b661e1e16972f}
+
+
+Definition at line 57 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ad7ff2ce70eeedd3870032415356b5c0f}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!right\-Close@{right\-Close}}
+\index{right\-Close@{right\-Close}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{right\-Close}]{\setlength{\rightskip}{0pt plus 5cm}\#define right\-Close~550}}\label{_lab6_golden_8c_ad7ff2ce70eeedd3870032415356b5c0f}
+
+
+Definition at line 509 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ad3f1a412f3818d3e0c4afddea947e7c9}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!super\-Low\-Speed\-Fixed@{super\-Low\-Speed\-Fixed}}
+\index{super\-Low\-Speed\-Fixed@{super\-Low\-Speed\-Fixed}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{super\-Low\-Speed\-Fixed}]{\setlength{\rightskip}{0pt plus 5cm}\#define super\-Low\-Speed\-Fixed~30}}\label{_lab6_golden_8c_ad3f1a412f3818d3e0c4afddea947e7c9}
+
+
+Definition at line 485 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ae586204918bfbea259810829a239d886}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!T\-I\-M\-E\-S\-L\-I\-C\-E@{T\-I\-M\-E\-S\-L\-I\-C\-E}}
+\index{T\-I\-M\-E\-S\-L\-I\-C\-E@{T\-I\-M\-E\-S\-L\-I\-C\-E}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{T\-I\-M\-E\-S\-L\-I\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-I\-M\-E\-S\-L\-I\-C\-E~2$\ast$T\-I\-M\-E\-\_\-1\-M\-S}}\label{_lab6_golden_8c_ae586204918bfbea259810829a239d886}
+
+
+Definition at line 32 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a90bf9206ca8b60d62247464501fb9e89}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Too\-Close@{Too\-Close}}
+\index{Too\-Close@{Too\-Close}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Too\-Close}]{\setlength{\rightskip}{0pt plus 5cm}\#define Too\-Close~1200}}\label{_lab6_golden_8c_a90bf9206ca8b60d62247464501fb9e89}
+
+
+Definition at line 21 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a930f8223aa964823168d8f4cf7418e44}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Too\-Far@{Too\-Far}}
+\index{Too\-Far@{Too\-Far}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Too\-Far}]{\setlength{\rightskip}{0pt plus 5cm}\#define Too\-Far~600}}\label{_lab6_golden_8c_a930f8223aa964823168d8f4cf7418e44}
+
+
+Definition at line 22 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a23f1b54309d3ad5bb058d17f0a968fd6}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L@{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L}}
+\index{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L@{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L~60}}\label{_lab6_golden_8c_a23f1b54309d3ad5bb058d17f0a968fd6}
+
+
+Definition at line 477 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a325968afe6bf093a3cac03b375e147b2}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R@{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R}}
+\index{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R@{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R~20}}\label{_lab6_golden_8c_a325968afe6bf093a3cac03b375e147b2}
+
+
+Definition at line 476 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!W\-H\-I\-T\-E@{W\-H\-I\-T\-E}}
+\index{W\-H\-I\-T\-E@{W\-H\-I\-T\-E}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{W\-H\-I\-T\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define W\-H\-I\-T\-E~0x0\-F}}\label{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}
+
+
+Definition at line 60 of file Lab6\-Golden.\-c.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{_lab6_golden_8c_a133f99d43fae8ab54b2f59e05239d009}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!brown\-\_\-out@{brown\-\_\-out}}
+\index{brown\-\_\-out@{brown\-\_\-out}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{brown\-\_\-out}]{\setlength{\rightskip}{0pt plus 5cm}void brown\-\_\-out (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a133f99d43fae8ab54b2f59e05239d009}
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}
+
+Definition at line 873 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+873                     \{
+874    CAN0\_Open();
+875 \textcolor{comment}{//NVIC\_APINT\_R = (1 << 2);}
+876     \textcolor{comment}{//while(1);}
+877 \}
+\end{DoxyCode}
+\hypertarget{_lab6_golden_8c_a43617af71ca5f26b8d87c7460ee110f4}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!C\-A\-N\-\_\-\-Listener@{C\-A\-N\-\_\-\-Listener}}
+\index{C\-A\-N\-\_\-\-Listener@{C\-A\-N\-\_\-\-Listener}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{C\-A\-N\-\_\-\-Listener}]{\setlength{\rightskip}{0pt plus 5cm}void C\-A\-N\-\_\-\-Listener (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a43617af71ca5f26b8d87c7460ee110f4}
+C\-A\-N Receiver Code 
+
+Definition at line 433 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+433                        \{
+434   uint8\_t RcvData[5];
+435 \textcolor{comment}{//  uint32\_t rxDat;}
+436   CanMessage\_t rxDat;
+437   \textcolor{comment}{//LEDS = WHITE;}
+438   \textcolor{keywordflow}{while}(1)\{
+439       \textcolor{keywordflow}{if}(CAN0\_GetMailNonBlock(RcvData))\{
+440             Buff2CanMessage(&rxDat, RcvData);
+441       \hyperlink{_lab6_golden_8c_a844dbda1145dc770c5f3166773e5ac15}{RcvCount}++;
+442       \textcolor{comment}{//rxDat = CAST\_UINT8\_2\_CAN(RcvData);}
+443             \textcolor{keywordflow}{switch}(rxDat.mId)\{
+444                 \textcolor{keywordflow}{case} \hyperlink{_lab6_golden_8c_a25b36259b474d6e7ff4c3eb00374f947}{PING\_L\_ID}:
+445                     \hyperlink{_lab6_golden_8c_adfdf2447659006d4a3062e8e27f1f533}{PingLVal} = rxDat.data;
+446                     \textcolor{keywordflow}{break};
+447                 
+448                 \textcolor{keywordflow}{case} \hyperlink{_lab6_golden_8c_a0d2937f7ce6f0370010af0183f2cfb24}{PING\_R\_ID}:
+449                     \hyperlink{_lab6_golden_8c_af14aa8ade47f8475f91855e0dff8ecc7}{PingRVal} = rxDat.data;
+450                     \textcolor{keywordflow}{break};
+451                 \textcolor{keywordflow}{case} \hyperlink{_lab6_golden_8c_aa1f4dd702be8a41cbc308411ed021fd8}{IR\_0\_ID}: 
+452                     \hyperlink{_lab6_golden_8c_ae9a74104294340225e2bbc7c1fa561ff}{IR0Val} = rxDat.data;
+453                     \textcolor{comment}{//LEDS = BLUE;}
+454                     \textcolor{keywordflow}{break};
+455                 \textcolor{keywordflow}{case} \hyperlink{_lab6_golden_8c_acbefcdc837243e39a82a94631f2b316e}{IR\_1\_ID}: 
+456                     \hyperlink{_lab6_golden_8c_adcea3401f53cc2d69e4f667b19e6c196}{IR1Val} = rxDat.data;
+457                     \textcolor{comment}{//LEDS = GREEN;}
+458                     \textcolor{keywordflow}{break};
+459                 \textcolor{keywordflow}{case} \hyperlink{_lab6_golden_8c_a0d5d96d1cc5a801f9f28516b054b86b4}{IR\_2\_ID}: 
+460                     \hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val} = rxDat.data;
+461                     \textcolor{comment}{//LEDS = RED;}
+462                     \textcolor{keywordflow}{break};
+463                 \textcolor{keywordflow}{case} \hyperlink{_lab6_golden_8c_ad375e12584c5cfd298113fb8e6901482}{IR\_3\_ID}: 
+464                     \hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val} = rxDat.data;
+465                     \textcolor{comment}{//LEDS = WHITE;}
+466                    \textcolor{keywordflow}{break};
+467                 \textcolor{keywordflow}{default}:
+468                     \textcolor{keywordflow}{break};
+469             \} \textcolor{comment}{//End Switch}
+470     
+471     \} \textcolor{comment}{// End if CAN0\_GetMail}
+472   \}\textcolor{comment}{// End While }
+473 \}\textcolor{comment}{//End CAN\_Listener}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{_lab6_golden_8c_a43617af71ca5f26b8d87c7460ee110f4_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_a8df88b108bf75863b97b46c603310d3c}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Controller@{Controller}}
+\index{Controller@{Controller}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Controller}]{\setlength{\rightskip}{0pt plus 5cm}void Controller (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a8df88b108bf75863b97b46c603310d3c}
+
+
+Definition at line 566 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+566                      \{
+567     \textcolor{keywordflow}{while}(1)\{
+568         
+569         \textcolor{keywordflow}{if}((\hyperlink{_lab6_golden_8c_adcea3401f53cc2d69e4f667b19e6c196}{IR1Val} > \hyperlink{_lab6_golden_8c_a2106b37bdba5fd8fa85a477f5a6cd219}{supercloseFront}) || (\hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val} > 
+      \hyperlink{_lab6_golden_8c_a70daf00b3818ebf7fd37f21c95e9def4}{supercloseRight}) || (\hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val} > \hyperlink{_lab6_golden_8c_ab61536514678e958524efe11a63b19c7}{supercloseLeft}))
+570         \{
+571             motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a00548cec6d104932bf79a65bac1c47e8}{REVERSE}, 200);
+572             motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a00548cec6d104932bf79a65bac1c47e8}{REVERSE}, 200);
+573 \textcolor{comment}{//            LEDS = GREEN + RED;}
+574             OS\_Sleep(1);
+575             \textcolor{keywordflow}{continue};
+576         \}
+577         
+578         \textcolor{comment}{//********************* }
+579         \textcolor{comment}{//compare the sides and assign size Values}
+580         \textcolor{comment}{//run all three in parallel, since mutually exclusive }
+581         
+582         \textcolor{comment}{//rightWheele closer }
+583         \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val} > \hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val})\{
+584             \hyperlink{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}{longSideIRValue} = \hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val};
+585             \hyperlink{_lab6_golden_8c_a1a6f4bd929a31fce794281d3a5fece6f}{shortSideIRValue} = \hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val};
+586             \hyperlink{_lab6_golden_8c_a32dba967fa49fbed99ed3c9531b3c3c4}{turnLeft} = 1; 
+587             \hyperlink{_lab6_golden_8c_adc8b36b959ce03ee202b7b33bb71655d}{turnRight} = 0; 
+588             \hyperlink{_lab6_golden_8c_ac17b395804882db11d8bd30dd0d5c9be}{goStraight} = 0; 
+589             \hyperlink{_lab6_golden_8c_a0e75101dc7809e2492fe0f8daed22f0a}{rightError} = 1.0 - ((float)\hyperlink{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}{longSideIRValue})/((float)
+      \hyperlink{_lab6_golden_8c_a1a6f4bd929a31fce794281d3a5fece6f}{shortSideIRValue});
+590             \hyperlink{_lab6_golden_8c_a8bbf6a7278a0b02cbd90723dc8f19bbe}{leftError} =  ((float)\hyperlink{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}{longSideIRValue})/((float)shortSideIRValue) - 1.0;
+591         \}
+592         \textcolor{comment}{//left Wheele closer }
+593         \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val} > \hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val})\{
+594             \hyperlink{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}{longSideIRValue} = \hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val};
+595             \hyperlink{_lab6_golden_8c_a1a6f4bd929a31fce794281d3a5fece6f}{shortSideIRValue} = \hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val};
+596             \hyperlink{_lab6_golden_8c_a32dba967fa49fbed99ed3c9531b3c3c4}{turnLeft} = 0; 
+597             \hyperlink{_lab6_golden_8c_adc8b36b959ce03ee202b7b33bb71655d}{turnRight} = 1; 
+598             \hyperlink{_lab6_golden_8c_ac17b395804882db11d8bd30dd0d5c9be}{goStraight} = 0; 
+599             \hyperlink{_lab6_golden_8c_a8bbf6a7278a0b02cbd90723dc8f19bbe}{leftError} = 1.0 - ((float)\hyperlink{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}{longSideIRValue})/((float)
+      \hyperlink{_lab6_golden_8c_a1a6f4bd929a31fce794281d3a5fece6f}{shortSideIRValue});
+600             \hyperlink{_lab6_golden_8c_a0e75101dc7809e2492fe0f8daed22f0a}{rightError} =  ((float)\hyperlink{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}{longSideIRValue})/((float)shortSideIRValue) - 1.0
+      ;
+601         \}
+602         \textcolor{comment}{//equal distance }
+603         \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val} == \hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val})\{
+604             \hyperlink{_lab6_golden_8c_a0e75101dc7809e2492fe0f8daed22f0a}{rightError} = 0; 
+605             \hyperlink{_lab6_golden_8c_a8bbf6a7278a0b02cbd90723dc8f19bbe}{leftError} = 0; 
+606             \hyperlink{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}{longSideIRValue} = \hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val};
+607             \hyperlink{_lab6_golden_8c_a1a6f4bd929a31fce794281d3a5fece6f}{shortSideIRValue} = \hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val};
+608             \hyperlink{_lab6_golden_8c_a32dba967fa49fbed99ed3c9531b3c3c4}{turnLeft} = 0; 
+609             \hyperlink{_lab6_golden_8c_adc8b36b959ce03ee202b7b33bb71655d}{turnRight} = 0; 
+610             \hyperlink{_lab6_golden_8c_ac17b395804882db11d8bd30dd0d5c9be}{goStraight} = 1; 
+611         \}
+612          
+613         \hyperlink{_lab6_golden_8c_aca879141a9e2660e4cd8e410208fc1ec}{frontError} = (((float)\hyperlink{_lab6_golden_8c_adcea3401f53cc2d69e4f667b19e6c196}{IR1Val} - \hyperlink{_lab6_golden_8c_a3a69578ffb800441a624e2411824678a}{frontThreashold})/ (float)
+      \hyperlink{_lab6_golden_8c_a82059da765869f30361bcd1248568240}{tooCloseThreadshold});
+614        
+615         \textcolor{comment}{//}
+616         \textcolor{comment}{//is front too close}
+617         \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_adcea3401f53cc2d69e4f667b19e6c196}{IR1Val} >= \hyperlink{_lab6_golden_8c_a3a69578ffb800441a624e2411824678a}{frontThreashold})\{
+618             \hyperlink{_lab6_golden_8c_ac3ef240984425a8e29bb603088b9a869}{tooCloseInFront} = 1;
+619             \textcolor{comment}{//LEDS = RED;}
+620         \}\textcolor{keywordflow}{else}\{
+621             \hyperlink{_lab6_golden_8c_ac3ef240984425a8e29bb603088b9a869}{tooCloseInFront} = 0;
+622         \}
+623         
+624         \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val} >= \hyperlink{_lab6_golden_8c_a963dbd4c4a8ee1db8f2be5fbf95b9cd7}{rightThreashold} + 
+      \hyperlink{_lab6_golden_8c_ac62b880f4d9f55e7955e5865274708be}{tooCloseInRightCounter})\{
+625             \hyperlink{_lab6_golden_8c_a69f912c5367b8513e06ce33f7aa4b503}{tooCloseInRight} = 1;
+626         \}\textcolor{keywordflow}{else}\{
+627             \hyperlink{_lab6_golden_8c_ac62b880f4d9f55e7955e5865274708be}{tooCloseInRightCounter} = 0;
+628             \hyperlink{_lab6_golden_8c_a69f912c5367b8513e06ce33f7aa4b503}{tooCloseInRight} = 0;
+629         \}
+630         
+631         
+632         \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val} >= \hyperlink{_lab6_golden_8c_ac78d4fe1eb5883199c0cb9fe89ff3d8c}{leftThreashold} + \hyperlink{_lab6_golden_8c_aea00d2299c013839953781c31d79a483}{tooCloseInLeftCounter})\{
+633             \hyperlink{_lab6_golden_8c_a6e7a0545c47884fe18d22fef9853eedb}{tooCloseInLeft} = 1;
+634         \}\textcolor{keywordflow}{else}\{
+635             \hyperlink{_lab6_golden_8c_aea00d2299c013839953781c31d79a483}{tooCloseInLeftCounter} = 0;
+636             \hyperlink{_lab6_golden_8c_a6e7a0545c47884fe18d22fef9853eedb}{tooCloseInLeft} = 0;
+637         \}
+638         
+639         
+640 
+641         \textcolor{comment}{//setting up the P }
+642         \textcolor{comment}{// P = (shortSideIRValue - longSideIRValue)/ (shortSideIRValue + longSideIRValue);}
+643         \hyperlink{_lab6_golden_8c_aca74a684c7823144d7962beb8397621e}{P} = ((float)\hyperlink{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}{longSideIRValue})/ ((float)\hyperlink{_lab6_golden_8c_a1a6f4bd929a31fce794281d3a5fece6f}{shortSideIRValue} );
+644         
+645         \textcolor{comment}{//setting up the  I}
+646         \hyperlink{_lab6_golden_8c_ae141a7ed52ba64f2053069a723a6b1fb}{leftCorrection} =  \hyperlink{_lab6_golden_8c_ae141a7ed52ba64f2053069a723a6b1fb}{leftCorrection} + \hyperlink{_lab6_golden_8c_aa7d5dd64817c03d067d0e922cd35d75c}{KI} * 
+      \hyperlink{_lab6_golden_8c_a8bbf6a7278a0b02cbd90723dc8f19bbe}{leftError}; 
+647         \hyperlink{_lab6_golden_8c_ae156e47c164a3c02c27a3117ce45696c}{rightCorrection} =  \hyperlink{_lab6_golden_8c_ae156e47c164a3c02c27a3117ce45696c}{rightCorrection} + \hyperlink{_lab6_golden_8c_aa7d5dd64817c03d067d0e922cd35d75c}{KI} * 
+      \hyperlink{_lab6_golden_8c_a0e75101dc7809e2492fe0f8daed22f0a}{rightError}; 
+648         \textcolor{comment}{//capping corrections}
+649         \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_ae141a7ed52ba64f2053069a723a6b1fb}{leftCorrection} > \hyperlink{_lab6_golden_8c_ab639d295e81c2bcff1a343f7cc1273f7}{highCorrectionCap}) 
+650             \hyperlink{_lab6_golden_8c_ae141a7ed52ba64f2053069a723a6b1fb}{leftCorrection} = \hyperlink{_lab6_golden_8c_ab639d295e81c2bcff1a343f7cc1273f7}{highCorrectionCap}; 
+651         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} ( \hyperlink{_lab6_golden_8c_ae141a7ed52ba64f2053069a723a6b1fb}{leftCorrection} < \hyperlink{_lab6_golden_8c_ad567eeac9df9c00f413fb04eecc4d68b}{lowCorrectionCap}) 
+652             \hyperlink{_lab6_golden_8c_ae141a7ed52ba64f2053069a723a6b1fb}{leftCorrection} = \hyperlink{_lab6_golden_8c_ad567eeac9df9c00f413fb04eecc4d68b}{lowCorrectionCap}; 
+653 
+654         \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_ae156e47c164a3c02c27a3117ce45696c}{rightCorrection} > \hyperlink{_lab6_golden_8c_ab639d295e81c2bcff1a343f7cc1273f7}{highCorrectionCap}) 
+655             \hyperlink{_lab6_golden_8c_ae156e47c164a3c02c27a3117ce45696c}{rightCorrection} = \hyperlink{_lab6_golden_8c_ab639d295e81c2bcff1a343f7cc1273f7}{highCorrectionCap}; 
+656         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} ( \hyperlink{_lab6_golden_8c_ae156e47c164a3c02c27a3117ce45696c}{rightCorrection} < \hyperlink{_lab6_golden_8c_ad567eeac9df9c00f413fb04eecc4d68b}{lowCorrectionCap}) 
+657             \hyperlink{_lab6_golden_8c_ae156e47c164a3c02c27a3117ce45696c}{rightCorrection} = \hyperlink{_lab6_golden_8c_ad567eeac9df9c00f413fb04eecc4d68b}{lowCorrectionCap}; 
+658 
+659         
+660         \textcolor{comment}{//navigate based on the sensor inputs so far}
+661         \textcolor{comment}{//run all three in paralell, since mutually exclusive }
+662         \textcolor{comment}{//set the motorSpeed }
+663         \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_a32dba967fa49fbed99ed3c9531b3c3c4}{turnLeft}) \{
+664             \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_golden_8c_acfbc006ea433ad708fdee3e82996e721}{GREEN}; 
+665             \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed};  \textcolor{comment}{//might be set to highestSpeed or
+       Higher}
+666             \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_aca74a684c7823144d7962beb8397621e}{P} > 1 )\{ \textcolor{comment}{//regulate if multipliaction caps out}
+667                 \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed} - 40;
+668                 \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE};
+669             \}\textcolor{keywordflow}{else}\{
+670                 \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed}*(\hyperlink{_lab6_golden_8c_aca74a684c7823144d7962beb8397621e}{P}) + 
+      \hyperlink{_lab6_golden_8c_ae156e47c164a3c02c27a3117ce45696c}{rightCorrection};
+671             \}
+672             
+673             \textcolor{comment}{//capping the speed }
+674             \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} > \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed})\{ 
+675                 \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed}  = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed}; 
+676                 \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE};
+677             \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} < \hyperlink{_lab6_golden_8c_a2ea64ff9e3f348639493e6ec84013d98}{lowestSpeed}) \{
+678                 \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE};
+679                 \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed}  = \hyperlink{_lab6_golden_8c_a2ea64ff9e3f348639493e6ec84013d98}{lowestSpeed}; 
+680             \}
+681         \}
+682         \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_adc8b36b959ce03ee202b7b33bb71655d}{turnRight}) \{
+683             \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_golden_8c_a79d10e672abb49ad63eeaa8aaef57c38}{BLUE}; 
+684             \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed};  \textcolor{comment}{//might be set to highestSpeed or
+       Higher}
+685             \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_aca74a684c7823144d7962beb8397621e}{P} > 1 )\{ \textcolor{comment}{//if this multiplication causes maxing out the speedg}
+686                 \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed} - 40;
+687             \}\textcolor{keywordflow}{else}\{
+688                 \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed}*(\hyperlink{_lab6_golden_8c_aca74a684c7823144d7962beb8397621e}{P}) + 
+      \hyperlink{_lab6_golden_8c_ae141a7ed52ba64f2053069a723a6b1fb}{leftCorrection};
+689             \}
+690 
+691             \textcolor{comment}{//capping the speed }
+692             \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} > \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed})\{ 
+693                 \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed}  = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed}; 
+694                 \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE};
+695             \}  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} < \hyperlink{_lab6_golden_8c_a2ea64ff9e3f348639493e6ec84013d98}{lowestSpeed}) \{
+696                 \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed}  = \hyperlink{_lab6_golden_8c_a2ea64ff9e3f348639493e6ec84013d98}{lowestSpeed}; 
+697             \}
+698 
+699         \}
+700         
+701         \textcolor{keywordflow}{if}  (\hyperlink{_lab6_golden_8c_ac17b395804882db11d8bd30dd0d5c9be}{goStraight}) \{
+702             \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed};  \textcolor{comment}{//might be set to highestSpeed or
+       Higher}
+703             \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = \hyperlink{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{highestSpeed} ;
+704         \}
+705 
+706         \textcolor{comment}{//run the Motors }
+707         \textcolor{comment}{//if too close, stop one wheele}
+708         \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_ac3ef240984425a8e29bb603088b9a869}{tooCloseInFront} == 1) \{ 
+709             \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_golden_8c_a8d23feea868a983c8c2b661e1e16972f}{RED}; 
+710             \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_adc8b36b959ce03ee202b7b33bb71655d}{turnRight}) \{
+711                 \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = \hyperlink{_lab6_golden_8c_a08f684c971e5e14bcd9ded712ffc8e31}{frontHighestSpeed}; 
+712                 \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = 60*(1.0 - \hyperlink{_lab6_golden_8c_aca879141a9e2660e4cd8e410208fc1ec}{frontError}); 
+713                 \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} < \hyperlink{_lab6_golden_8c_a4e5311a153c7dc8b2e6160e3733ddb4d}{frontLowCap}) \{
+714                     \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS}= \hyperlink{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE}; 
+715                     \textcolor{comment}{//rightMotorSpeed = 0;}
+716                     motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+717                     motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_ae19b6bb2940d2fbe0a79852b070eeafd}{STOP}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+718                 \}\textcolor{keywordflow}{else} \{
+719                     motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+720                     motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+721                 \}
+722                 \textcolor{comment}{//rightMotorSpeed = 1/ }
+723                 \textcolor{comment}{//motorMovement(RIGHTMOTOR, STOP, FORWARD,rightMotorSpeed);}
+724             \}
+725             \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_a32dba967fa49fbed99ed3c9531b3c3c4}{turnLeft}) \{
+726                 \textcolor{comment}{//motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);}
+727                 \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = \hyperlink{_lab6_golden_8c_a08f684c971e5e14bcd9ded712ffc8e31}{frontHighestSpeed}; 
+728                 \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = 60*(1.0 - \hyperlink{_lab6_golden_8c_aca879141a9e2660e4cd8e410208fc1ec}{frontError}); 
+729                 \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} < \hyperlink{_lab6_golden_8c_a4e5311a153c7dc8b2e6160e3733ddb4d}{frontLowCap}) \{
+730                     \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS}= \hyperlink{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE}; 
+731                     \textcolor{comment}{//leftMotorSpeed = 0;}
+732                     motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_ae19b6bb2940d2fbe0a79852b070eeafd}{STOP}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+733                     motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+734                 \}\textcolor{keywordflow}{else} \{
+735                     motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+736                     motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+737                 \}
+738             \}
+739         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_a69f912c5367b8513e06ce33f7aa4b503}{tooCloseInRight}  == 1)\{
+740             \hyperlink{_lab6_golden_8c_ac62b880f4d9f55e7955e5865274708be}{tooCloseInRightCounter} +=30; 
+741             \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = \hyperlink{_lab6_golden_8c_a4e956e2d600928dfbbe5b2440c53a223}{sideHighestSpeed}; 
+742             \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = 60*(1.0 - \hyperlink{_lab6_golden_8c_a0e75101dc7809e2492fe0f8daed22f0a}{rightError}); 
+743             \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} < \hyperlink{_lab6_golden_8c_a4e5311a153c7dc8b2e6160e3733ddb4d}{frontLowCap}) \{
+744                 \textcolor{comment}{//leftMotorSpeed = 0;}
+745                 \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS}= \hyperlink{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE}; 
+746                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_ae19b6bb2940d2fbe0a79852b070eeafd}{STOP}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+747                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+748             \}\textcolor{keywordflow}{else} \{
+749                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+750                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+751                 \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_golden_8c_a8d23feea868a983c8c2b661e1e16972f}{RED} + \hyperlink{_lab6_golden_8c_a79d10e672abb49ad63eeaa8aaef57c38}{BLUE};
+752             \}
+753         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_a6e7a0545c47884fe18d22fef9853eedb}{tooCloseInLeft}  == 1)\{
+754             \hyperlink{_lab6_golden_8c_aea00d2299c013839953781c31d79a483}{tooCloseInLeftCounter} +=30; 
+755             \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = \hyperlink{_lab6_golden_8c_a4e956e2d600928dfbbe5b2440c53a223}{sideHighestSpeed}; 
+756             \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = 60*(1.0 - \hyperlink{_lab6_golden_8c_a8bbf6a7278a0b02cbd90723dc8f19bbe}{leftError}); 
+757             \textcolor{keywordflow}{if} (\hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} < \hyperlink{_lab6_golden_8c_a4e5311a153c7dc8b2e6160e3733ddb4d}{frontLowCap}) \{
+758                 \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS}= \hyperlink{_lab6_golden_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE}; 
+759                 \textcolor{comment}{//leftMotorSpeed = 0;}
+760                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+761                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR},\hyperlink{_p_w_m_dual_test_8c_ae19b6bb2940d2fbe0a79852b070eeafd}{STOP} , \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+762             \}\textcolor{keywordflow}{else} \{
+763                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+764                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+765                 \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_golden_8c_a8d23feea868a983c8c2b661e1e16972f}{RED} + \hyperlink{_lab6_golden_8c_a79d10e672abb49ad63eeaa8aaef57c38}{BLUE};
+766             \}
+767         \}\textcolor{keywordflow}{else}\{ 
+768             motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+769             motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+770         \}
+771 
+772         \textcolor{comment}{//go to sleep for a while  }
+773         OS\_Sleep(1);
+774     \}
+775     OS\_Kill();
+776 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{_lab6_golden_8c_a8df88b108bf75863b97b46c603310d3c_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_abced8d67df156821551c29a1cb684a05}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Controller2@{Controller2}}
+\index{Controller2@{Controller2}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Controller2}]{\setlength{\rightskip}{0pt plus 5cm}void Controller2 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_abced8d67df156821551c29a1cb684a05}
+
+
+Definition at line 552 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+552                       \{
+553      \textcolor{keywordflow}{while}(1) \{  
+554 \textcolor{comment}{//         for (int i =0; i< 100000; i++)\{}
+555 \textcolor{comment}{//             LEDS = BLUE; }
+556 \textcolor{comment}{//         \} }
+557 \textcolor{comment}{//          for (int i =0; i< 100000; i++)\{}
+558 \textcolor{comment}{//             LEDS = RED; }
+559 \textcolor{comment}{//         \} }
+560          motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD}, 200);
+561          motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD}, 200);
+562          OS\_Sleep(1);
+563    \}
+564     OS\_Kill();
+565 \}
+\end{DoxyCode}
+\hypertarget{_lab6_golden_8c_ac866dbaf7b167e5c46bb33de42eee84d}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Disable\-Interrupts@{Disable\-Interrupts}}
+\index{Disable\-Interrupts@{Disable\-Interrupts}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Disable\-Interrupts}]{\setlength{\rightskip}{0pt plus 5cm}void Disable\-Interrupts (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_ac866dbaf7b167e5c46bb33de42eee84d}
+\hypertarget{_lab6_golden_8c_ab712356331a62b04aebcb373865e68c4}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Enable\-Interrupts@{Enable\-Interrupts}}
+\index{Enable\-Interrupts@{Enable\-Interrupts}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Enable\-Interrupts}]{\setlength{\rightskip}{0pt plus 5cm}void Enable\-Interrupts (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_ab712356331a62b04aebcb373865e68c4}
+\hypertarget{_lab6_golden_8c_a670da3ff1aea0c7d54c40e9e40b5eeed}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!End\-Critical@{End\-Critical}}
+\index{End\-Critical@{End\-Critical}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{End\-Critical}]{\setlength{\rightskip}{0pt plus 5cm}void End\-Critical (
+\begin{DoxyParamCaption}
+\item[{long}]{sr}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a670da3ff1aea0c7d54c40e9e40b5eeed}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{_lab6_golden_8c_a670da3ff1aea0c7d54c40e9e40b5eeed_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_a6f1889c3f5d0f35d0ca0f7aa03ed5cb1}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!G\-P\-I\-O\-Port\-A\-\_\-\-Handler@{G\-P\-I\-O\-Port\-A\-\_\-\-Handler}}
+\index{G\-P\-I\-O\-Port\-A\-\_\-\-Handler@{G\-P\-I\-O\-Port\-A\-\_\-\-Handler}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{G\-P\-I\-O\-Port\-A\-\_\-\-Handler}]{\setlength{\rightskip}{0pt plus 5cm}void G\-P\-I\-O\-Port\-A\-\_\-\-Handler (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a6f1889c3f5d0f35d0ca0f7aa03ed5cb1}
+
+
+Definition at line 110 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+110                             \{
+111   GPIO\_PORTA\_ICR\_R = (1 << 6);    \textcolor{comment}{// acknowledge flag6}
+112   \textcolor{comment}{//SW2 = 1;}
+113   \textcolor{keyword}{static} uint32\_t pingStartTime; 
+114   \textcolor{keyword}{static} uint32\_t pingEndTime;
+115 
+116   \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_adaab1d0c061d12c9892583c9591a70af}{PA6} != 0)  pingStartTime = OS\_GetUsTime();
+117   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_adaab1d0c061d12c9892583c9591a70af}{PA6} == 0)\{
+118     pingEndTime = OS\_GetUsTime();
+119     uint32\_t delta =  ((pingEndTime - pingStartTime) >> 1)*34300/1000000;
+120     \textcolor{keywordflow}{if}(pingEndTime > pingStartTime)\{
+121       \hyperlink{_lab6_golden_8c_a6b0304a7c2f611c97a1f4779a9bfb483}{Ping1Mail}.Send(delta);
+122     \}
+123   \}
+124 \}
+\end{DoxyCode}
+\hypertarget{_lab6_golden_8c_a0b6c07c1a985f30a5ca41d59f8c22932}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!G\-P\-I\-O\-Port\-C\-\_\-\-Handler@{G\-P\-I\-O\-Port\-C\-\_\-\-Handler}}
+\index{G\-P\-I\-O\-Port\-C\-\_\-\-Handler@{G\-P\-I\-O\-Port\-C\-\_\-\-Handler}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{G\-P\-I\-O\-Port\-C\-\_\-\-Handler}]{\setlength{\rightskip}{0pt plus 5cm}void G\-P\-I\-O\-Port\-C\-\_\-\-Handler (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a0b6c07c1a985f30a5ca41d59f8c22932}
+
+
+Definition at line 125 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+125                             \{
+126   GPIO\_PORTC\_ICR\_R = (1 << 6);    \textcolor{comment}{// acknowledge flag6}
+127   \textcolor{comment}{//SW2 = 1;}
+128   \textcolor{keyword}{static} uint32\_t pingStartTime; 
+129   \textcolor{keyword}{static} uint32\_t pingEndTime;
+130 
+131   \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_aea08c09063c5962f8f60044f1829d54c}{PC6} != 0)  pingStartTime = OS\_GetUsTime();
+132   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\hyperlink{_lab6_golden_8c_aea08c09063c5962f8f60044f1829d54c}{PC6} == 0)\{
+133     pingEndTime = OS\_GetUsTime();
+134     uint32\_t delta =  ((pingEndTime - pingStartTime) >> 1)*34300/1000000;
+135     \textcolor{keywordflow}{if}(pingEndTime > pingStartTime)\{
+136       \hyperlink{_lab6_golden_8c_a39dbfc1fca14892a7d8916d445fb4321}{Ping2Mail}.Send(delta);
+137     \}
+138   \}
+139 \}
+\end{DoxyCode}
+\hypertarget{_lab6_golden_8c_a93e4ea9d9ef2ee60af1459a12b6e6d4c}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R1@{I\-R1}}
+\index{I\-R1@{I\-R1}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R1}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R1 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a93e4ea9d9ef2ee60af1459a12b6e6d4c}
+
+
+Definition at line 332 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+332               \{
+333     
+334   uint32\_t SendData;
+335   CanMessage\_t msg;
+336     uint8\_t byteMe[5];
+337   \hyperlink{_a_d_c_8c_ae7cef9ecd73d25c0931372d21e6be943}{ADC\_init\_channel}(1, 100);
+338     \textcolor{keywordflow}{while}(1)\{
+339         SendData = 0;
+340         OS\_Wait(&\hyperlink{_lab6_golden_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+341     \hyperlink{_a_d_c_8c_a9fdea7e06f4c4769ab22981dafb58477}{ADC\_Collect}(1, 100, \hyperlink{_lab6_golden_8c_aec9aecee730bddbe611ffd11cfe09692}{Res\_buffer1}, 2*\hyperlink{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}); \textcolor{comment}{//128, to bring down
+       sampling rate from 100 to 50}
+342     \textcolor{keywordflow}{while}(\hyperlink{_a_d_c_8c_ab991147608f978ac77baf774334e802b}{ADC\_Status}(1))\{\}
+343         OS\_Signal(&\hyperlink{_lab6_golden_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+344     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \hyperlink{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE; i++)\{
+345       SendData += median\_filt(&\hyperlink{_lab6_golden_8c_aec9aecee730bddbe611ffd11cfe09692}{Res\_buffer1}[i]);
+346     \}
+347     SendData = SendData/(\hyperlink{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE);
+348     \textcolor{comment}{//msg.mId = IR\_1\_ID;}
+349     \textcolor{comment}{//msg.data = SendData;}
+350     \textcolor{comment}{//CanMessage2Buff(&msg, byteMe);}
+351     \textcolor{comment}{//CAN0\_SendData(byteMe);}
+352     \hyperlink{_lab6_golden_8c_adcea3401f53cc2d69e4f667b19e6c196}{IR1Val} = SendData; 
+353     \textcolor{comment}{//LEDS = RED;}
+354   \}
+355   OS\_Kill();
+356 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab6_golden_8c_a93e4ea9d9ef2ee60af1459a12b6e6d4c_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{_lab6_golden_8c_a93e4ea9d9ef2ee60af1459a12b6e6d4c_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_adc674087543a04e8700d2427322b8328}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R2@{I\-R2}}
+\index{I\-R2@{I\-R2}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R2}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R2 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_adc674087543a04e8700d2427322b8328}
+
+
+Definition at line 359 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+359               \{
+360         
+361   uint32\_t SendData;
+362   CanMessage\_t msg;
+363     uint8\_t byteMe[5];
+364   \hyperlink{_a_d_c_8c_ae7cef9ecd73d25c0931372d21e6be943}{ADC\_init\_channel}(2, 100);
+365     \textcolor{keywordflow}{while}(1)\{
+366         SendData = 0;
+367         OS\_Wait(&\hyperlink{_lab6_golden_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+368     \hyperlink{_a_d_c_8c_a9fdea7e06f4c4769ab22981dafb58477}{ADC\_Collect}(2, 100, \hyperlink{_lab6_golden_8c_a6a20659f3190002cee79b8ee18b012a7}{Res\_buffer2}, 2*\hyperlink{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}); \textcolor{comment}{//128, to bring down
+       sampling rate from 100 to 50}
+369     \textcolor{keywordflow}{while}(\hyperlink{_a_d_c_8c_ab991147608f978ac77baf774334e802b}{ADC\_Status}(2))\{\}
+370     OS\_Signal(&\hyperlink{_lab6_golden_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+371         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \hyperlink{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE; i++)\{
+372       SendData += median\_filt(&\hyperlink{_lab6_golden_8c_a6a20659f3190002cee79b8ee18b012a7}{Res\_buffer2}[i]);
+373     \}
+374     SendData = SendData/(\hyperlink{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE);
+375 \textcolor{comment}{//    msg.mId = IR\_2\_ID;}
+376 \textcolor{comment}{//    msg.data = SendData;}
+377 \textcolor{comment}{//        CanMessage2Buff(&msg, byteMe);}
+378 \textcolor{comment}{//    CAN0\_SendData(byteMe);}
+379 \textcolor{comment}{//    }
+380     \hyperlink{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val} = SendData; 
+381     \textcolor{comment}{//LEDS = BLUE;}
+382   \}
+383   OS\_Kill();
+384 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab6_golden_8c_adc674087543a04e8700d2427322b8328_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{_lab6_golden_8c_adc674087543a04e8700d2427322b8328_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_a7c8ab9e9d2256a9f7ecee8fb0499cb91}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R3@{I\-R3}}
+\index{I\-R3@{I\-R3}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R3}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R3 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a7c8ab9e9d2256a9f7ecee8fb0499cb91}
+
+
+Definition at line 387 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+387               \{
+388   uint32\_t SendData;
+389   CanMessage\_t msg;
+390     uint8\_t byteMe[5];
+391   \hyperlink{_a_d_c_8c_ae7cef9ecd73d25c0931372d21e6be943}{ADC\_init\_channel}(4, 100);
+392     \textcolor{keywordflow}{while}(1)\{
+393         SendData = 0;
+394         OS\_Wait(&\hyperlink{_lab6_golden_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+395     \hyperlink{_a_d_c_8c_a9fdea7e06f4c4769ab22981dafb58477}{ADC\_Collect}(4, 100, \hyperlink{_lab6_golden_8c_ad382a86c210687cdebcb99093927c7d3}{Res\_buffer3}, 2*\hyperlink{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}); \textcolor{comment}{//128, to bring down
+       sampling rate from 100 to 50}
+396     \textcolor{keywordflow}{while}(\hyperlink{_a_d_c_8c_ab991147608f978ac77baf774334e802b}{ADC\_Status}(3))\{\}
+397         OS\_Signal(&\hyperlink{_lab6_golden_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+398     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \hyperlink{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE; i++)\{
+399       SendData += median\_filt(&\hyperlink{_lab6_golden_8c_ad382a86c210687cdebcb99093927c7d3}{Res\_buffer3}[i]);
+400     \}
+401     SendData = SendData/(\hyperlink{_lab6_golden_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE);
+402 \textcolor{comment}{//    msg.mId = IR\_3\_ID;}
+403 \textcolor{comment}{//    msg.data = SendData;}
+404 \textcolor{comment}{//        CanMessage2Buff(&msg, byteMe);}
+405 \textcolor{comment}{//    CAN0\_SendData(byteMe);}
+406     \hyperlink{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val} = SendData; 
+407     \textcolor{comment}{//LEDS = RED;}
+408   \}
+409   OS\_Kill();
+410 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab6_golden_8c_a7c8ab9e9d2256a9f7ecee8fb0499cb91_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{_lab6_golden_8c_a7c8ab9e9d2256a9f7ecee8fb0499cb91_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_a840291bc02cba5474a4cb46a9b9566fe}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!main@{main}}
+\index{main@{main}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a840291bc02cba5474a4cb46a9b9566fe}
+
+
+Definition at line 912 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+912               \{   \textcolor{comment}{// testmain1}
+913   OS\_Init();           \textcolor{comment}{// initialize, disable interrupts}
+914 \textcolor{comment}{//  PWM0Dual\_Period(40000);           // 12.50 Hz, 15 RPM}
+915   \hyperlink{_lab6_golden_8c_ae19ef8807dc64129635da5b3b781588a}{PortF\_Init}();
+916   CAN0\_Open();
+917 
+918   PWM0Dual\_Init(60000);            \textcolor{comment}{// initialize PWM1-0, 0.8333 Hz, 1 RPM}
+919   NumCreated = 0 ;
+920   \textcolor{comment}{// create initial foreground threads}
+921   NumCreated += OS\_AddThread(&\hyperlink{_lab6_golden_8c_a43617af71ca5f26b8d87c7460ee110f4}{CAN\_Listener}, 128, 2);
+922   \textcolor{comment}{//NumCreated += OS\_AddThread(&Controller2, 128, 2);}
+923   NumCreated += OS\_AddThread(&\hyperlink{_lab6_golden_8c_a8df88b108bf75863b97b46c603310d3c}{Controller}, 128, 2);
+924   OS\_InitSemaphore(&\hyperlink{_lab6_golden_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection}, 1);
+925   NumCreated += OS\_AddThread(&\hyperlink{_lab6_golden_8c_a93e4ea9d9ef2ee60af1459a12b6e6d4c}{IR1}, 128, 2);
+926   NumCreated += OS\_AddThread(&\hyperlink{_lab6_golden_8c_adc674087543a04e8700d2427322b8328}{IR2}, 128, 2);
+927   NumCreated += OS\_AddThread(&\hyperlink{_lab6_golden_8c_a7c8ab9e9d2256a9f7ecee8fb0499cb91}{IR3}, 128, 2);
+928   OS\_Launch(TIME\_1MS/4); \textcolor{comment}{// doesn't return, interrupts enabled in here}
+929   \textcolor{keywordflow}{return} 0;               \textcolor{comment}{// this never executes}
+930 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab6_golden_8c_a840291bc02cba5474a4cb46a9b9566fe_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_a03c7899f3ff55164dfc955aed1b328f8}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Ping1@{Ping1}}
+\index{Ping1@{Ping1}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Ping1}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Ping1 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a03c7899f3ff55164dfc955aed1b328f8}
+
+
+Definition at line 181 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+181                     \{
+182     \textcolor{comment}{// uint32\_t pingStartTime; }
+183     \textcolor{comment}{// uint32\_t pingEndTime;}
+184     \textcolor{comment}{//Write GPIO\_Pin High}
+185     \textcolor{keywordtype}{long} sr = \hyperlink{_lab6_golden_8c_a6e7e2088607214bc15b17ac57b57df1b}{StartCritical}();
+186   \hyperlink{_lab6_golden_8c_ad55f1ce2962d3a43aeed74b5459214f6}{PA7} = 0x80;
+187     OS\_DelayUS(5);
+188     \textcolor{comment}{//Write GPIO Pin Low}
+189     \hyperlink{_lab6_golden_8c_ad55f1ce2962d3a43aeed74b5459214f6}{PA7} = 0x00;
+190     \textcolor{comment}{//Could move into a ISR}
+191     \textcolor{comment}{//while(gpio\_Pin\_Low)\{\}}
+192     \textcolor{comment}{// while(PA6 == 0)\{\}}
+193     \textcolor{comment}{// pingStartTime = OS\_GetUsTime();}
+194 
+195     \textcolor{comment}{// //while(gpio\_Pin\_High)\{\}}
+196     \textcolor{comment}{// while(PA6 != 0)\{\}}
+197 
+198     \textcolor{comment}{// pingEndTime = OS\_GetUsTime();}
+199     \textcolor{comment}{// OS\_DelayUS(200);}
+200     \textcolor{comment}{// //Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)}
+201     \textcolor{comment}{// //Then the ping time is c*dT/2}
+202         \hyperlink{_lab6_golden_8c_a670da3ff1aea0c7d54c40e9e40b5eeed}{EndCritical}(sr);
+203     \textcolor{comment}{// return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;}
+204 
+205   uint32\_t delta;
+206   \hyperlink{_lab6_golden_8c_a6b0304a7c2f611c97a1f4779a9bfb483}{Ping1Mail}.Receive(delta);
+207   \textcolor{keywordflow}{return} delta;
+208 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{_lab6_golden_8c_a03c7899f3ff55164dfc955aed1b328f8_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{_lab6_golden_8c_a03c7899f3ff55164dfc955aed1b328f8_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_a88c85cf0752512429969dbc0b75626d0}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Ping2@{Ping2}}
+\index{Ping2@{Ping2}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Ping2}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Ping2 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a88c85cf0752512429969dbc0b75626d0}
+
+
+Definition at line 211 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+211                     \{
+212   \textcolor{comment}{// uint32\_t pingStartTime; }
+213   \textcolor{comment}{// uint32\_t pingEndTime;}
+214   \textcolor{comment}{//Write GPIO\_Pin High}
+215     \textcolor{keywordtype}{long} sr = \hyperlink{_lab6_golden_8c_a6e7e2088607214bc15b17ac57b57df1b}{StartCritical}();
+216   \hyperlink{_lab6_golden_8c_a1194403dd24b90c5af73482c52ad1360}{PC7} = 0x80;
+217   OS\_DelayUS(5);
+218   \textcolor{comment}{//Write GPIO Pin Low}
+219   \hyperlink{_lab6_golden_8c_a1194403dd24b90c5af73482c52ad1360}{PC7} = 0x00;
+220   \textcolor{comment}{//Could move into a ISR}
+221   \textcolor{comment}{//while(gpio\_Pin\_Low)\{\}}
+222   \textcolor{comment}{// while(PC6 == 0)\{\}}
+223   \textcolor{comment}{// pingStartTime = OS\_GetUsTime();}
+224 
+225   \textcolor{comment}{// //while(gpio\_Pin\_High)\{\}}
+226   \textcolor{comment}{// while(PC6 != 0)\{\}}
+227 
+228     \hyperlink{_lab6_golden_8c_a670da3ff1aea0c7d54c40e9e40b5eeed}{EndCritical}(sr);
+229 
+230   \textcolor{comment}{// pingEndTime = OS\_GetUsTime();}
+231   \textcolor{comment}{// OS\_DelayUS(200);}
+232   \textcolor{comment}{// //Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)}
+233   \textcolor{comment}{// //Then the ping time is c*dT/2}
+234   \textcolor{comment}{// return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;}
+235   uint32\_t delta;
+236   \hyperlink{_lab6_golden_8c_a39dbfc1fca14892a7d8916d445fb4321}{Ping2Mail}.Receive(delta);
+237   \textcolor{keywordflow}{return} delta;
+238 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{_lab6_golden_8c_a88c85cf0752512429969dbc0b75626d0_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=200pt]{_lab6_golden_8c_a88c85cf0752512429969dbc0b75626d0_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_acbb551322fcba7749c8c40006cd9ffd8}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Ping\-L@{Ping\-L}}
+\index{Ping\-L@{Ping\-L}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Ping\-L}]{\setlength{\rightskip}{0pt plus 5cm}void Ping\-L (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_acbb551322fcba7749c8c40006cd9ffd8}
+
+
+Definition at line 266 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+266                 \{
+267   
+268   uint32\_t distance;
+269   CanMessage\_t msg;
+270     uint8\_t byteMe[5];
+271 
+272   uint32\_t i = 0;
+273   \textcolor{keywordflow}{while}(1)\{
+274     distance = 0;
+275     \textcolor{keywordflow}{for}(i = 0; i < 4; i++)\{
+276       distance += \hyperlink{_lab6_golden_8c_a88c85cf0752512429969dbc0b75626d0}{Ping2}();
+277     \}
+278     distance = distance >> 2;
+279     \textcolor{comment}{//XmtData = (uint8\_t *) &distance;}
+280     msg.mId = \hyperlink{_lab6_golden_8c_a25b36259b474d6e7ff4c3eb00374f947}{PING\_L\_ID};
+281     msg.data = distance;
+282         CanMessage2Buff(&msg, byteMe);
+283 
+284     \textcolor{comment}{//CAN0\_SendData(CAST\_CAN\_2\_UINT8P(msg));}
+285         CAN0\_SendData(byteMe);
+286 
+287 
+288   \}
+289   OS\_Kill();
+290 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{_lab6_golden_8c_acbb551322fcba7749c8c40006cd9ffd8_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_abd66255c87de5710737f979da785c171}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Ping\-R@{Ping\-R}}
+\index{Ping\-R@{Ping\-R}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Ping\-R}]{\setlength{\rightskip}{0pt plus 5cm}void Ping\-R (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_abd66255c87de5710737f979da785c171}
+
+
+Definition at line 240 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+240                 \{
+241   
+242 
+243   uint32\_t distance;
+244   CanMessage\_t msg;
+245     uint8\_t byteMe[5];
+246 
+247   \textcolor{comment}{//uint32\_t distance\_buff[4];}
+248   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{id} = OS\_Id();
+249   uint32\_t i = 0;
+250   \textcolor{keywordflow}{while}(1)\{
+251     distance = 0;
+252     \textcolor{keywordflow}{for}(i = 0; i < 4; i++)\{
+253       distance += \hyperlink{_lab6_golden_8c_a03c7899f3ff55164dfc955aed1b328f8}{Ping1}();
+254     \}
+255     distance = distance >> 2;
+256     \textcolor{comment}{//XmtData = (uint8\_t *) &distance;}
+257     msg.mId = \hyperlink{_lab6_golden_8c_a0d2937f7ce6f0370010af0183f2cfb24}{PING\_R\_ID};
+258     msg.data = distance;
+259         CanMessage2Buff(&msg, byteMe);
+260     CAN0\_SendData(byteMe);
+261 
+262   \}
+263   OS\_Kill();
+264 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{_lab6_golden_8c_abd66255c87de5710737f979da785c171_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_ac079e51ee4b2d6294323419435982b5d}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init@{Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init}}
+\index{Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init@{Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init}]{\setlength{\rightskip}{0pt plus 5cm}void Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_ac079e51ee4b2d6294323419435982b5d}
+
+
+Definition at line 161 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+161                                  \{ \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keyword}{volatile} delay;
+162   \textcolor{comment}{//SYSCTL\_RCGC2\_R |= 0x10;       // activate port A}
+163   SYSCTL\_RCGCGPIO\_R |= 0x01;       
+164   delay = SYSCTL\_RCGC2\_R;        
+165   delay = SYSCTL\_RCGC2\_R;         
+166   GPIO\_PORTA\_DIR\_R |= 0xC0;    \textcolor{comment}{// make PA7 output}
+167   GPIO\_PORTA\_DIR\_R &= ~0x40;   \textcolor{comment}{//PA6 is echo}
+168   GPIO\_PORTA\_AFSEL\_R &= ~0xC0;   \textcolor{comment}{// disable alt funct on PA6-7}
+169   GPIO\_PORTA\_DEN\_R |= 0xC0;     \textcolor{comment}{// enable digital I/O on PA6-7}
+170 
+171   GPIO\_PORTA\_IS\_R &= ~(1 << 6);   \textcolor{comment}{// PA6 is edge-sensitive}
+172   GPIO\_PORTA\_IBE\_R |= (1 << 6);   \textcolor{comment}{// PA6 is sensitive to both edges}
+173   GPIO\_PORTA\_IEV\_R |= (1 << 6);   \textcolor{comment}{// PA6 rising edge event (Dont care)}
+174   GPIO\_PORTA\_ICR\_R = (1 << 6); \textcolor{comment}{//Clear the flag}
+175   GPIO\_PORTA\_IM\_R |= (1 << 6);    \textcolor{comment}{// enable interrupt on PA6}
+176 
+177   \textcolor{comment}{//Priority Level 3}
+178   NVIC\_PRI0\_R = (NVIC\_PRI0\_R&0xFFFFFFF00)| (3 << 5);
+179   NVIC\_EN0\_R = 1 << 0;
+180 \}
+\end{DoxyCode}
+\hypertarget{_lab6_golden_8c_a5a2a2db7e83737739f577faafdf8cce7}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init@{Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init}}
+\index{Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init@{Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init}]{\setlength{\rightskip}{0pt plus 5cm}void Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a5a2a2db7e83737739f577faafdf8cce7}
+
+
+Definition at line 140 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+140                                  \{ \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keyword}{volatile} delay;
+141   \textcolor{comment}{//SYSCTL\_RCGC2\_R |= 0x10;       // activate port c}
+142   SYSCTL\_RCGCGPIO\_R |= 0x04;       
+143   delay = SYSCTL\_RCGC2\_R;        
+144   delay = SYSCTL\_RCGC2\_R;         
+145   GPIO\_PORTC\_DIR\_R |= 0xC0;    \textcolor{comment}{// make PC7 output}
+146   GPIO\_PORTC\_DIR\_R &= ~0x40;   \textcolor{comment}{//PC6 is echo}
+147   GPIO\_PORTC\_AFSEL\_R &= ~0xC0;   \textcolor{comment}{// disable alt funct on PC6-7}
+148   GPIO\_PORTC\_DEN\_R |= 0xC0;     \textcolor{comment}{// enable digital I/O on PC6-7}
+149 
+150   GPIO\_PORTC\_IS\_R &= ~(1 << 6);   \textcolor{comment}{// PA6 is edge-sensitive}
+151   GPIO\_PORTC\_IBE\_R |= (1 << 6);   \textcolor{comment}{// PA6 is sensitive to both edges}
+152   GPIO\_PORTC\_IEV\_R |= (1 << 6);   \textcolor{comment}{// PA6 rising edge event (Dont care)}
+153   GPIO\_PORTC\_ICR\_R = (1 << 6); \textcolor{comment}{//Clear the flag}
+154   GPIO\_PORTC\_IM\_R |= (1 << 6);    \textcolor{comment}{// enable interrupt on PA6}
+155 
+156   \textcolor{comment}{//Priority Level 3}
+157   NVIC\_PRI0\_R = (NVIC\_PRI0\_R&0xFF00FFFFF)| (1 << 21);
+158   NVIC\_EN0\_R = 1 << 2;
+159 \}
+\end{DoxyCode}
+\hypertarget{_lab6_golden_8c_a04369a3281263e369b0cffb5658b24e3}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Port\-D\-\_\-\-Init@{Port\-D\-\_\-\-Init}}
+\index{Port\-D\-\_\-\-Init@{Port\-D\-\_\-\-Init}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Port\-D\-\_\-\-Init}]{\setlength{\rightskip}{0pt plus 5cm}void Port\-D\-\_\-\-Init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a04369a3281263e369b0cffb5658b24e3}
+
+
+Definition at line 87 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+87                      \{ \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keyword}{volatile} delay;
+88   \textcolor{comment}{//SYSCTL\_RCGC2\_R |= 0x10;       // activate port D}
+89   SYSCTL\_RCGCGPIO\_R |= 0x08;       
+90   delay = SYSCTL\_RCGC2\_R;        
+91   delay = SYSCTL\_RCGC2\_R;         
+92   GPIO\_PORTD\_DIR\_R |= 0xC0;    \textcolor{comment}{// make PD7 output}
+93     GPIO\_PORTD\_DIR\_R &= ~0x40;   \textcolor{comment}{//PD6 is echo}
+94   GPIO\_PORTD\_AFSEL\_R &= ~0xC0;   \textcolor{comment}{// disable alt funct on PD6-7}
+95   GPIO\_PORTD\_DEN\_R |= 0xC0;     \textcolor{comment}{// enable digital I/O on PD6-7}
+96   \textcolor{comment}{//GPIO\_PORTD\_PCTL\_R = ~0x0000FFFF;}
+97   \textcolor{comment}{//GPIO\_PORTD\_AMSEL\_R &= ~0x0F;;      // disable analog functionality on PF}
+98   GPIO\_PORTD\_IS\_R &= ~(1 << 6);   \textcolor{comment}{// PD6 is edge-sensitive}
+99   GPIO\_PORTD\_IBE\_R |= (1 << 6);   \textcolor{comment}{// PD6 is sensitive to both edges}
+100   GPIO\_PORTD\_IEV\_R |= (1 << 6);   \textcolor{comment}{// PD6 rising edge event (Dont care)}
+101   GPIO\_PORTD\_ICR\_R = (1 << 6); \textcolor{comment}{//Clear the flag}
+102   GPIO\_PORTD\_IM\_R |= (1 << 6);    \textcolor{comment}{// enable interrupt on PD6}
+103 
+104   \textcolor{comment}{//Priority Level 3}
+105   NVIC\_PRI0\_R = (NVIC\_PRI0\_R&0x00FFFFFF)| (0 << 29);
+106   NVIC\_EN0\_R = 1 << 3;
+107  
+108 \}
+\end{DoxyCode}
+\hypertarget{_lab6_golden_8c_ae19ef8807dc64129635da5b3b781588a}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Port\-F\-\_\-\-Init@{Port\-F\-\_\-\-Init}}
+\index{Port\-F\-\_\-\-Init@{Port\-F\-\_\-\-Init}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Port\-F\-\_\-\-Init}]{\setlength{\rightskip}{0pt plus 5cm}void Port\-F\-\_\-\-Init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_ae19ef8807dc64129635da5b3b781588a}
+
+
+Definition at line 417 of file Lab6\-Golden.\-c.
+
+
+\begin{DoxyCode}
+417                      \{
+418   SYSCTL\_RCGCGPIO\_R |= 0x20;       \textcolor{comment}{// activate port F}
+419   \textcolor{keywordflow}{while}((SYSCTL\_PRGPIO\_R&0x0020) == 0)\{\};\textcolor{comment}{// ready?}
+420   GPIO\_PORTF\_DIR\_R |= 0x0E;        \textcolor{comment}{// make PF3-1 output (PF3-1 built-in LEDs)}
+421   GPIO\_PORTF\_AFSEL\_R &= ~0x0E;     \textcolor{comment}{// disable alt funct on PF3-1}
+422   GPIO\_PORTF\_DEN\_R |= 0x0E;        \textcolor{comment}{// enable digital I/O on PF3-1}
+423                                    \textcolor{comment}{// configure PF3-1 as GPIO}
+424   GPIO\_PORTF\_PCTL\_R = (GPIO\_PORTF\_PCTL\_R&0xFFFF000F)+0x00000000;
+425   GPIO\_PORTF\_AMSEL\_R = 0;          \textcolor{comment}{// disable analog functionality on PF}
+426   \hyperlink{_lab6_golden_8c_a61686d33603491344883775b9b31e172}{LEDS} = 0;     \textcolor{comment}{// turn all LEDs off}
+427 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{_lab6_golden_8c_ae19ef8807dc64129635da5b3b781588a_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_a6e7e2088607214bc15b17ac57b57df1b}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Start\-Critical@{Start\-Critical}}
+\index{Start\-Critical@{Start\-Critical}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Start\-Critical}]{\setlength{\rightskip}{0pt plus 5cm}long Start\-Critical (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a6e7e2088607214bc15b17ac57b57df1b}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{_lab6_golden_8c_a6e7e2088607214bc15b17ac57b57df1b_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_golden_8c_a80ae22f2f73496246542c428c4bec38f}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Wait\-For\-Interrupt@{Wait\-For\-Interrupt}}
+\index{Wait\-For\-Interrupt@{Wait\-For\-Interrupt}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Wait\-For\-Interrupt}]{\setlength{\rightskip}{0pt plus 5cm}void Wait\-For\-Interrupt (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_golden_8c_a80ae22f2f73496246542c428c4bec38f}
+
+
+\subsection{Variable Documentation}
+\hypertarget{_lab6_golden_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!A\-D\-C\-\_\-\-Collection@{A\-D\-C\-\_\-\-Collection}}
+\index{A\-D\-C\-\_\-\-Collection@{A\-D\-C\-\_\-\-Collection}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{A\-D\-C\-\_\-\-Collection}]{\setlength{\rightskip}{0pt plus 5cm}Sema4\-Type A\-D\-C\-\_\-\-Collection}}\label{_lab6_golden_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}
+
+
+Definition at line 62 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aca879141a9e2660e4cd8e410208fc1ec}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!front\-Error@{front\-Error}}
+\index{front\-Error@{front\-Error}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{front\-Error}]{\setlength{\rightskip}{0pt plus 5cm}float front\-Error = 0}}\label{_lab6_golden_8c_aca879141a9e2660e4cd8e410208fc1ec}
+
+
+Definition at line 533 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a08f684c971e5e14bcd9ded712ffc8e31}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!front\-Highest\-Speed@{front\-Highest\-Speed}}
+\index{front\-Highest\-Speed@{front\-Highest\-Speed}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{front\-Highest\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}int front\-Highest\-Speed = 150}}\label{_lab6_golden_8c_a08f684c971e5e14bcd9ded712ffc8e31}
+
+
+Definition at line 538 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a4e5311a153c7dc8b2e6160e3733ddb4d}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!front\-Low\-Cap@{front\-Low\-Cap}}
+\index{front\-Low\-Cap@{front\-Low\-Cap}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{front\-Low\-Cap}]{\setlength{\rightskip}{0pt plus 5cm}int front\-Low\-Cap = 10}}\label{_lab6_golden_8c_a4e5311a153c7dc8b2e6160e3733ddb4d}
+
+
+Definition at line 542 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a5fa41fb37330973b00a53519b43dc652}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!front\-Lowest\-Speed@{front\-Lowest\-Speed}}
+\index{front\-Lowest\-Speed@{front\-Lowest\-Speed}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{front\-Lowest\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}int front\-Lowest\-Speed = 60}}\label{_lab6_golden_8c_a5fa41fb37330973b00a53519b43dc652}
+
+
+Definition at line 540 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a3a69578ffb800441a624e2411824678a}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!front\-Threashold@{front\-Threashold}}
+\index{front\-Threashold@{front\-Threashold}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{front\-Threashold}]{\setlength{\rightskip}{0pt plus 5cm}float front\-Threashold = 600}}\label{_lab6_golden_8c_a3a69578ffb800441a624e2411824678a}
+
+
+Definition at line 512 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ac17b395804882db11d8bd30dd0d5c9be}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!go\-Straight@{go\-Straight}}
+\index{go\-Straight@{go\-Straight}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{go\-Straight}]{\setlength{\rightskip}{0pt plus 5cm}bool go\-Straight = 0}}\label{_lab6_golden_8c_ac17b395804882db11d8bd30dd0d5c9be}
+
+
+Definition at line 536 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ab639d295e81c2bcff1a343f7cc1273f7}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!high\-Correction\-Cap@{high\-Correction\-Cap}}
+\index{high\-Correction\-Cap@{high\-Correction\-Cap}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{high\-Correction\-Cap}]{\setlength{\rightskip}{0pt plus 5cm}float high\-Correction\-Cap = {\bf highest\-Speed} $\ast$(1 -\/ {\bf lowest\-P})}}\label{_lab6_golden_8c_ab639d295e81c2bcff1a343f7cc1273f7}
+
+
+Definition at line 549 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!highest\-Speed@{highest\-Speed}}
+\index{highest\-Speed@{highest\-Speed}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{highest\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}int highest\-Speed = 290}}\label{_lab6_golden_8c_a050ff1c0feff586146c87aeac96fdbe2}
+
+
+Definition at line 537 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ae9a74104294340225e2bbc7c1fa561ff}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R0\-Val@{I\-R0\-Val}}
+\index{I\-R0\-Val@{I\-R0\-Val}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R0\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t I\-R0\-Val = 4096}}\label{_lab6_golden_8c_ae9a74104294340225e2bbc7c1fa561ff}
+
+
+Definition at line 296 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_adcea3401f53cc2d69e4f667b19e6c196}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R1\-Val@{I\-R1\-Val}}
+\index{I\-R1\-Val@{I\-R1\-Val}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R1\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t I\-R1\-Val = 4096}}\label{_lab6_golden_8c_adcea3401f53cc2d69e4f667b19e6c196}
+
+
+Definition at line 297 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R2\-Val@{I\-R2\-Val}}
+\index{I\-R2\-Val@{I\-R2\-Val}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R2\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t I\-R2\-Val = 4096}}\label{_lab6_golden_8c_a2b37f85b4e04e07d733d0925cafeea88}
+
+
+Definition at line 298 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!I\-R3\-Val@{I\-R3\-Val}}
+\index{I\-R3\-Val@{I\-R3\-Val}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{I\-R3\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t I\-R3\-Val = 4096}}\label{_lab6_golden_8c_a6af4ef6e3413367b368acb7b5ba47d17}
+
+
+Definition at line 299 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aa7d5dd64817c03d067d0e922cd35d75c}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!K\-I@{K\-I}}
+\index{K\-I@{K\-I}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{K\-I}]{\setlength{\rightskip}{0pt plus 5cm}float K\-I = .\-04}}\label{_lab6_golden_8c_aa7d5dd64817c03d067d0e922cd35d75c}
+
+
+Definition at line 518 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ae141a7ed52ba64f2053069a723a6b1fb}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!left\-Correction@{left\-Correction}}
+\index{left\-Correction@{left\-Correction}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{left\-Correction}]{\setlength{\rightskip}{0pt plus 5cm}float left\-Correction = 0}}\label{_lab6_golden_8c_ae141a7ed52ba64f2053069a723a6b1fb}
+
+
+Definition at line 526 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a8bbf6a7278a0b02cbd90723dc8f19bbe}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!left\-Error@{left\-Error}}
+\index{left\-Error@{left\-Error}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{left\-Error}]{\setlength{\rightskip}{0pt plus 5cm}float left\-Error = 0}}\label{_lab6_golden_8c_a8bbf6a7278a0b02cbd90723dc8f19bbe}
+
+
+Definition at line 532 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!left\-Motor\-Speed@{left\-Motor\-Speed}}
+\index{left\-Motor\-Speed@{left\-Motor\-Speed}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{left\-Motor\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}int left\-Motor\-Speed = 0}}\label{_lab6_golden_8c_ace43f08f7bad6f10c2df24b2df25f6bb}
+
+
+Definition at line 482 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ac78d4fe1eb5883199c0cb9fe89ff3d8c}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!left\-Threashold@{left\-Threashold}}
+\index{left\-Threashold@{left\-Threashold}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{left\-Threashold}]{\setlength{\rightskip}{0pt plus 5cm}float left\-Threashold = 1250}}\label{_lab6_golden_8c_ac78d4fe1eb5883199c0cb9fe89ff3d8c}
+
+
+Definition at line 514 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!long\-Side\-I\-R\-Value@{long\-Side\-I\-R\-Value}}
+\index{long\-Side\-I\-R\-Value@{long\-Side\-I\-R\-Value}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{long\-Side\-I\-R\-Value}]{\setlength{\rightskip}{0pt plus 5cm}int long\-Side\-I\-R\-Value = 0}}\label{_lab6_golden_8c_af345627334acfcd100f4da69040d289f}
+
+
+Definition at line 527 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ad567eeac9df9c00f413fb04eecc4d68b}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!low\-Correction\-Cap@{low\-Correction\-Cap}}
+\index{low\-Correction\-Cap@{low\-Correction\-Cap}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{low\-Correction\-Cap}]{\setlength{\rightskip}{0pt plus 5cm}float low\-Correction\-Cap = {\bf lowest\-Speed} -\/ {\bf highest\-Speed}$\ast$({\bf lowest\-P})}}\label{_lab6_golden_8c_ad567eeac9df9c00f413fb04eecc4d68b}
+
+
+Definition at line 550 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a7f5e753433afadc9ce544a3602c256cd}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!lowest\-P@{lowest\-P}}
+\index{lowest\-P@{lowest\-P}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{lowest\-P}]{\setlength{\rightskip}{0pt plus 5cm}float lowest\-P = .\-1}}\label{_lab6_golden_8c_a7f5e753433afadc9ce544a3602c256cd}
+
+
+Definition at line 519 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a2ea64ff9e3f348639493e6ec84013d98}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!lowest\-Speed@{lowest\-Speed}}
+\index{lowest\-Speed@{lowest\-Speed}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{lowest\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}int lowest\-Speed = 40}}\label{_lab6_golden_8c_a2ea64ff9e3f348639493e6ec84013d98}
+
+
+Definition at line 541 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aca74a684c7823144d7962beb8397621e}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!P@{P}}
+\index{P@{P}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{P}]{\setlength{\rightskip}{0pt plus 5cm}float P = 0}}\label{_lab6_golden_8c_aca74a684c7823144d7962beb8397621e}
+
+
+Definition at line 548 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a6b0304a7c2f611c97a1f4779a9bfb483}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Ping1\-Mail@{Ping1\-Mail}}
+\index{Ping1\-Mail@{Ping1\-Mail}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Ping1\-Mail}]{\setlength{\rightskip}{0pt plus 5cm}B\-G\-Mailbox$<$uint32\-\_\-t$>$ Ping1\-Mail}}\label{_lab6_golden_8c_a6b0304a7c2f611c97a1f4779a9bfb483}
+
+
+Definition at line 84 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a39dbfc1fca14892a7d8916d445fb4321}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Ping2\-Mail@{Ping2\-Mail}}
+\index{Ping2\-Mail@{Ping2\-Mail}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Ping2\-Mail}]{\setlength{\rightskip}{0pt plus 5cm}B\-G\-Mailbox$<$uint32\-\_\-t$>$ Ping2\-Mail}}\label{_lab6_golden_8c_a39dbfc1fca14892a7d8916d445fb4321}
+
+
+Definition at line 85 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_adfdf2447659006d4a3062e8e27f1f533}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Ping\-L\-Val@{Ping\-L\-Val}}
+\index{Ping\-L\-Val@{Ping\-L\-Val}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Ping\-L\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Ping\-L\-Val}}\label{_lab6_golden_8c_adfdf2447659006d4a3062e8e27f1f533}
+
+
+Definition at line 295 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_af14aa8ade47f8475f91855e0dff8ecc7}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Ping\-R\-Val@{Ping\-R\-Val}}
+\index{Ping\-R\-Val@{Ping\-R\-Val}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Ping\-R\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Ping\-R\-Val}}\label{_lab6_golden_8c_af14aa8ade47f8475f91855e0dff8ecc7}
+
+
+Definition at line 294 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a844dbda1145dc770c5f3166773e5ac15}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Rcv\-Count@{Rcv\-Count}}
+\index{Rcv\-Count@{Rcv\-Count}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Rcv\-Count}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Rcv\-Count =0}}\label{_lab6_golden_8c_a844dbda1145dc770c5f3166773e5ac15}
+
+
+Definition at line 292 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aae5700ac6107cc795ae5a50da455a690}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!red\-\_\-counter@{red\-\_\-counter}}
+\index{red\-\_\-counter@{red\-\_\-counter}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{red\-\_\-counter}]{\setlength{\rightskip}{0pt plus 5cm}int red\-\_\-counter = 0}}\label{_lab6_golden_8c_aae5700ac6107cc795ae5a50da455a690}
+
+
+Definition at line 524 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aec9aecee730bddbe611ffd11cfe09692}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Res\-\_\-buffer1@{Res\-\_\-buffer1}}
+\index{Res\-\_\-buffer1@{Res\-\_\-buffer1}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Res\-\_\-buffer1}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t Res\-\_\-buffer1\mbox{[}64\mbox{]}}}\label{_lab6_golden_8c_aec9aecee730bddbe611ffd11cfe09692}
+
+
+Definition at line 331 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a6a20659f3190002cee79b8ee18b012a7}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Res\-\_\-buffer2@{Res\-\_\-buffer2}}
+\index{Res\-\_\-buffer2@{Res\-\_\-buffer2}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Res\-\_\-buffer2}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t Res\-\_\-buffer2\mbox{[}64\mbox{]}}}\label{_lab6_golden_8c_a6a20659f3190002cee79b8ee18b012a7}
+
+
+Definition at line 358 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ad382a86c210687cdebcb99093927c7d3}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Res\-\_\-buffer3@{Res\-\_\-buffer3}}
+\index{Res\-\_\-buffer3@{Res\-\_\-buffer3}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Res\-\_\-buffer3}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t Res\-\_\-buffer3\mbox{[}64\mbox{]}}}\label{_lab6_golden_8c_ad382a86c210687cdebcb99093927c7d3}
+
+
+Definition at line 386 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ae156e47c164a3c02c27a3117ce45696c}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!right\-Correction@{right\-Correction}}
+\index{right\-Correction@{right\-Correction}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{right\-Correction}]{\setlength{\rightskip}{0pt plus 5cm}float right\-Correction = 0}}\label{_lab6_golden_8c_ae156e47c164a3c02c27a3117ce45696c}
+
+
+Definition at line 525 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a0e75101dc7809e2492fe0f8daed22f0a}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!right\-Error@{right\-Error}}
+\index{right\-Error@{right\-Error}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{right\-Error}]{\setlength{\rightskip}{0pt plus 5cm}float right\-Error = 0}}\label{_lab6_golden_8c_a0e75101dc7809e2492fe0f8daed22f0a}
+
+
+Definition at line 531 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!right\-Motor\-Speed@{right\-Motor\-Speed}}
+\index{right\-Motor\-Speed@{right\-Motor\-Speed}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{right\-Motor\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}int right\-Motor\-Speed = 0}}\label{_lab6_golden_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}
+
+
+Definition at line 483 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a963dbd4c4a8ee1db8f2be5fbf95b9cd7}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!right\-Threashold@{right\-Threashold}}
+\index{right\-Threashold@{right\-Threashold}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{right\-Threashold}]{\setlength{\rightskip}{0pt plus 5cm}float right\-Threashold = 1250}}\label{_lab6_golden_8c_a963dbd4c4a8ee1db8f2be5fbf95b9cd7}
+
+
+Definition at line 513 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a1e26c569f8ea4c8145952219697f181f}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Running@{Running}}
+\index{Running@{Running}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Running}]{\setlength{\rightskip}{0pt plus 5cm}int Running}}\label{_lab6_golden_8c_a1e26c569f8ea4c8145952219697f181f}
+
+
+Definition at line 30 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a1a6f4bd929a31fce794281d3a5fece6f}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!short\-Side\-I\-R\-Value@{short\-Side\-I\-R\-Value}}
+\index{short\-Side\-I\-R\-Value@{short\-Side\-I\-R\-Value}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{short\-Side\-I\-R\-Value}]{\setlength{\rightskip}{0pt plus 5cm}int short\-Side\-I\-R\-Value = 0}}\label{_lab6_golden_8c_a1a6f4bd929a31fce794281d3a5fece6f}
+
+
+Definition at line 528 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a4e956e2d600928dfbbe5b2440c53a223}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!side\-Highest\-Speed@{side\-Highest\-Speed}}
+\index{side\-Highest\-Speed@{side\-Highest\-Speed}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{side\-Highest\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}int side\-Highest\-Speed = 120}}\label{_lab6_golden_8c_a4e956e2d600928dfbbe5b2440c53a223}
+
+
+Definition at line 539 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a2106b37bdba5fd8fa85a477f5a6cd219}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!superclose\-Front@{superclose\-Front}}
+\index{superclose\-Front@{superclose\-Front}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{superclose\-Front}]{\setlength{\rightskip}{0pt plus 5cm}float superclose\-Front = 2000}}\label{_lab6_golden_8c_a2106b37bdba5fd8fa85a477f5a6cd219}
+
+
+Definition at line 515 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ab61536514678e958524efe11a63b19c7}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!superclose\-Left@{superclose\-Left}}
+\index{superclose\-Left@{superclose\-Left}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{superclose\-Left}]{\setlength{\rightskip}{0pt plus 5cm}float superclose\-Left = 2300}}\label{_lab6_golden_8c_ab61536514678e958524efe11a63b19c7}
+
+
+Definition at line 517 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a70daf00b3818ebf7fd37f21c95e9def4}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!superclose\-Right@{superclose\-Right}}
+\index{superclose\-Right@{superclose\-Right}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{superclose\-Right}]{\setlength{\rightskip}{0pt plus 5cm}float superclose\-Right = 2300}}\label{_lab6_golden_8c_a70daf00b3818ebf7fd37f21c95e9def4}
+
+
+Definition at line 516 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ac3ef240984425a8e29bb603088b9a869}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!too\-Close\-In\-Front@{too\-Close\-In\-Front}}
+\index{too\-Close\-In\-Front@{too\-Close\-In\-Front}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{too\-Close\-In\-Front}]{\setlength{\rightskip}{0pt plus 5cm}bool too\-Close\-In\-Front = 0}}\label{_lab6_golden_8c_ac3ef240984425a8e29bb603088b9a869}
+
+
+Definition at line 544 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a6e7a0545c47884fe18d22fef9853eedb}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!too\-Close\-In\-Left@{too\-Close\-In\-Left}}
+\index{too\-Close\-In\-Left@{too\-Close\-In\-Left}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{too\-Close\-In\-Left}]{\setlength{\rightskip}{0pt plus 5cm}bool too\-Close\-In\-Left = 0}}\label{_lab6_golden_8c_a6e7a0545c47884fe18d22fef9853eedb}
+
+
+Definition at line 545 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aea00d2299c013839953781c31d79a483}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!too\-Close\-In\-Left\-Counter@{too\-Close\-In\-Left\-Counter}}
+\index{too\-Close\-In\-Left\-Counter@{too\-Close\-In\-Left\-Counter}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{too\-Close\-In\-Left\-Counter}]{\setlength{\rightskip}{0pt plus 5cm}int too\-Close\-In\-Left\-Counter = 0}}\label{_lab6_golden_8c_aea00d2299c013839953781c31d79a483}
+
+
+Definition at line 530 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a69f912c5367b8513e06ce33f7aa4b503}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!too\-Close\-In\-Right@{too\-Close\-In\-Right}}
+\index{too\-Close\-In\-Right@{too\-Close\-In\-Right}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{too\-Close\-In\-Right}]{\setlength{\rightskip}{0pt plus 5cm}bool too\-Close\-In\-Right = 0}}\label{_lab6_golden_8c_a69f912c5367b8513e06ce33f7aa4b503}
+
+
+Definition at line 546 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ac62b880f4d9f55e7955e5865274708be}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!too\-Close\-In\-Right\-Counter@{too\-Close\-In\-Right\-Counter}}
+\index{too\-Close\-In\-Right\-Counter@{too\-Close\-In\-Right\-Counter}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{too\-Close\-In\-Right\-Counter}]{\setlength{\rightskip}{0pt plus 5cm}int too\-Close\-In\-Right\-Counter = 0}}\label{_lab6_golden_8c_ac62b880f4d9f55e7955e5865274708be}
+
+
+Definition at line 529 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a82059da765869f30361bcd1248568240}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!too\-Close\-Threadshold@{too\-Close\-Threadshold}}
+\index{too\-Close\-Threadshold@{too\-Close\-Threadshold}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{too\-Close\-Threadshold}]{\setlength{\rightskip}{0pt plus 5cm}float too\-Close\-Threadshold = 800}}\label{_lab6_golden_8c_a82059da765869f30361bcd1248568240}
+
+
+Definition at line 511 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_ac3df666236b2a1eb5090dd3c71e9c82b}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!turning\-Mode@{turning\-Mode}}
+\index{turning\-Mode@{turning\-Mode}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{turning\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}int turning\-Mode = 0}}\label{_lab6_golden_8c_ac3df666236b2a1eb5090dd3c71e9c82b}
+
+
+Definition at line 475 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a32dba967fa49fbed99ed3c9531b3c3c4}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!turn\-Left@{turn\-Left}}
+\index{turn\-Left@{turn\-Left}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{turn\-Left}]{\setlength{\rightskip}{0pt plus 5cm}bool turn\-Left = 0}}\label{_lab6_golden_8c_a32dba967fa49fbed99ed3c9531b3c3c4}
+
+
+Definition at line 535 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_adc8b36b959ce03ee202b7b33bb71655d}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!turn\-Right@{turn\-Right}}
+\index{turn\-Right@{turn\-Right}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{turn\-Right}]{\setlength{\rightskip}{0pt plus 5cm}bool turn\-Right = 0}}\label{_lab6_golden_8c_adc8b36b959ce03ee202b7b33bb71655d}
+
+
+Definition at line 534 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_a76415045fcd9ad9ec248427e80572f9a}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Wobble\-L@{Wobble\-L}}
+\index{Wobble\-L@{Wobble\-L}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Wobble\-L}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wobble\-L\mbox{[}$\,$\mbox{]} = \{200, 195, 200, 205\}}}\label{_lab6_golden_8c_a76415045fcd9ad9ec248427e80572f9a}
+
+
+Definition at line 479 of file Lab6\-Golden.\-c.
+
+\hypertarget{_lab6_golden_8c_aeccbe31b89cf90e9c9ee1a1fafefc5ff}{\index{Lab6\-Golden.\-c@{Lab6\-Golden.\-c}!Wobble\-R@{Wobble\-R}}
+\index{Wobble\-R@{Wobble\-R}!Lab6Golden.c@{Lab6\-Golden.\-c}}
+\subsubsection[{Wobble\-R}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wobble\-R\mbox{[}$\,$\mbox{]} = \{200, 205, 200, 195\}}}\label{_lab6_golden_8c_aeccbe31b89cf90e9c9ee1a1fafefc5ff}
+
+
+Definition at line 478 of file Lab6\-Golden.\-c.
+

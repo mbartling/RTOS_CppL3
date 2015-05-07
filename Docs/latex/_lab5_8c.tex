@@ -1,0 +1,913 @@
+\hypertarget{_lab5_8c}{\section{Lab5.\-c File Reference}
+\label{_lab5_8c}\index{Lab5.\-c@{Lab5.\-c}}
+}
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}inc/hw\-\_\-types.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}A\-D\-C.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}os.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}inc/tm4c123gh6pm.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}edisk.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}efile.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Perf.\-h\char`\"{}}\\*
+Include dependency graph for Lab5.\-c\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab5_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_lab5_8c_ae586204918bfbea259810829a239d886}{T\-I\-M\-E\-S\-L\-I\-C\-E}~2$\ast$T\-I\-M\-E\-\_\-1\-M\-S
+\item 
+\#define \hyperlink{_lab5_8c_ab527c0e4b7c318dbae300412b03eed17}{G\-P\-I\-O\-\_\-\-P\-F0}~($\ast$((volatile unsigned long $\ast$)0x40025004))
+\item 
+\#define \hyperlink{_lab5_8c_abbb42535d15ee2366af5a5b1e2124a05}{G\-P\-I\-O\-\_\-\-P\-F1}~($\ast$((volatile unsigned long $\ast$)0x40025008))
+\item 
+\#define \hyperlink{_lab5_8c_a959a99608831fef309047e405b5059bc}{G\-P\-I\-O\-\_\-\-P\-F2}~($\ast$((volatile unsigned long $\ast$)0x40025010))
+\item 
+\#define \hyperlink{_lab5_8c_aab864bd67f4cea10fd17ee13808668cd}{G\-P\-I\-O\-\_\-\-P\-F3}~($\ast$((volatile unsigned long $\ast$)0x40025020))
+\item 
+\#define \hyperlink{_lab5_8c_a66dc5c770ec2c27da7ecceb303354ff4}{G\-P\-I\-O\-\_\-\-P\-G1}~($\ast$((volatile unsigned long $\ast$)0x40026008))
+\item 
+\#define \hyperlink{_lab5_8c_ab9438454509c495abb6f0dac60d7ac02}{P\-E0}~($\ast$((volatile unsigned long $\ast$)0x40024004))
+\item 
+\#define \hyperlink{_lab5_8c_a2b333e81f2f724f5d0f6ff557f3a0b49}{P\-E1}~($\ast$((volatile unsigned long $\ast$)0x40024008))
+\item 
+\#define \hyperlink{_lab5_8c_ab9f47403c8a3489beafcac840b8fff7d}{P\-E2}~($\ast$((volatile unsigned long $\ast$)0x40024010))
+\item 
+\#define \hyperlink{_lab5_8c_a1ef39ee2274d28bab6daa26359630c57}{P\-E3}~($\ast$((volatile unsigned long $\ast$)0x40024020))
+\item 
+\#define \hyperlink{_lab5_8c_a02723c1cf9784c591e45af7bf584f97c}{M\-A\-X\-B\-L\-O\-C\-K\-S}~100
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_lab5_8c_a5b51a90348618cbd5eb0e65114ea0daf}{Port\-E\-\_\-\-Init} (void)
+\item 
+void \hyperlink{_lab5_8c_aefdc786873bfd8245aa0f47e54f3077e}{Robot} (void)
+\item 
+void \hyperlink{_lab5_8c_af31c52c818cfe90014abf63e1b984ca0}{Button\-Push} (void)
+\item 
+void \hyperlink{_lab5_8c_a6141d7655f515388f7e5323b9e0a81b3}{Down\-Push} (void)
+\item 
+void \hyperlink{_lab5_8c_a7eaf80f6bdd1fd573219220dbb7f8837}{Producer} (unsigned long data)
+\item 
+void \hyperlink{_lab5_8c_a269a2b542c489c0d00dd5d4328ed6ccf}{Idle\-Task} (void)
+\item 
+void \hyperlink{_lab5_8c_a2e36aaea6b9cab2ca1faab2c2d760271}{Interpreter} (void)
+\item 
+int \hyperlink{_lab5_8c_a7eff0fb752de46f3df0342f22f69c458}{realmain} (void)
+\item 
+void \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{disk\-Error} (char $\ast$errtype, unsigned long n)
+\item 
+void \hyperlink{_lab5_8c_a3efcf5e79ed9738d40e3dbaf3befc678}{Test\-Disk} (void)
+\item 
+void \hyperlink{_lab5_8c_a8ae9923a4397b1cc33baf08ea2341c33}{Run\-Test} (void)
+\item 
+void \hyperlink{_lab5_8c_a95d7d847e2c29bc8c83224318399d41b}{Test\-File} (void)
+\item 
+int \hyperlink{_lab5_8c_abbcfdc8ab315a9f273a0c498a0e73e29}{testmain2} (void)
+\item 
+void \hyperlink{_lab5_8c_aad6d0bf2cbb02582664e1107ccee3483}{Test\-F\-A\-T} (void)
+\item 
+uint32\-\_\-t \hyperlink{_lab5_8c_a9c8a4d21a75e6a19ea31df0c5ccecfc2}{Ping} (void)
+\item 
+void \hyperlink{_lab5_8c_ad4c2bdb78f3b09301fc0a24bbc9d1a5d}{Test\-Us} (void)
+\item 
+int \hyperlink{_lab5_8c_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_lab5_8c_a1e26c569f8ea4c8145952219697f181f}{Running}
+\item 
+unsigned long \hyperlink{_lab5_8c_a1bb5d517b380a841c91444d3bbffb9ab}{Idlecount} =0
+\item 
+unsigned char \hyperlink{_lab5_8c_a9516ea594e030f96eb9483d95f1583a5}{buffer} \mbox{[}512\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_lab5_8c_ab527c0e4b7c318dbae300412b03eed17}{\index{Lab5.\-c@{Lab5.\-c}!G\-P\-I\-O\-\_\-\-P\-F0@{G\-P\-I\-O\-\_\-\-P\-F0}}
+\index{G\-P\-I\-O\-\_\-\-P\-F0@{G\-P\-I\-O\-\_\-\-P\-F0}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F0}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F0~($\ast$((volatile unsigned long $\ast$)0x40025004))}}\label{_lab5_8c_ab527c0e4b7c318dbae300412b03eed17}
+
+
+Definition at line 27 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_abbb42535d15ee2366af5a5b1e2124a05}{\index{Lab5.\-c@{Lab5.\-c}!G\-P\-I\-O\-\_\-\-P\-F1@{G\-P\-I\-O\-\_\-\-P\-F1}}
+\index{G\-P\-I\-O\-\_\-\-P\-F1@{G\-P\-I\-O\-\_\-\-P\-F1}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F1}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F1~($\ast$((volatile unsigned long $\ast$)0x40025008))}}\label{_lab5_8c_abbb42535d15ee2366af5a5b1e2124a05}
+
+
+Definition at line 28 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_a959a99608831fef309047e405b5059bc}{\index{Lab5.\-c@{Lab5.\-c}!G\-P\-I\-O\-\_\-\-P\-F2@{G\-P\-I\-O\-\_\-\-P\-F2}}
+\index{G\-P\-I\-O\-\_\-\-P\-F2@{G\-P\-I\-O\-\_\-\-P\-F2}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F2}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F2~($\ast$((volatile unsigned long $\ast$)0x40025010))}}\label{_lab5_8c_a959a99608831fef309047e405b5059bc}
+
+
+Definition at line 29 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_aab864bd67f4cea10fd17ee13808668cd}{\index{Lab5.\-c@{Lab5.\-c}!G\-P\-I\-O\-\_\-\-P\-F3@{G\-P\-I\-O\-\_\-\-P\-F3}}
+\index{G\-P\-I\-O\-\_\-\-P\-F3@{G\-P\-I\-O\-\_\-\-P\-F3}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F3}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F3~($\ast$((volatile unsigned long $\ast$)0x40025020))}}\label{_lab5_8c_aab864bd67f4cea10fd17ee13808668cd}
+
+
+Definition at line 30 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_a66dc5c770ec2c27da7ecceb303354ff4}{\index{Lab5.\-c@{Lab5.\-c}!G\-P\-I\-O\-\_\-\-P\-G1@{G\-P\-I\-O\-\_\-\-P\-G1}}
+\index{G\-P\-I\-O\-\_\-\-P\-G1@{G\-P\-I\-O\-\_\-\-P\-G1}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-G1}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-G1~($\ast$((volatile unsigned long $\ast$)0x40026008))}}\label{_lab5_8c_a66dc5c770ec2c27da7ecceb303354ff4}
+
+
+Definition at line 31 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_a02723c1cf9784c591e45af7bf584f97c}{\index{Lab5.\-c@{Lab5.\-c}!M\-A\-X\-B\-L\-O\-C\-K\-S@{M\-A\-X\-B\-L\-O\-C\-K\-S}}
+\index{M\-A\-X\-B\-L\-O\-C\-K\-S@{M\-A\-X\-B\-L\-O\-C\-K\-S}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{M\-A\-X\-B\-L\-O\-C\-K\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define M\-A\-X\-B\-L\-O\-C\-K\-S~100}}\label{_lab5_8c_a02723c1cf9784c591e45af7bf584f97c}
+
+
+Definition at line 183 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_ab9438454509c495abb6f0dac60d7ac02}{\index{Lab5.\-c@{Lab5.\-c}!P\-E0@{P\-E0}}
+\index{P\-E0@{P\-E0}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{P\-E0}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E0~($\ast$((volatile unsigned long $\ast$)0x40024004))}}\label{_lab5_8c_ab9438454509c495abb6f0dac60d7ac02}
+
+
+Definition at line 33 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_a2b333e81f2f724f5d0f6ff557f3a0b49}{\index{Lab5.\-c@{Lab5.\-c}!P\-E1@{P\-E1}}
+\index{P\-E1@{P\-E1}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{P\-E1}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E1~($\ast$((volatile unsigned long $\ast$)0x40024008))}}\label{_lab5_8c_a2b333e81f2f724f5d0f6ff557f3a0b49}
+
+
+Definition at line 34 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_ab9f47403c8a3489beafcac840b8fff7d}{\index{Lab5.\-c@{Lab5.\-c}!P\-E2@{P\-E2}}
+\index{P\-E2@{P\-E2}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{P\-E2}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E2~($\ast$((volatile unsigned long $\ast$)0x40024010))}}\label{_lab5_8c_ab9f47403c8a3489beafcac840b8fff7d}
+
+
+Definition at line 35 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_a1ef39ee2274d28bab6daa26359630c57}{\index{Lab5.\-c@{Lab5.\-c}!P\-E3@{P\-E3}}
+\index{P\-E3@{P\-E3}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{P\-E3}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E3~($\ast$((volatile unsigned long $\ast$)0x40024020))}}\label{_lab5_8c_a1ef39ee2274d28bab6daa26359630c57}
+
+
+Definition at line 36 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_ae586204918bfbea259810829a239d886}{\index{Lab5.\-c@{Lab5.\-c}!T\-I\-M\-E\-S\-L\-I\-C\-E@{T\-I\-M\-E\-S\-L\-I\-C\-E}}
+\index{T\-I\-M\-E\-S\-L\-I\-C\-E@{T\-I\-M\-E\-S\-L\-I\-C\-E}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{T\-I\-M\-E\-S\-L\-I\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-I\-M\-E\-S\-L\-I\-C\-E~2$\ast$T\-I\-M\-E\-\_\-1\-M\-S}}\label{_lab5_8c_ae586204918bfbea259810829a239d886}
+
+
+Definition at line 25 of file Lab5.\-c.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{_lab5_8c_af31c52c818cfe90014abf63e1b984ca0}{\index{Lab5.\-c@{Lab5.\-c}!Button\-Push@{Button\-Push}}
+\index{Button\-Push@{Button\-Push}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Button\-Push}]{\setlength{\rightskip}{0pt plus 5cm}void Button\-Push (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_af31c52c818cfe90014abf63e1b984ca0}
+
+
+Definition at line 89 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+89                      \{
+90   \textcolor{keywordflow}{if}(\hyperlink{_lab5_8c_a1e26c569f8ea4c8145952219697f181f}{Running}==0)\{
+91     \hyperlink{_lab5_8c_a1e26c569f8ea4c8145952219697f181f}{Running} = 1;  \textcolor{comment}{// prevents you from starting two robot threads}
+92     NumCreated += OS\_AddThread(&\hyperlink{_lab5_8c_aefdc786873bfd8245aa0f47e54f3077e}{Robot},128,1);  \textcolor{comment}{// start a 20 second run}
+93   \}
+94 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{_lab5_8c_af31c52c818cfe90014abf63e1b984ca0_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{\index{Lab5.\-c@{Lab5.\-c}!disk\-Error@{disk\-Error}}
+\index{disk\-Error@{disk\-Error}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{disk\-Error}]{\setlength{\rightskip}{0pt plus 5cm}void disk\-Error (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{errtype, }
+\item[{unsigned long}]{n}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}
+
+
+Definition at line 184 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+184                                               \{
+185   printf(errtype);
+186   printf(\textcolor{stringliteral}{" disk error %u"},n);
+187   OS\_Kill();
+188 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{_lab5_8c_a22c9a06aa7985e858ece98451d29d482_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_a6141d7655f515388f7e5323b9e0a81b3}{\index{Lab5.\-c@{Lab5.\-c}!Down\-Push@{Down\-Push}}
+\index{Down\-Push@{Down\-Push}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Down\-Push}]{\setlength{\rightskip}{0pt plus 5cm}void Down\-Push (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a6141d7655f515388f7e5323b9e0a81b3}
+
+
+Definition at line 98 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+98                    \{
+99 
+100 \}
+\end{DoxyCode}
+\hypertarget{_lab5_8c_a269a2b542c489c0d00dd5d4328ed6ccf}{\index{Lab5.\-c@{Lab5.\-c}!Idle\-Task@{Idle\-Task}}
+\index{Idle\-Task@{Idle\-Task}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Idle\-Task}]{\setlength{\rightskip}{0pt plus 5cm}void Idle\-Task (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a269a2b542c489c0d00dd5d4328ed6ccf}
+
+
+Definition at line 129 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+129                    \{ 
+130   \textcolor{keywordflow}{while}(1) \{ 
+131     \hyperlink{_lab5_8c_a1bb5d517b380a841c91444d3bbffb9ab}{Idlecount}++;        \textcolor{comment}{// debugging }
+132   \}
+133 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{_lab5_8c_a269a2b542c489c0d00dd5d4328ed6ccf_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_a2e36aaea6b9cab2ca1faab2c2d760271}{\index{Lab5.\-c@{Lab5.\-c}!Interpreter@{Interpreter}}
+\index{Interpreter@{Interpreter}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Interpreter}]{\setlength{\rightskip}{0pt plus 5cm}void Interpreter (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a2e36aaea6b9cab2ca1faab2c2d760271}
+
+
+Definition at line 142 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+142                   \{
+143   \textcolor{keywordtype}{char} buff[10];
+144   printf(\textcolor{stringliteral}{">>\(\backslash\)n\(\backslash\)r"});
+145   scanf(\textcolor{stringliteral}{"%s\(\backslash\)n"}, buff);
+146   printf(\textcolor{stringliteral}{"%s\(\backslash\)n\(\backslash\)r"}, buff);
+147 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{_lab5_8c_a2e36aaea6b9cab2ca1faab2c2d760271_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_a840291bc02cba5474a4cb46a9b9566fe}{\index{Lab5.\-c@{Lab5.\-c}!main@{main}}
+\index{main@{main}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a840291bc02cba5474a4cb46a9b9566fe}
+
+
+Definition at line 364 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+364               \{   \textcolor{comment}{// testmain1}
+365   OS\_Init();           \textcolor{comment}{// initialize, disable interrupts}
+366   \hyperlink{_lab5_8c_a5b51a90348618cbd5eb0e65114ea0daf}{PortE\_Init}();
+367   \hyperlink{_lab5_8c_a1ef39ee2274d28bab6daa26359630c57}{PE3} = 0x00;
+368 \textcolor{comment}{//*******attach background tasks***********}
+369 \textcolor{comment}{//  OS\_AddPeriodicThread(&disk\_timerproc,10*TIME\_1MS,0);   // time out routines for disk}
+370 \textcolor{comment}{//  OS\_AddButtonTask(&RunTest,2);}
+371   
+372   NumCreated = 0 ;
+373 \textcolor{comment}{// create initial foreground threads}
+374 \textcolor{comment}{//  NumCreated += OS\_AddThread(&TestFAT,128,1);  }
+375   \textcolor{comment}{//NumCreated += OS\_AddThread(&IdleTask,128,3); }
+376   NumCreated += OS\_AddThread(&\hyperlink{_lab5_8c_ad4c2bdb78f3b09301fc0a24bbc9d1a5d}{TestUs}, 128, 1);
+377   \textcolor{comment}{//NumCreated += OS\_AddThread(&TestUs, 128, 1);}
+378   OS\_Launch(10*TIME\_1MS); \textcolor{comment}{// doesn't return, interrupts enabled in here}
+379   \textcolor{keywordflow}{return} 0;               \textcolor{comment}{// this never executes}
+380 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{_lab5_8c_a840291bc02cba5474a4cb46a9b9566fe_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_a9c8a4d21a75e6a19ea31df0c5ccecfc2}{\index{Lab5.\-c@{Lab5.\-c}!Ping@{Ping}}
+\index{Ping@{Ping}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Ping}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Ping (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a9c8a4d21a75e6a19ea31df0c5ccecfc2}
+
+
+Definition at line 299 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+299                    \{
+300   uint32\_t pingStartTime; 
+301   uint32\_t pingEndTime;
+302   \textcolor{comment}{//Write GPIO\_Pin High}
+303   \hyperlink{_lab5_8c_a1ef39ee2274d28bab6daa26359630c57}{PE3} = 0x08;
+304   OS\_DelayUS(5);
+305   \textcolor{comment}{//Write GPIO Pin Low}
+306   \hyperlink{_lab5_8c_a1ef39ee2274d28bab6daa26359630c57}{PE3} = 0x00;
+307   \textcolor{comment}{//Could move into a ISR}
+308   \textcolor{comment}{//while(gpio\_Pin\_Low)\{\}}
+309   \textcolor{comment}{//while(PE2 == 0)\{OS\_DelayUS(1);\}}
+310   \textcolor{keywordflow}{while}(\hyperlink{_lab5_8c_ab9f47403c8a3489beafcac840b8fff7d}{PE2} == 0)\{\}
+311   pingStartTime = OS\_GetUsTime();
+312   \textcolor{comment}{//while(gpio\_Pin\_High)\{\}}
+313   \textcolor{comment}{//while(PE2 != 0)\{OS\_DelayUS(1);\}}
+314   \textcolor{keywordflow}{while}(\hyperlink{_lab5_8c_ab9f47403c8a3489beafcac840b8fff7d}{PE2} != 0)\{\}
+315 \textcolor{comment}{//  OS\_DelayUS(18500); //For Simulation}
+316 
+317   pingEndTime = OS\_GetUsTime();
+318   OS\_DelayUS(200);
+319   \textcolor{comment}{//Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)}
+320   \textcolor{comment}{//Then the ping time is c*dT/2}
+321   \textcolor{keywordflow}{return} ((pingEndTime - pingStartTime) \textcolor{comment}{/*>> 1*/})*34300/1000000;
+322   \textcolor{comment}{//return (uint32\_t)(((float)((pingEndTime - pingStartTime) >> 1))*34000.0/1000000.0);}
+323 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=276pt]{_lab5_8c_a9c8a4d21a75e6a19ea31df0c5ccecfc2_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_a5b51a90348618cbd5eb0e65114ea0daf}{\index{Lab5.\-c@{Lab5.\-c}!Port\-E\-\_\-\-Init@{Port\-E\-\_\-\-Init}}
+\index{Port\-E\-\_\-\-Init@{Port\-E\-\_\-\-Init}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Port\-E\-\_\-\-Init}]{\setlength{\rightskip}{0pt plus 5cm}void Port\-E\-\_\-\-Init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a5b51a90348618cbd5eb0e65114ea0daf}
+
+
+Definition at line 37 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+37                      \{ \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keyword}{volatile} delay;
+38   \textcolor{comment}{//SYSCTL\_RCGC2\_R |= 0x10;       // activate port E}
+39   SYSCTL\_RCGCGPIO\_R |= 0x10;       
+40   delay = SYSCTL\_RCGC2\_R;        
+41   delay = SYSCTL\_RCGC2\_R;         
+42   GPIO\_PORTE\_DIR\_R |= 0x0F;    \textcolor{comment}{// make PE3-0 output heartbeats}
+43   GPIO\_PORTE\_DIR\_R &= ~0x04;
+44   GPIO\_PORTE\_AFSEL\_R &= ~0x0F;   \textcolor{comment}{// disable alt funct on PE3-0}
+45   GPIO\_PORTE\_DEN\_R |= 0x0F;     \textcolor{comment}{// enable digital I/O on PE3-0}
+46   GPIO\_PORTE\_PCTL\_R = ~0x0000FFFF;
+47   GPIO\_PORTE\_AMSEL\_R &= ~0x0F;;      \textcolor{comment}{// disable analog functionality on PF}
+48 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{_lab5_8c_a5b51a90348618cbd5eb0e65114ea0daf_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_a7eaf80f6bdd1fd573219220dbb7f8837}{\index{Lab5.\-c@{Lab5.\-c}!Producer@{Producer}}
+\index{Producer@{Producer}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Producer}]{\setlength{\rightskip}{0pt plus 5cm}void Producer (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{data}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a7eaf80f6bdd1fd573219220dbb7f8837}
+
+
+Definition at line 113 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+113                                  \{  
+114   \textcolor{keywordflow}{if}(\hyperlink{_lab5_8c_a1e26c569f8ea4c8145952219697f181f}{Running})\{
+115     \textcolor{keywordflow}{if}(OS\_Fifo\_Put(data))\{     \textcolor{comment}{// send to Robot}
+116       NumSamples++;
+117     \} \textcolor{keywordflow}{else}\{ 
+118       DataLost++;
+119     \} 
+120   \}
+121 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{_lab5_8c_a7eaf80f6bdd1fd573219220dbb7f8837_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_a7eff0fb752de46f3df0342f22f69c458}{\index{Lab5.\-c@{Lab5.\-c}!realmain@{realmain}}
+\index{realmain@{realmain}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{realmain}]{\setlength{\rightskip}{0pt plus 5cm}int realmain (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a7eff0fb752de46f3df0342f22f69c458}
+
+
+Definition at line 156 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+156                   \{        \textcolor{comment}{// lab 5 real main}
+157   OS\_Init();           \textcolor{comment}{// initialize, disable interrupts}
+158   \hyperlink{_lab5_8c_a1e26c569f8ea4c8145952219697f181f}{Running} = 0;         \textcolor{comment}{// robot not running}
+159   DataLost = 0;        \textcolor{comment}{// lost data between producer and consumer}
+160   NumSamples = 0;
+161 
+162 \textcolor{comment}{//********initialize communication channels}
+163   OS\_Fifo\_Init(512);    \textcolor{comment}{// ***note*** 4 is not big enough*****}
+164   \hyperlink{_a_d_c_8c_a9fdea7e06f4c4769ab22981dafb58477}{ADC\_Collect}(0, 1000, &\hyperlink{_lab5_8c_a7eaf80f6bdd1fd573219220dbb7f8837}{Producer}); \textcolor{comment}{// start ADC sampling, channel 0, 1000 Hz}
+165 
+166 \textcolor{comment}{//*******attach background tasks***********}
+167 \textcolor{comment}{//  OS\_AddButtonTask(&ButtonPush,2);}
+168 \textcolor{comment}{//  OS\_AddButtonTask(&DownPush,3);}
+169   OS\_AddPeriodicThread(disk\_timerproc,10*TIME\_1MS,5);
+170 
+171   NumCreated = 0 ;
+172 \textcolor{comment}{// create initial foreground threads}
+173   NumCreated += OS\_AddThread(&\hyperlink{_lab5_8c_a2e36aaea6b9cab2ca1faab2c2d760271}{Interpreter},128,2); 
+174   NumCreated += OS\_AddThread(&\hyperlink{_lab5_8c_a269a2b542c489c0d00dd5d4328ed6ccf}{IdleTask},128,7);  \textcolor{comment}{// runs when nothing useful to do}
+175  
+176   OS\_Launch(\hyperlink{_lab5_8c_ae586204918bfbea259810829a239d886}{TIMESLICE}); \textcolor{comment}{// doesn't return, interrupts enabled in here}
+177   \textcolor{keywordflow}{return} 0;             \textcolor{comment}{// this never executes}
+178 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab5_8c_a7eff0fb752de46f3df0342f22f69c458_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_aefdc786873bfd8245aa0f47e54f3077e}{\index{Lab5.\-c@{Lab5.\-c}!Robot@{Robot}}
+\index{Robot@{Robot}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Robot}]{\setlength{\rightskip}{0pt plus 5cm}void Robot (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_aefdc786873bfd8245aa0f47e54f3077e}
+
+
+Definition at line 62 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+62                 \{   
+63 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} data;      \textcolor{comment}{// ADC sample, 0 to 1023}
+64 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} voltage;   \textcolor{comment}{// in mV,      0 to 3000}
+65 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} time;      \textcolor{comment}{// in 10msec,  0 to 1000 }
+66 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} t=0;
+67   OS\_ClearMsTime();    
+68   DataLost = 0;          \textcolor{comment}{// new run with no lost data }
+69   printf(\textcolor{stringliteral}{"Robot running..."});
+70   eFile\_RedirectToFile(\textcolor{stringliteral}{"Robot"});
+71   printf(\textcolor{stringliteral}{"time(sec)\(\backslash\)tdata(volts)\(\backslash\)n\(\backslash\)r"});
+72   \textcolor{keywordflow}{do}\{
+73     t++;
+74     time=OS\_MsTime();            \textcolor{comment}{// 10ms resolution in this OS}
+75     data = OS\_Fifo\_Get();        \textcolor{comment}{// 1000 Hz sampling get from producer}
+76     voltage = (300*data)/1024;   \textcolor{comment}{// in mV}
+77     printf(\textcolor{stringliteral}{"%0u.%02u\(\backslash\)t%0u.%03u\(\backslash\)n\(\backslash\)r"},time/100,time%100,voltage/1000,voltage%1000);
+78   \}
+79   \textcolor{keywordflow}{while}(time < 1000);       \textcolor{comment}{// change this to mean 10 seconds}
+80   eFile\_EndRedirectToFile();
+81   printf(\textcolor{stringliteral}{"done.\(\backslash\)n\(\backslash\)r"});
+82   \hyperlink{_lab5_8c_a1e26c569f8ea4c8145952219697f181f}{Running} = 0;                \textcolor{comment}{// robot no longer running}
+83   OS\_Kill();
+84 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{_lab5_8c_aefdc786873bfd8245aa0f47e54f3077e_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_a8ae9923a4397b1cc33baf08ea2341c33}{\index{Lab5.\-c@{Lab5.\-c}!Run\-Test@{Run\-Test}}
+\index{Run\-Test@{Run\-Test}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Run\-Test}]{\setlength{\rightskip}{0pt plus 5cm}void Run\-Test (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a8ae9923a4397b1cc33baf08ea2341c33}
+
+
+Definition at line 222 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+222                   \{
+223   NumCreated += OS\_AddThread(&\hyperlink{_lab5_8c_a3efcf5e79ed9738d40e3dbaf3befc678}{TestDisk},128,1);  
+224 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{_lab5_8c_a8ae9923a4397b1cc33baf08ea2341c33_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_a3efcf5e79ed9738d40e3dbaf3befc678}{\index{Lab5.\-c@{Lab5.\-c}!Test\-Disk@{Test\-Disk}}
+\index{Test\-Disk@{Test\-Disk}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Test\-Disk}]{\setlength{\rightskip}{0pt plus 5cm}void Test\-Disk (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a3efcf5e79ed9738d40e3dbaf3befc678}
+
+
+Definition at line 189 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+189                    \{  DSTATUS result;  \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{short} block;  \textcolor{keywordtype}{int} i; \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} n;
+190   \textcolor{comment}{// simple test of eDisk}
+191   printf(\textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)rEE345M/EE380L, Lab 5 eDisk test\(\backslash\)n\(\backslash\)r"});
+192   result = eDisk\_Init(0);  \textcolor{comment}{// initialize disk}
+193   \textcolor{keywordflow}{if}(result) \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eDisk\_Init"},result);
+194   printf(\textcolor{stringliteral}{"Writing blocks\(\backslash\)n\(\backslash\)r"});
+195   n = 1;    \textcolor{comment}{// seed}
+196   \textcolor{keywordflow}{for}(block = 0; block < \hyperlink{_lab5_8c_a02723c1cf9784c591e45af7bf584f97c}{MAXBLOCKS}; block++)\{
+197     \textcolor{keywordflow}{for}(i=0;i<512;i++)\{
+198       n = (16807*n)%2147483647; \textcolor{comment}{// pseudo random sequence}
+199       \hyperlink{_lab5_8c_a9516ea594e030f96eb9483d95f1583a5}{buffer}[i] = 0xFF&n;        
+200     \}
+201     \hyperlink{_lab5_8c_aab864bd67f4cea10fd17ee13808668cd}{GPIO\_PF3} = 0x08;     \textcolor{comment}{// PF3 high for 100 block writes}
+202     \textcolor{keywordflow}{if}(eDisk\_WriteBlock(\hyperlink{_lab5_8c_a9516ea594e030f96eb9483d95f1583a5}{buffer},block))\hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eDisk\_WriteBlock"},block); \textcolor{comment}{// save to disk}
+203     \hyperlink{_lab5_8c_aab864bd67f4cea10fd17ee13808668cd}{GPIO\_PF3} = 0x00;     
+204   \}  
+205   printf(\textcolor{stringliteral}{"Reading blocks\(\backslash\)n\(\backslash\)r"});
+206   n = 1;  \textcolor{comment}{// reseed, start over to get the same sequence}
+207   \textcolor{keywordflow}{for}(block = 0; block < \hyperlink{_lab5_8c_a02723c1cf9784c591e45af7bf584f97c}{MAXBLOCKS}; block++)\{
+208     \hyperlink{_lab5_8c_a959a99608831fef309047e405b5059bc}{GPIO\_PF2} = 0x04;     \textcolor{comment}{// PF2 high for one block read}
+209     \textcolor{keywordflow}{if}(eDisk\_ReadBlock(\hyperlink{_lab5_8c_a9516ea594e030f96eb9483d95f1583a5}{buffer},block))\hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eDisk\_ReadBlock"},block); \textcolor{comment}{// read from disk}
+210     \hyperlink{_lab5_8c_a959a99608831fef309047e405b5059bc}{GPIO\_PF2} = 0x00;
+211     \textcolor{keywordflow}{for}(i=0;i<512;i++)\{
+212       n = (16807*n)%2147483647; \textcolor{comment}{// pseudo random sequence}
+213       \textcolor{keywordflow}{if}(\hyperlink{_lab5_8c_a9516ea594e030f96eb9483d95f1583a5}{buffer}[i] != (0xFF&n))\{
+214         printf(\textcolor{stringliteral}{"Read data not correct, block=%u, i=%u, expected %u, read %u\(\backslash\)n\(\backslash\)r"},block,i,(0xFF&n),
+      \hyperlink{_lab5_8c_a9516ea594e030f96eb9483d95f1583a5}{buffer}[i]);
+215         OS\_Kill();
+216       \}      
+217     \}
+218   \}  
+219   printf(\textcolor{stringliteral}{"Successful test of %u blocks\(\backslash\)n\(\backslash\)r"},MAXBLOCKS);
+220   OS\_Kill();
+221 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{_lab5_8c_a3efcf5e79ed9738d40e3dbaf3befc678_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{_lab5_8c_a3efcf5e79ed9738d40e3dbaf3befc678_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_aad6d0bf2cbb02582664e1107ccee3483}{\index{Lab5.\-c@{Lab5.\-c}!Test\-F\-A\-T@{Test\-F\-A\-T}}
+\index{Test\-F\-A\-T@{Test\-F\-A\-T}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Test\-F\-A\-T}]{\setlength{\rightskip}{0pt plus 5cm}void Test\-F\-A\-T (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_aad6d0bf2cbb02582664e1107ccee3483}
+
+
+Definition at line 290 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+290                   \{
+291   \textcolor{comment}{// simple test of eDisk}
+292   eFile\_Init();
+293   printf(\textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)rEE345M/EE380L, Lab 5 eDisk test\(\backslash\)n\(\backslash\)r"});
+294 
+295   printf(\textcolor{stringliteral}{"Successful test of %u blocks\(\backslash\)n\(\backslash\)r"},\hyperlink{_lab5_8c_a02723c1cf9784c591e45af7bf584f97c}{MAXBLOCKS});
+296   OS\_Kill();
+297 \}
+\end{DoxyCode}
+\hypertarget{_lab5_8c_a95d7d847e2c29bc8c83224318399d41b}{\index{Lab5.\-c@{Lab5.\-c}!Test\-File@{Test\-File}}
+\index{Test\-File@{Test\-File}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Test\-File}]{\setlength{\rightskip}{0pt plus 5cm}void Test\-File (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_a95d7d847e2c29bc8c83224318399d41b}
+
+
+Definition at line 245 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+245                    \{   \textcolor{keywordtype}{int} i; \textcolor{keywordtype}{char} data; 
+246   printf(\textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)rEE345M/EE380L, Lab 5 eFile test\(\backslash\)n\(\backslash\)r"});
+247   \textcolor{comment}{// simple test of eFile}
+248   \textcolor{keywordflow}{if}(eFile\_Init())              \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_Init"},0); 
+249   \textcolor{keywordflow}{if}(eFile\_Format())            \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_Format"},0); 
+250 \textcolor{comment}{//  eFile\_Directory(&Serial\_OutChar);}
+251   \textcolor{keywordflow}{if}(eFile\_Create(\textcolor{stringliteral}{"file1"}))     \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_Create"},0);
+252   \textcolor{keywordflow}{if}(eFile\_WOpen(\textcolor{stringliteral}{"file1"}))      \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_WOpen"},0);
+253   \textcolor{keywordflow}{for}(i=0;i<1000;i++)\{
+254     \textcolor{keywordflow}{if}(eFile\_Write(\textcolor{charliteral}{'a'}+i%26))   \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_Write"},i);
+255     \textcolor{keywordflow}{if}(i%52==51)\{
+256       \textcolor{keywordflow}{if}(eFile\_Write(\textcolor{charliteral}{'\(\backslash\)n'}))     \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_Write"},i);  
+257       \textcolor{keywordflow}{if}(eFile\_Write(\textcolor{charliteral}{'\(\backslash\)r'}))     \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_Write"},i);
+258     \}
+259   \}
+260   \textcolor{keywordflow}{if}(eFile\_WClose())            \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_Close"},0);
+261 \textcolor{comment}{//  eFile\_Directory(&Serial\_OutChar);}
+262   \textcolor{keywordflow}{if}(eFile\_ROpen(\textcolor{stringliteral}{"file1"}))      \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_ROpen"},0);
+263   \textcolor{keywordflow}{for}(i=0;i<1000;i++)\{
+264     \textcolor{keywordflow}{if}(eFile\_ReadNext(&data))   \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_ReadNext"},i);
+265 \textcolor{comment}{//    Serial\_OutChar(data);}
+266   \}
+267   \textcolor{keywordflow}{if}(eFile\_Delete(\textcolor{stringliteral}{"file1"}))     \hyperlink{_lab5_8c_a22c9a06aa7985e858ece98451d29d482}{diskError}(\textcolor{stringliteral}{"eFile\_Delete"},0);
+268 \textcolor{comment}{//  eFile\_Directory(&Serial\_OutChar);}
+269   printf(\textcolor{stringliteral}{"Successful test of creating a file\(\backslash\)n\(\backslash\)r"});
+270   OS\_Kill();
+271 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{_lab5_8c_a95d7d847e2c29bc8c83224318399d41b_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{_lab5_8c_a95d7d847e2c29bc8c83224318399d41b_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_abbcfdc8ab315a9f273a0c498a0e73e29}{\index{Lab5.\-c@{Lab5.\-c}!testmain2@{testmain2}}
+\index{testmain2@{testmain2}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{testmain2}]{\setlength{\rightskip}{0pt plus 5cm}int testmain2 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_abbcfdc8ab315a9f273a0c498a0e73e29}
+
+
+Definition at line 276 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+276                    \{ 
+277   OS\_Init();           \textcolor{comment}{// initialize, disable interrupts}
+278 
+279 \textcolor{comment}{//*******attach background tasks***********}
+280   OS\_AddPeriodicThread(&disk\_timerproc,10*TIME\_1MS,0);   \textcolor{comment}{// time out routines for disk}
+281   
+282   NumCreated = 0 ;
+283 \textcolor{comment}{// create initial foreground threads}
+284   NumCreated += OS\_AddThread(&\hyperlink{_lab5_8c_a95d7d847e2c29bc8c83224318399d41b}{TestFile},128,1);  
+285   \textcolor{comment}{//NumCreated += OS\_AddThread(&IdleTask,128,3); }
+286  
+287   OS\_Launch(10*TIME\_1MS); \textcolor{comment}{// doesn't return, interrupts enabled in here}
+288   \textcolor{keywordflow}{return} 0;               \textcolor{comment}{// this never executes}
+289 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{_lab5_8c_abbcfdc8ab315a9f273a0c498a0e73e29_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab5_8c_ad4c2bdb78f3b09301fc0a24bbc9d1a5d}{\index{Lab5.\-c@{Lab5.\-c}!Test\-Us@{Test\-Us}}
+\index{Test\-Us@{Test\-Us}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Test\-Us}]{\setlength{\rightskip}{0pt plus 5cm}void Test\-Us (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab5_8c_ad4c2bdb78f3b09301fc0a24bbc9d1a5d}
+
+
+Definition at line 324 of file Lab5.\-c.
+
+
+\begin{DoxyCode}
+324                  \{
+325   
+326   uint32\_t currTime; 
+327   uint32\_t currTime2;
+328   uint32\_t distance;
+329   \textcolor{comment}{//uint32\_t distance\_buff[4];}
+330   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{id} = OS\_Id();
+331   uint32\_t i = 0;
+332   uint32\_t x = 5;
+333   x--;
+334   x--;
+335   x--;
+336   currTime = OS\_GetUsTime();
+337   OS\_DelayUS(5);
+338   currTime2 = OS\_GetUsTime();
+339   printf(\textcolor{stringliteral}{"Verifying Timing Conditions\(\backslash\)n"});
+340   printf(\textcolor{stringliteral}{"%u\(\backslash\)t%u\(\backslash\)t%u\(\backslash\)n"}, currTime, currTime2, currTime2-currTime);
+341   
+342   currTime = OS\_GetUsTime();
+343   currTime2 = OS\_GetUsTime();
+344   printf(\textcolor{stringliteral}{"Verifying Timing Conditions\(\backslash\)n"});
+345   printf(\textcolor{stringliteral}{"%u\(\backslash\)t%u\(\backslash\)t%u\(\backslash\)n"}, currTime, currTime2, currTime2-currTime);
+346   
+347     currTime = OS\_GetUsTime();
+348     currTime2 = OS\_GetUsTime();
+349     printf(\textcolor{stringliteral}{"Verifying Timing Conditions\(\backslash\)n"});
+350     printf(\textcolor{stringliteral}{"%u\(\backslash\)t%u\(\backslash\)t%u\(\backslash\)n"}, currTime, currTime2, currTime2-currTime);
+351   \textcolor{keywordflow}{while}(1)\{
+352     distance = 0;
+353     \textcolor{keywordflow}{for}(i = 0; i < 4; i++)\{
+354       currTime = OS\_GetUsTime();
+355       \textcolor{comment}{//distance\_buff[i] = Ping();}
+356       distance += \hyperlink{_lab5_8c_a9c8a4d21a75e6a19ea31df0c5ccecfc2}{Ping}();
+357       currTime2 = OS\_GetUsTime();
+358     \}
+359     distance = distance >> 2;
+360     printf(\textcolor{stringliteral}{"ID: %u\(\backslash\)t\(\backslash\)t%u\(\backslash\)t\(\backslash\)t%u\(\backslash\)n\(\backslash\)r"}, \textcolor{keywordtype}{id}, distance, currTime2-currTime);
+361   \}
+362   OS\_Kill();
+363 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{_lab5_8c_ad4c2bdb78f3b09301fc0a24bbc9d1a5d_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{_lab5_8c_ad4c2bdb78f3b09301fc0a24bbc9d1a5d_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{_lab5_8c_a9516ea594e030f96eb9483d95f1583a5}{\index{Lab5.\-c@{Lab5.\-c}!buffer@{buffer}}
+\index{buffer@{buffer}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{buffer}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char buffer\mbox{[}512\mbox{]}}}\label{_lab5_8c_a9516ea594e030f96eb9483d95f1583a5}
+
+
+Definition at line 182 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_a1bb5d517b380a841c91444d3bbffb9ab}{\index{Lab5.\-c@{Lab5.\-c}!Idlecount@{Idlecount}}
+\index{Idlecount@{Idlecount}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Idlecount}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Idlecount =0}}\label{_lab5_8c_a1bb5d517b380a841c91444d3bbffb9ab}
+
+
+Definition at line 128 of file Lab5.\-c.
+
+\hypertarget{_lab5_8c_a1e26c569f8ea4c8145952219697f181f}{\index{Lab5.\-c@{Lab5.\-c}!Running@{Running}}
+\index{Running@{Running}!Lab5.c@{Lab5.\-c}}
+\subsubsection[{Running}]{\setlength{\rightskip}{0pt plus 5cm}int Running}}\label{_lab5_8c_a1e26c569f8ea4c8145952219697f181f}
+
+
+Definition at line 23 of file Lab5.\-c.
+

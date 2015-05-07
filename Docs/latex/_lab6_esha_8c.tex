@@ -1,0 +1,1614 @@
+\hypertarget{_lab6_esha_8c}{\section{Lab6\-Esha.\-c File Reference}
+\label{_lab6_esha_8c}\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}}
+}
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}inc/hw\-\_\-types.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}A\-D\-C.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}os.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}inc/tm4c123gh6pm.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Perf.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}can0.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}median.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}P\-W\-M\-Dual.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Mailbox.\-hpp\char`\"{}}\\*
+Include dependency graph for Lab6\-Esha.\-c\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab6_esha_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_lab6_esha_8c_a90bf9206ca8b60d62247464501fb9e89}{Too\-Close}~1200
+\item 
+\#define \hyperlink{_lab6_esha_8c_a930f8223aa964823168d8f4cf7418e44}{Too\-Far}~600
+\item 
+\#define \hyperlink{_lab6_esha_8c_a084f0cbd524691ad1a56acf4e2858259}{Ok\-Range\-Min}~600
+\item 
+\#define \hyperlink{_lab6_esha_8c_a45c01d393beae01b562c5cb6c26cc8ea}{Ok\-Range\-Max}~1200
+\item 
+\#define \hyperlink{_lab6_esha_8c_ae586204918bfbea259810829a239d886}{T\-I\-M\-E\-S\-L\-I\-C\-E}~2$\ast$T\-I\-M\-E\-\_\-1\-M\-S
+\item 
+\#define \hyperlink{_lab6_esha_8c_ab527c0e4b7c318dbae300412b03eed17}{G\-P\-I\-O\-\_\-\-P\-F0}~($\ast$((volatile unsigned long $\ast$)0x40025004))
+\item 
+\#define \hyperlink{_lab6_esha_8c_abbb42535d15ee2366af5a5b1e2124a05}{G\-P\-I\-O\-\_\-\-P\-F1}~($\ast$((volatile unsigned long $\ast$)0x40025008))
+\item 
+\#define \hyperlink{_lab6_esha_8c_a959a99608831fef309047e405b5059bc}{G\-P\-I\-O\-\_\-\-P\-F2}~($\ast$((volatile unsigned long $\ast$)0x40025010))
+\item 
+\#define \hyperlink{_lab6_esha_8c_aab864bd67f4cea10fd17ee13808668cd}{G\-P\-I\-O\-\_\-\-P\-F3}~($\ast$((volatile unsigned long $\ast$)0x40025020))
+\item 
+\#define \hyperlink{_lab6_esha_8c_a66dc5c770ec2c27da7ecceb303354ff4}{G\-P\-I\-O\-\_\-\-P\-G1}~($\ast$((volatile unsigned long $\ast$)0x40026008))
+\item 
+\#define \hyperlink{_lab6_esha_8c_aa1bdfe98b68dc6bf0934403577a69402}{P\-D6}~($\ast$((volatile unsigned long $\ast$)0x40007100))
+\item 
+\#define \hyperlink{_lab6_esha_8c_a3e427eea4be9cc64631d579b0d4c13ce}{P\-D7}~($\ast$((volatile unsigned long $\ast$)0x40007200))
+\item 
+\#define \hyperlink{_lab6_esha_8c_aea08c09063c5962f8f60044f1829d54c}{P\-C6}~($\ast$((volatile unsigned long $\ast$)0x40006100))
+\item 
+\#define \hyperlink{_lab6_esha_8c_a1194403dd24b90c5af73482c52ad1360}{P\-C7}~($\ast$((volatile unsigned long $\ast$)0x40006200))
+\item 
+\#define \hyperlink{_lab6_esha_8c_adaab1d0c061d12c9892583c9591a70af}{P\-A6}~($\ast$((volatile unsigned long $\ast$)0x40004100))
+\item 
+\#define \hyperlink{_lab6_esha_8c_ad55f1ce2962d3a43aeed74b5459214f6}{P\-A7}~($\ast$((volatile unsigned long $\ast$)0x40004200))
+\item 
+\#define \hyperlink{_lab6_esha_8c_a25b36259b474d6e7ff4c3eb00374f947}{P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D}~1
+\item 
+\#define \hyperlink{_lab6_esha_8c_a0d2937f7ce6f0370010af0183f2cfb24}{P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D}~2
+\item 
+\#define \hyperlink{_lab6_esha_8c_aa1f4dd702be8a41cbc308411ed021fd8}{I\-R\-\_\-0\-\_\-\-I\-D}~3
+\item 
+\#define \hyperlink{_lab6_esha_8c_acbefcdc837243e39a82a94631f2b316e}{I\-R\-\_\-1\-\_\-\-I\-D}~4
+\item 
+\#define \hyperlink{_lab6_esha_8c_a0d5d96d1cc5a801f9f28516b054b86b4}{I\-R\-\_\-2\-\_\-\-I\-D}~5
+\item 
+\#define \hyperlink{_lab6_esha_8c_ad375e12584c5cfd298113fb8e6901482}{I\-R\-\_\-3\-\_\-\-I\-D}~6
+\item 
+\#define \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{L\-E\-D\-S}~($\ast$((volatile uint32\-\_\-t $\ast$)0x40025038))
+\item 
+\#define \hyperlink{_lab6_esha_8c_a8d23feea868a983c8c2b661e1e16972f}{R\-E\-D}~0x02
+\item 
+\#define \hyperlink{_lab6_esha_8c_a79d10e672abb49ad63eeaa8aaef57c38}{B\-L\-U\-E}~0x04
+\item 
+\#define \hyperlink{_lab6_esha_8c_acfbc006ea433ad708fdee3e82996e721}{G\-R\-E\-E\-N}~0x08
+\item 
+\#define \hyperlink{_lab6_esha_8c_a87b537f5fa5c109d3c05c13d6b18f382}{W\-H\-I\-T\-E}~0x0\-F
+\item 
+\#define \hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buff\-S\-I\-Z\-E}~8
+\item 
+\#define \hyperlink{_lab6_esha_8c_a325968afe6bf093a3cac03b375e147b2}{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R}~20
+\item 
+\#define \hyperlink{_lab6_esha_8c_a23f1b54309d3ad5bb058d17f0a968fd6}{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L}~60
+\item 
+\#define \hyperlink{_lab6_esha_8c_ad7ff2ce70eeedd3870032415356b5c0f}{right\-Close}~550
+\item 
+\#define \hyperlink{_lab6_esha_8c_ae43862274f636ec024aa03058d826ae4}{left\-Close}~550
+\item 
+\#define \hyperlink{_lab6_esha_8c_abdbc2261b78a98ca1cbe6072662f4f55}{front\-Close}~1100
+\item 
+\#define \hyperlink{_lab6_esha_8c_abdbc2261b78a98ca1cbe6072662f4f55}{front\-Close}~900
+\item 
+\#define \hyperlink{_lab6_esha_8c_a800de448b37b6a5e31b412f95d8e6cda}{low\-Speed\-Fixed}~30
+\item 
+\#define \hyperlink{_lab6_esha_8c_ad3f1a412f3818d3e0c4afddea947e7c9}{super\-Low\-Speed\-Fixed}~30
+\item 
+\#define \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{high\-Speed\-Fixed}~300
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_lab6_esha_8c_ac866dbaf7b167e5c46bb33de42eee84d}{Disable\-Interrupts} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_ab712356331a62b04aebcb373865e68c4}{Enable\-Interrupts} (void)
+\item 
+long \hyperlink{_lab6_esha_8c_a6e7e2088607214bc15b17ac57b57df1b}{Start\-Critical} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_a670da3ff1aea0c7d54c40e9e40b5eeed}{End\-Critical} (long sr)
+\item 
+void \hyperlink{_lab6_esha_8c_a80ae22f2f73496246542c428c4bec38f}{Wait\-For\-Interrupt} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_a6f1889c3f5d0f35d0ca0f7aa03ed5cb1}{G\-P\-I\-O\-Port\-A\-\_\-\-Handler} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_a0b6c07c1a985f30a5ca41d59f8c22932}{G\-P\-I\-O\-Port\-C\-\_\-\-Handler} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_a04369a3281263e369b0cffb5658b24e3}{Port\-D\-\_\-\-Init} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_a5a2a2db7e83737739f577faafdf8cce7}{Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_ac079e51ee4b2d6294323419435982b5d}{Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init} (void)
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_a03c7899f3ff55164dfc955aed1b328f8}{Ping1} (void)
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_a88c85cf0752512429969dbc0b75626d0}{Ping2} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_abd66255c87de5710737f979da785c171}{Ping\-R} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_acbb551322fcba7749c8c40006cd9ffd8}{Ping\-L} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_affe0a9a16718407e57b15b2eb77c4d8f}{I\-R0} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_a93e4ea9d9ef2ee60af1459a12b6e6d4c}{I\-R1} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_adc674087543a04e8700d2427322b8328}{I\-R2} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_a7c8ab9e9d2256a9f7ecee8fb0499cb91}{I\-R3} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_ae19ef8807dc64129635da5b3b781588a}{Port\-F\-\_\-\-Init} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_a43617af71ca5f26b8d87c7460ee110f4}{C\-A\-N\-\_\-\-Listener} (void)
+\item 
+void \hyperlink{_lab6_esha_8c_a8df88b108bf75863b97b46c603310d3c}{Controller} (void)
+\item 
+int \hyperlink{_lab6_esha_8c_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_lab6_esha_8c_a1e26c569f8ea4c8145952219697f181f}{Running}
+\item 
+Sema4\-Type \hyperlink{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{A\-D\-C\-\_\-\-Collection}
+\item 
+B\-G\-Mailbox$<$ uint32\-\_\-t $>$ \hyperlink{_lab6_esha_8c_a6b0304a7c2f611c97a1f4779a9bfb483}{Ping1\-Mail}
+\item 
+B\-G\-Mailbox$<$ uint32\-\_\-t $>$ \hyperlink{_lab6_esha_8c_a39dbfc1fca14892a7d8916d445fb4321}{Ping2\-Mail}
+\item 
+uint16\-\_\-t \hyperlink{_lab6_esha_8c_a3ef9af88ef7960267baff71e003030e6}{Res\-\_\-buffer0} \mbox{[}8\mbox{]}
+\item 
+uint16\-\_\-t \hyperlink{_lab6_esha_8c_aec9aecee730bddbe611ffd11cfe09692}{Res\-\_\-buffer1} \mbox{[}64\mbox{]}
+\item 
+uint16\-\_\-t \hyperlink{_lab6_esha_8c_a6a20659f3190002cee79b8ee18b012a7}{Res\-\_\-buffer2} \mbox{[}64\mbox{]}
+\item 
+uint16\-\_\-t \hyperlink{_lab6_esha_8c_ad382a86c210687cdebcb99093927c7d3}{Res\-\_\-buffer3} \mbox{[}64\mbox{]}
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_a844dbda1145dc770c5f3166773e5ac15}{Rcv\-Count} =0
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_af14aa8ade47f8475f91855e0dff8ecc7}{Ping\-R\-Val}
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_adfdf2447659006d4a3062e8e27f1f533}{Ping\-L\-Val}
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_ae9a74104294340225e2bbc7c1fa561ff}{I\-R0\-Val} = 4096
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_adcea3401f53cc2d69e4f667b19e6c196}{I\-R1\-Val} = 4096
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_a2b37f85b4e04e07d733d0925cafeea88}{I\-R2\-Val} = 4096
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_a6af4ef6e3413367b368acb7b5ba47d17}{I\-R3\-Val} = 4096
+\item 
+int \hyperlink{_lab6_esha_8c_ac3df666236b2a1eb5090dd3c71e9c82b}{turning\-Mode} = 0
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_aeccbe31b89cf90e9c9ee1a1fafefc5ff}{Wobble\-R} \mbox{[}$\,$\mbox{]} = \{200, 205, 200, 195\}
+\item 
+uint32\-\_\-t \hyperlink{_lab6_esha_8c_a76415045fcd9ad9ec248427e80572f9a}{Wobble\-L} \mbox{[}$\,$\mbox{]} = \{200, 195, 200, 205\}
+\item 
+int \hyperlink{_lab6_esha_8c_a419d0a21926ce1fa3d158e1e565b7750}{K\-I} = 0
+\item 
+int \hyperlink{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{left\-Motor\-Speed} = 0
+\item 
+int \hyperlink{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{right\-Motor\-Speed} = 0
+\item 
+int \hyperlink{_lab6_esha_8c_a31dfb8bfd435dc08041263388c814c63}{divider} = 10
+\item 
+float \hyperlink{_lab6_esha_8c_adf1658fde4c0fce1c9f6c2ae4f1ae6b4}{right\-Weight} = 1/((4096 -\/ 550 )$\ast$\hyperlink{_lab6_esha_8c_a31dfb8bfd435dc08041263388c814c63}{divider})
+\item 
+float \hyperlink{_lab6_esha_8c_a638a80c3a00e093136cc33505e032da6}{left\-Weight} = 1/((4096 -\/ 550 )$\ast$\hyperlink{_lab6_esha_8c_a31dfb8bfd435dc08041263388c814c63}{divider})
+\item 
+float \hyperlink{_lab6_esha_8c_a92b2ed7f50eea2b7a0ba4c1b46d31939}{front\-Weight} = 1/((4096 -\/ 1100 )$\ast$\hyperlink{_lab6_esha_8c_a31dfb8bfd435dc08041263388c814c63}{divider})
+\item 
+int \hyperlink{_lab6_esha_8c_adeb354b6e7b636d3428ddd90428611d9}{R\-P\-W\-M\-Error} = 0
+\item 
+int \hyperlink{_lab6_esha_8c_a0f786ce875afe076c3f1914e461753b6}{L\-P\-W\-M\-Error} = 0
+\item 
+int \hyperlink{_lab6_esha_8c_a30c797b8083ee73d3949c090916748ca}{F\-P\-W\-M\-Error} = 0
+\item 
+int \hyperlink{_lab6_esha_8c_a60b16f8bc83b23cc11fb0ecd124c60ae}{R\-I\-Correction} = 0
+\item 
+int \hyperlink{_lab6_esha_8c_a037c18c2cf586612dbff36384c90bd7b}{L\-I\-Correction} = 0
+\item 
+int \hyperlink{_lab6_esha_8c_aae5700ac6107cc795ae5a50da455a690}{red\-\_\-counter} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_lab6_esha_8c_a79d10e672abb49ad63eeaa8aaef57c38}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!B\-L\-U\-E@{B\-L\-U\-E}}
+\index{B\-L\-U\-E@{B\-L\-U\-E}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{B\-L\-U\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-L\-U\-E~0x04}}\label{_lab6_esha_8c_a79d10e672abb49ad63eeaa8aaef57c38}
+
+
+Definition at line 58 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!buff\-S\-I\-Z\-E@{buff\-S\-I\-Z\-E}}
+\index{buff\-S\-I\-Z\-E@{buff\-S\-I\-Z\-E}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{buff\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define buff\-S\-I\-Z\-E~8}}\label{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}
+
+
+Definition at line 292 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_abdbc2261b78a98ca1cbe6072662f4f55}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!front\-Close@{front\-Close}}
+\index{front\-Close@{front\-Close}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{front\-Close}]{\setlength{\rightskip}{0pt plus 5cm}\#define front\-Close~1100}}\label{_lab6_esha_8c_abdbc2261b78a98ca1cbe6072662f4f55}
+
+
+Definition at line 476 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_abdbc2261b78a98ca1cbe6072662f4f55}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!front\-Close@{front\-Close}}
+\index{front\-Close@{front\-Close}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{front\-Close}]{\setlength{\rightskip}{0pt plus 5cm}\#define front\-Close~900}}\label{_lab6_esha_8c_abdbc2261b78a98ca1cbe6072662f4f55}
+
+
+Definition at line 476 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ab527c0e4b7c318dbae300412b03eed17}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!G\-P\-I\-O\-\_\-\-P\-F0@{G\-P\-I\-O\-\_\-\-P\-F0}}
+\index{G\-P\-I\-O\-\_\-\-P\-F0@{G\-P\-I\-O\-\_\-\-P\-F0}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F0}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F0~($\ast$((volatile unsigned long $\ast$)0x40025004))}}\label{_lab6_esha_8c_ab527c0e4b7c318dbae300412b03eed17}
+
+
+Definition at line 34 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_abbb42535d15ee2366af5a5b1e2124a05}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!G\-P\-I\-O\-\_\-\-P\-F1@{G\-P\-I\-O\-\_\-\-P\-F1}}
+\index{G\-P\-I\-O\-\_\-\-P\-F1@{G\-P\-I\-O\-\_\-\-P\-F1}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F1}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F1~($\ast$((volatile unsigned long $\ast$)0x40025008))}}\label{_lab6_esha_8c_abbb42535d15ee2366af5a5b1e2124a05}
+
+
+Definition at line 35 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a959a99608831fef309047e405b5059bc}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!G\-P\-I\-O\-\_\-\-P\-F2@{G\-P\-I\-O\-\_\-\-P\-F2}}
+\index{G\-P\-I\-O\-\_\-\-P\-F2@{G\-P\-I\-O\-\_\-\-P\-F2}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F2}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F2~($\ast$((volatile unsigned long $\ast$)0x40025010))}}\label{_lab6_esha_8c_a959a99608831fef309047e405b5059bc}
+
+
+Definition at line 36 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_aab864bd67f4cea10fd17ee13808668cd}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!G\-P\-I\-O\-\_\-\-P\-F3@{G\-P\-I\-O\-\_\-\-P\-F3}}
+\index{G\-P\-I\-O\-\_\-\-P\-F3@{G\-P\-I\-O\-\_\-\-P\-F3}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-F3}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-F3~($\ast$((volatile unsigned long $\ast$)0x40025020))}}\label{_lab6_esha_8c_aab864bd67f4cea10fd17ee13808668cd}
+
+
+Definition at line 37 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a66dc5c770ec2c27da7ecceb303354ff4}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!G\-P\-I\-O\-\_\-\-P\-G1@{G\-P\-I\-O\-\_\-\-P\-G1}}
+\index{G\-P\-I\-O\-\_\-\-P\-G1@{G\-P\-I\-O\-\_\-\-P\-G1}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{G\-P\-I\-O\-\_\-\-P\-G1}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-P\-I\-O\-\_\-\-P\-G1~($\ast$((volatile unsigned long $\ast$)0x40026008))}}\label{_lab6_esha_8c_a66dc5c770ec2c27da7ecceb303354ff4}
+
+
+Definition at line 38 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_acfbc006ea433ad708fdee3e82996e721}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!G\-R\-E\-E\-N@{G\-R\-E\-E\-N}}
+\index{G\-R\-E\-E\-N@{G\-R\-E\-E\-N}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{G\-R\-E\-E\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\-R\-E\-E\-N~0x08}}\label{_lab6_esha_8c_acfbc006ea433ad708fdee3e82996e721}
+
+
+Definition at line 59 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!high\-Speed\-Fixed@{high\-Speed\-Fixed}}
+\index{high\-Speed\-Fixed@{high\-Speed\-Fixed}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{high\-Speed\-Fixed}]{\setlength{\rightskip}{0pt plus 5cm}\#define high\-Speed\-Fixed~300}}\label{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}
+
+
+Definition at line 482 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_aa1f4dd702be8a41cbc308411ed021fd8}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R\-\_\-0\-\_\-\-I\-D@{I\-R\-\_\-0\-\_\-\-I\-D}}
+\index{I\-R\-\_\-0\-\_\-\-I\-D@{I\-R\-\_\-0\-\_\-\-I\-D}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R\-\_\-0\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\-R\-\_\-0\-\_\-\-I\-D~3}}\label{_lab6_esha_8c_aa1f4dd702be8a41cbc308411ed021fd8}
+
+
+Definition at line 48 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_acbefcdc837243e39a82a94631f2b316e}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R\-\_\-1\-\_\-\-I\-D@{I\-R\-\_\-1\-\_\-\-I\-D}}
+\index{I\-R\-\_\-1\-\_\-\-I\-D@{I\-R\-\_\-1\-\_\-\-I\-D}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R\-\_\-1\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\-R\-\_\-1\-\_\-\-I\-D~4}}\label{_lab6_esha_8c_acbefcdc837243e39a82a94631f2b316e}
+
+
+Definition at line 49 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a0d5d96d1cc5a801f9f28516b054b86b4}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R\-\_\-2\-\_\-\-I\-D@{I\-R\-\_\-2\-\_\-\-I\-D}}
+\index{I\-R\-\_\-2\-\_\-\-I\-D@{I\-R\-\_\-2\-\_\-\-I\-D}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R\-\_\-2\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\-R\-\_\-2\-\_\-\-I\-D~5}}\label{_lab6_esha_8c_a0d5d96d1cc5a801f9f28516b054b86b4}
+
+
+Definition at line 50 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ad375e12584c5cfd298113fb8e6901482}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R\-\_\-3\-\_\-\-I\-D@{I\-R\-\_\-3\-\_\-\-I\-D}}
+\index{I\-R\-\_\-3\-\_\-\-I\-D@{I\-R\-\_\-3\-\_\-\-I\-D}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R\-\_\-3\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\-R\-\_\-3\-\_\-\-I\-D~6}}\label{_lab6_esha_8c_ad375e12584c5cfd298113fb8e6901482}
+
+
+Definition at line 51 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!L\-E\-D\-S@{L\-E\-D\-S}}
+\index{L\-E\-D\-S@{L\-E\-D\-S}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{L\-E\-D\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-E\-D\-S~($\ast$((volatile uint32\-\_\-t $\ast$)0x40025038))}}\label{_lab6_esha_8c_a61686d33603491344883775b9b31e172}
+
+
+Definition at line 55 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ae43862274f636ec024aa03058d826ae4}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!left\-Close@{left\-Close}}
+\index{left\-Close@{left\-Close}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{left\-Close}]{\setlength{\rightskip}{0pt plus 5cm}\#define left\-Close~550}}\label{_lab6_esha_8c_ae43862274f636ec024aa03058d826ae4}
+
+
+Definition at line 472 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a800de448b37b6a5e31b412f95d8e6cda}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!low\-Speed\-Fixed@{low\-Speed\-Fixed}}
+\index{low\-Speed\-Fixed@{low\-Speed\-Fixed}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{low\-Speed\-Fixed}]{\setlength{\rightskip}{0pt plus 5cm}\#define low\-Speed\-Fixed~30}}\label{_lab6_esha_8c_a800de448b37b6a5e31b412f95d8e6cda}
+
+
+Definition at line 480 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a45c01d393beae01b562c5cb6c26cc8ea}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Ok\-Range\-Max@{Ok\-Range\-Max}}
+\index{Ok\-Range\-Max@{Ok\-Range\-Max}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Ok\-Range\-Max}]{\setlength{\rightskip}{0pt plus 5cm}\#define Ok\-Range\-Max~1200}}\label{_lab6_esha_8c_a45c01d393beae01b562c5cb6c26cc8ea}
+
+
+Definition at line 24 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a084f0cbd524691ad1a56acf4e2858259}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Ok\-Range\-Min@{Ok\-Range\-Min}}
+\index{Ok\-Range\-Min@{Ok\-Range\-Min}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Ok\-Range\-Min}]{\setlength{\rightskip}{0pt plus 5cm}\#define Ok\-Range\-Min~600}}\label{_lab6_esha_8c_a084f0cbd524691ad1a56acf4e2858259}
+
+
+Definition at line 23 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_adaab1d0c061d12c9892583c9591a70af}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!P\-A6@{P\-A6}}
+\index{P\-A6@{P\-A6}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{P\-A6}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-A6~($\ast$((volatile unsigned long $\ast$)0x40004100))}}\label{_lab6_esha_8c_adaab1d0c061d12c9892583c9591a70af}
+
+
+Definition at line 44 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ad55f1ce2962d3a43aeed74b5459214f6}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!P\-A7@{P\-A7}}
+\index{P\-A7@{P\-A7}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{P\-A7}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-A7~($\ast$((volatile unsigned long $\ast$)0x40004200))}}\label{_lab6_esha_8c_ad55f1ce2962d3a43aeed74b5459214f6}
+
+
+Definition at line 45 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_aea08c09063c5962f8f60044f1829d54c}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!P\-C6@{P\-C6}}
+\index{P\-C6@{P\-C6}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{P\-C6}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-C6~($\ast$((volatile unsigned long $\ast$)0x40006100))}}\label{_lab6_esha_8c_aea08c09063c5962f8f60044f1829d54c}
+
+
+Definition at line 42 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a1194403dd24b90c5af73482c52ad1360}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!P\-C7@{P\-C7}}
+\index{P\-C7@{P\-C7}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{P\-C7}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-C7~($\ast$((volatile unsigned long $\ast$)0x40006200))}}\label{_lab6_esha_8c_a1194403dd24b90c5af73482c52ad1360}
+
+
+Definition at line 43 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_aa1bdfe98b68dc6bf0934403577a69402}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!P\-D6@{P\-D6}}
+\index{P\-D6@{P\-D6}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{P\-D6}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-D6~($\ast$((volatile unsigned long $\ast$)0x40007100))}}\label{_lab6_esha_8c_aa1bdfe98b68dc6bf0934403577a69402}
+
+
+Definition at line 40 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a3e427eea4be9cc64631d579b0d4c13ce}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!P\-D7@{P\-D7}}
+\index{P\-D7@{P\-D7}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{P\-D7}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-D7~($\ast$((volatile unsigned long $\ast$)0x40007200))}}\label{_lab6_esha_8c_a3e427eea4be9cc64631d579b0d4c13ce}
+
+
+Definition at line 41 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a25b36259b474d6e7ff4c3eb00374f947}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D@{P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D}}
+\index{P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D@{P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-I\-N\-G\-\_\-\-L\-\_\-\-I\-D~1}}\label{_lab6_esha_8c_a25b36259b474d6e7ff4c3eb00374f947}
+
+
+Definition at line 46 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a0d2937f7ce6f0370010af0183f2cfb24}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D@{P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D}}
+\index{P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D@{P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-I\-N\-G\-\_\-\-R\-\_\-\-I\-D~2}}\label{_lab6_esha_8c_a0d2937f7ce6f0370010af0183f2cfb24}
+
+
+Definition at line 47 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a8d23feea868a983c8c2b661e1e16972f}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!R\-E\-D@{R\-E\-D}}
+\index{R\-E\-D@{R\-E\-D}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{R\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\-E\-D~0x02}}\label{_lab6_esha_8c_a8d23feea868a983c8c2b661e1e16972f}
+
+
+Definition at line 57 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ad7ff2ce70eeedd3870032415356b5c0f}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!right\-Close@{right\-Close}}
+\index{right\-Close@{right\-Close}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{right\-Close}]{\setlength{\rightskip}{0pt plus 5cm}\#define right\-Close~550}}\label{_lab6_esha_8c_ad7ff2ce70eeedd3870032415356b5c0f}
+
+
+Definition at line 471 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ad3f1a412f3818d3e0c4afddea947e7c9}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!super\-Low\-Speed\-Fixed@{super\-Low\-Speed\-Fixed}}
+\index{super\-Low\-Speed\-Fixed@{super\-Low\-Speed\-Fixed}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{super\-Low\-Speed\-Fixed}]{\setlength{\rightskip}{0pt plus 5cm}\#define super\-Low\-Speed\-Fixed~30}}\label{_lab6_esha_8c_ad3f1a412f3818d3e0c4afddea947e7c9}
+
+
+Definition at line 481 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ae586204918bfbea259810829a239d886}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!T\-I\-M\-E\-S\-L\-I\-C\-E@{T\-I\-M\-E\-S\-L\-I\-C\-E}}
+\index{T\-I\-M\-E\-S\-L\-I\-C\-E@{T\-I\-M\-E\-S\-L\-I\-C\-E}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{T\-I\-M\-E\-S\-L\-I\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-I\-M\-E\-S\-L\-I\-C\-E~2$\ast$T\-I\-M\-E\-\_\-1\-M\-S}}\label{_lab6_esha_8c_ae586204918bfbea259810829a239d886}
+
+
+Definition at line 32 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a90bf9206ca8b60d62247464501fb9e89}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Too\-Close@{Too\-Close}}
+\index{Too\-Close@{Too\-Close}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Too\-Close}]{\setlength{\rightskip}{0pt plus 5cm}\#define Too\-Close~1200}}\label{_lab6_esha_8c_a90bf9206ca8b60d62247464501fb9e89}
+
+
+Definition at line 21 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a930f8223aa964823168d8f4cf7418e44}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Too\-Far@{Too\-Far}}
+\index{Too\-Far@{Too\-Far}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Too\-Far}]{\setlength{\rightskip}{0pt plus 5cm}\#define Too\-Far~600}}\label{_lab6_esha_8c_a930f8223aa964823168d8f4cf7418e44}
+
+
+Definition at line 22 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a23f1b54309d3ad5bb058d17f0a968fd6}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L@{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L}}
+\index{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L@{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-L~60}}\label{_lab6_esha_8c_a23f1b54309d3ad5bb058d17f0a968fd6}
+
+
+Definition at line 470 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a325968afe6bf093a3cac03b375e147b2}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R@{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R}}
+\index{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R@{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-U\-R\-N\-T\-H\-R\-E\-S\-H\-R~20}}\label{_lab6_esha_8c_a325968afe6bf093a3cac03b375e147b2}
+
+
+Definition at line 469 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a87b537f5fa5c109d3c05c13d6b18f382}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!W\-H\-I\-T\-E@{W\-H\-I\-T\-E}}
+\index{W\-H\-I\-T\-E@{W\-H\-I\-T\-E}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{W\-H\-I\-T\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define W\-H\-I\-T\-E~0x0\-F}}\label{_lab6_esha_8c_a87b537f5fa5c109d3c05c13d6b18f382}
+
+
+Definition at line 60 of file Lab6\-Esha.\-c.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{_lab6_esha_8c_a43617af71ca5f26b8d87c7460ee110f4}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!C\-A\-N\-\_\-\-Listener@{C\-A\-N\-\_\-\-Listener}}
+\index{C\-A\-N\-\_\-\-Listener@{C\-A\-N\-\_\-\-Listener}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{C\-A\-N\-\_\-\-Listener}]{\setlength{\rightskip}{0pt plus 5cm}void C\-A\-N\-\_\-\-Listener (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a43617af71ca5f26b8d87c7460ee110f4}
+
+
+Definition at line 427 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+427                        \{
+428   uint8\_t RcvData[5];
+429 \textcolor{comment}{//  uint32\_t rxDat;}
+430   CanMessage\_t rxDat;
+431   \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_esha_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE};
+432   \textcolor{keywordflow}{while}(1)\{
+433     \textcolor{keywordflow}{if}(CAN0\_GetMailNonBlock(RcvData))\{
+434             Buff2CanMessage(&rxDat, RcvData);
+435       \hyperlink{_lab6_esha_8c_a844dbda1145dc770c5f3166773e5ac15}{RcvCount}++;
+436       \textcolor{comment}{//rxDat = CAST\_UINT8\_2\_CAN(RcvData);}
+437             \textcolor{keywordflow}{switch}(rxDat.mId)\{
+438                 \textcolor{keywordflow}{case} \hyperlink{_lab6_esha_8c_a25b36259b474d6e7ff4c3eb00374f947}{PING\_L\_ID}:
+439                     \hyperlink{_lab6_esha_8c_adfdf2447659006d4a3062e8e27f1f533}{PingLVal} = rxDat.data;
+440                     \textcolor{keywordflow}{break};
+441                 
+442                 \textcolor{keywordflow}{case} \hyperlink{_lab6_esha_8c_a0d2937f7ce6f0370010af0183f2cfb24}{PING\_R\_ID}:
+443                     \hyperlink{_lab6_esha_8c_af14aa8ade47f8475f91855e0dff8ecc7}{PingRVal} = rxDat.data;
+444                     \textcolor{keywordflow}{break};
+445                 \textcolor{keywordflow}{case} \hyperlink{_lab6_esha_8c_aa1f4dd702be8a41cbc308411ed021fd8}{IR\_0\_ID}: 
+446                     \hyperlink{_lab6_esha_8c_ae9a74104294340225e2bbc7c1fa561ff}{IR0Val} = rxDat.data;
+447 \textcolor{comment}{//                    LEDS ^= BLUE;}
+448                     \textcolor{keywordflow}{break};
+449                 \textcolor{keywordflow}{case} \hyperlink{_lab6_esha_8c_acbefcdc837243e39a82a94631f2b316e}{IR\_1\_ID}: 
+450                     \hyperlink{_lab6_esha_8c_adcea3401f53cc2d69e4f667b19e6c196}{IR1Val} = rxDat.data;
+451 \textcolor{comment}{//                    LEDS ^= GREEN;}
+452                     \textcolor{keywordflow}{break};
+453                 \textcolor{keywordflow}{case} \hyperlink{_lab6_esha_8c_a0d5d96d1cc5a801f9f28516b054b86b4}{IR\_2\_ID}: 
+454                     \hyperlink{_lab6_esha_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val} = rxDat.data;
+455 \textcolor{comment}{//                    LEDS = RED;}
+456                     \textcolor{keywordflow}{break};
+457                 \textcolor{keywordflow}{case} \hyperlink{_lab6_esha_8c_ad375e12584c5cfd298113fb8e6901482}{IR\_3\_ID}: 
+458                     \hyperlink{_lab6_esha_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val} = rxDat.data;
+459 \textcolor{comment}{//                  LEDS = WHITE;}
+460                     \textcolor{keywordflow}{break};
+461                 \textcolor{keywordflow}{default}:
+462                     \textcolor{keywordflow}{break};
+463             \} \textcolor{comment}{//End Switch}
+464     \} \textcolor{comment}{// End if CAN0\_GetMail}
+465   \}\textcolor{comment}{// End While }
+466 \}\textcolor{comment}{//End CAN\_Listener}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{_lab6_esha_8c_a43617af71ca5f26b8d87c7460ee110f4_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_a8df88b108bf75863b97b46c603310d3c}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Controller@{Controller}}
+\index{Controller@{Controller}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Controller}]{\setlength{\rightskip}{0pt plus 5cm}void Controller (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a8df88b108bf75863b97b46c603310d3c}
+
+
+Definition at line 504 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+504                      \{
+505     \textcolor{keywordflow}{while}(1)\{
+506         \textcolor{comment}{//        if (OS\_MsTime() > (120000))\{}
+507 \textcolor{comment}{//            LEDS = WHITE; }
+508 \textcolor{comment}{//            motorMovement(LEFTMOTOR, STOP, FORWARD,leftMotorSpeed);}
+509 \textcolor{comment}{//            motorMovement(RIGHTMOTOR,STOP, FORWARD,rightMotorSpeed);}
+510 \textcolor{comment}{//            OS\_Kill(); }
+511 \textcolor{comment}{//        \}}
+512         \hyperlink{_lab6_esha_8c_adeb354b6e7b636d3428ddd90428611d9}{RPWMError} = \hyperlink{_lab6_esha_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val} - \hyperlink{_lab6_esha_8c_ad7ff2ce70eeedd3870032415356b5c0f}{rightClose};
+513         \hyperlink{_lab6_esha_8c_a0f786ce875afe076c3f1914e461753b6}{LPWMError} = \hyperlink{_lab6_esha_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val} - \hyperlink{_lab6_esha_8c_ae43862274f636ec024aa03058d826ae4}{leftClose};
+514         \hyperlink{_lab6_esha_8c_a30c797b8083ee73d3949c090916748ca}{FPWMError} = \hyperlink{_lab6_esha_8c_adcea3401f53cc2d69e4f667b19e6c196}{IR1Val} - \hyperlink{_lab6_esha_8c_abdbc2261b78a98ca1cbe6072662f4f55}{frontClose};
+515         \hyperlink{_lab6_esha_8c_a60b16f8bc83b23cc11fb0ecd124c60ae}{RICorrection} = \hyperlink{_lab6_esha_8c_a60b16f8bc83b23cc11fb0ecd124c60ae}{RICorrection} + \hyperlink{_lab6_esha_8c_a419d0a21926ce1fa3d158e1e565b7750}{KI}* \hyperlink{_lab6_esha_8c_adeb354b6e7b636d3428ddd90428611d9}{RPWMError};
+516         \hyperlink{_lab6_esha_8c_a037c18c2cf586612dbff36384c90bd7b}{LICorrection} = \hyperlink{_lab6_esha_8c_a037c18c2cf586612dbff36384c90bd7b}{LICorrection} + \hyperlink{_lab6_esha_8c_a419d0a21926ce1fa3d158e1e565b7750}{KI}* \hyperlink{_lab6_esha_8c_a0f786ce875afe076c3f1914e461753b6}{LPWMError};
+517         \textcolor{comment}{//front too close  }
+518         \textcolor{keywordflow}{if} (\hyperlink{_lab6_esha_8c_adcea3401f53cc2d69e4f667b19e6c196}{IR1Val} > frontClose)\{
+519             \hyperlink{_lab6_esha_8c_aae5700ac6107cc795ae5a50da455a690}{red\_counter}++;
+520             \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_esha_8c_a8d23feea868a983c8c2b661e1e16972f}{RED};
+521             \textcolor{comment}{//decides based on the two IR }
+522             \textcolor{keywordflow}{if}(\hyperlink{_lab6_esha_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val} > \hyperlink{_lab6_esha_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val})\{ \textcolor{comment}{//Turn left}
+523                 \hyperlink{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed};
+524                 \hyperlink{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed} - 
+      \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed}*\hyperlink{_lab6_esha_8c_a638a80c3a00e093136cc33505e032da6}{leftWeight}*LPWMError +\hyperlink{_lab6_esha_8c_a037c18c2cf586612dbff36384c90bd7b}{LICorrection}; 
+525                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_ae19b6bb2940d2fbe0a79852b070eeafd}{STOP}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+526                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+527             \}
+528             \textcolor{keywordflow}{else}\{ \textcolor{comment}{//Turn right}
+529                 \hyperlink{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed};
+530                 \hyperlink{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed} - 
+      \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed}*\hyperlink{_lab6_esha_8c_adf1658fde4c0fce1c9f6c2ae4f1ae6b4}{rightWeight}*RPWMError +\hyperlink{_lab6_esha_8c_a60b16f8bc83b23cc11fb0ecd124c60ae}{RICorrection}; 
+531                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_ae19b6bb2940d2fbe0a79852b070eeafd}{STOP}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+532                 motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+533             \}
+534         \}
+535         \textcolor{comment}{//right wheel close }
+536         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\hyperlink{_lab6_esha_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val} > rightClose && \hyperlink{_lab6_esha_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val} > \hyperlink{_lab6_esha_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val})\{
+537             \textcolor{comment}{//            if (red\_counter > 0) \{}
+538             \textcolor{comment}{//                red\_counter--;}
+539             \textcolor{comment}{//                rightWeightCoef = rightWeightCoefOriginal/2;}
+540             \textcolor{comment}{//            \}else\{}
+541             \textcolor{comment}{//                rightWeightCoef = rightWeightCoefOriginal;}
+542             \textcolor{comment}{//            \}}
+543             \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_esha_8c_acfbc006ea433ad708fdee3e82996e721}{GREEN};
+544             \hyperlink{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed};
+545             \hyperlink{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed} - 
+      \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed}*\hyperlink{_lab6_esha_8c_adf1658fde4c0fce1c9f6c2ae4f1ae6b4}{rightWeight}*RPWMError +\hyperlink{_lab6_esha_8c_a60b16f8bc83b23cc11fb0ecd124c60ae}{RICorrection}; 
+546             motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+547             motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+548 
+549         \}
+550         \textcolor{comment}{//left too close }
+551         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\hyperlink{_lab6_esha_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val} > leftClose && \hyperlink{_lab6_esha_8c_a6af4ef6e3413367b368acb7b5ba47d17}{IR3Val}>\hyperlink{_lab6_esha_8c_a2b37f85b4e04e07d733d0925cafeea88}{IR2Val})\{ \textcolor{comment}{//IR0 is on Right side and IR1 in
+       front}
+552             \textcolor{comment}{//            if (red\_counter > 0) \{}
+553             \textcolor{comment}{//                red\_counter--;}
+555 \textcolor{comment}{}            \textcolor{comment}{//            \}else\{}
+556             \textcolor{comment}{//                leftWeightCoef = leftWeightCoefOriginal;}
+557             \textcolor{comment}{//            \}}
+558             \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_esha_8c_a79d10e672abb49ad63eeaa8aaef57c38}{BLUE}; 
+559             
+560             \hyperlink{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed} = \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed};
+561             \hyperlink{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed} = \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed} - 
+      \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed}*\hyperlink{_lab6_esha_8c_a638a80c3a00e093136cc33505e032da6}{leftWeight}*LPWMError +\hyperlink{_lab6_esha_8c_a037c18c2cf586612dbff36384c90bd7b}{LICorrection}; 
+562             motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_ae19b6bb2940d2fbe0a79852b070eeafd}{STOP}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{leftMotorSpeed});
+563             motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{rightMotorSpeed});
+564         \} 
+565         \textcolor{comment}{//no problems, go straight }
+566         \textcolor{keywordflow}{else} 
+567         \{
+568             \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{LEDS} = \hyperlink{_lab6_esha_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE};
+569             motorMovement(\hyperlink{_p_w_m_dual_test_8c_aa187ea0bbd0d7736185b722178189816}{LEFTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed});
+570             motorMovement(\hyperlink{_p_w_m_dual_test_8c_a76ff1c11b4defec11ea4a37cec53af8b}{RIGHTMOTOR}, \hyperlink{_p_w_m_dual_test_8c_a2acdc4aa0f128c9b2788707db3e6935e}{MOVE}, \hyperlink{_p_w_m_dual_test_8c_a6ddfdda7a062d10cff4a72b76b44aeb8}{FORWARD},
+      \hyperlink{_lab6_esha_8c_a05622c58511844acbf2dc6b3be597c70}{highSpeedFixed});
+571         \}
+572         OS\_Sleep(1);
+573     \}
+574     OS\_Kill();
+575 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{_lab6_esha_8c_a8df88b108bf75863b97b46c603310d3c_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_ac866dbaf7b167e5c46bb33de42eee84d}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Disable\-Interrupts@{Disable\-Interrupts}}
+\index{Disable\-Interrupts@{Disable\-Interrupts}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Disable\-Interrupts}]{\setlength{\rightskip}{0pt plus 5cm}void Disable\-Interrupts (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_ac866dbaf7b167e5c46bb33de42eee84d}
+\hypertarget{_lab6_esha_8c_ab712356331a62b04aebcb373865e68c4}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Enable\-Interrupts@{Enable\-Interrupts}}
+\index{Enable\-Interrupts@{Enable\-Interrupts}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Enable\-Interrupts}]{\setlength{\rightskip}{0pt plus 5cm}void Enable\-Interrupts (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_ab712356331a62b04aebcb373865e68c4}
+\hypertarget{_lab6_esha_8c_a670da3ff1aea0c7d54c40e9e40b5eeed}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!End\-Critical@{End\-Critical}}
+\index{End\-Critical@{End\-Critical}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{End\-Critical}]{\setlength{\rightskip}{0pt plus 5cm}void End\-Critical (
+\begin{DoxyParamCaption}
+\item[{long}]{sr}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a670da3ff1aea0c7d54c40e9e40b5eeed}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{_lab6_esha_8c_a670da3ff1aea0c7d54c40e9e40b5eeed_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_a6f1889c3f5d0f35d0ca0f7aa03ed5cb1}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!G\-P\-I\-O\-Port\-A\-\_\-\-Handler@{G\-P\-I\-O\-Port\-A\-\_\-\-Handler}}
+\index{G\-P\-I\-O\-Port\-A\-\_\-\-Handler@{G\-P\-I\-O\-Port\-A\-\_\-\-Handler}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{G\-P\-I\-O\-Port\-A\-\_\-\-Handler}]{\setlength{\rightskip}{0pt plus 5cm}void G\-P\-I\-O\-Port\-A\-\_\-\-Handler (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a6f1889c3f5d0f35d0ca0f7aa03ed5cb1}
+
+
+Definition at line 109 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+109                             \{
+110   GPIO\_PORTA\_ICR\_R = (1 << 6);    \textcolor{comment}{// acknowledge flag6}
+111   \textcolor{comment}{//SW2 = 1;}
+112   \textcolor{keyword}{static} uint32\_t pingStartTime; 
+113   \textcolor{keyword}{static} uint32\_t pingEndTime;
+114 
+115   \textcolor{keywordflow}{if}(\hyperlink{_lab6_esha_8c_adaab1d0c061d12c9892583c9591a70af}{PA6} != 0)  pingStartTime = OS\_GetUsTime();
+116   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\hyperlink{_lab6_esha_8c_adaab1d0c061d12c9892583c9591a70af}{PA6} == 0)\{
+117     pingEndTime = OS\_GetUsTime();
+118     uint32\_t delta =  ((pingEndTime - pingStartTime) >> 1)*34300/1000000;
+119     \textcolor{keywordflow}{if}(pingEndTime > pingStartTime)\{
+120       \hyperlink{_lab6_esha_8c_a6b0304a7c2f611c97a1f4779a9bfb483}{Ping1Mail}.Send(delta);
+121     \}
+122   \}
+123 \}
+\end{DoxyCode}
+\hypertarget{_lab6_esha_8c_a0b6c07c1a985f30a5ca41d59f8c22932}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!G\-P\-I\-O\-Port\-C\-\_\-\-Handler@{G\-P\-I\-O\-Port\-C\-\_\-\-Handler}}
+\index{G\-P\-I\-O\-Port\-C\-\_\-\-Handler@{G\-P\-I\-O\-Port\-C\-\_\-\-Handler}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{G\-P\-I\-O\-Port\-C\-\_\-\-Handler}]{\setlength{\rightskip}{0pt plus 5cm}void G\-P\-I\-O\-Port\-C\-\_\-\-Handler (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a0b6c07c1a985f30a5ca41d59f8c22932}
+
+
+Definition at line 124 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+124                             \{
+125   GPIO\_PORTC\_ICR\_R = (1 << 6);    \textcolor{comment}{// acknowledge flag6}
+126   \textcolor{comment}{//SW2 = 1;}
+127   \textcolor{keyword}{static} uint32\_t pingStartTime; 
+128   \textcolor{keyword}{static} uint32\_t pingEndTime;
+129 
+130   \textcolor{keywordflow}{if}(\hyperlink{_lab6_esha_8c_aea08c09063c5962f8f60044f1829d54c}{PC6} != 0)  pingStartTime = OS\_GetUsTime();
+131   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\hyperlink{_lab6_esha_8c_aea08c09063c5962f8f60044f1829d54c}{PC6} == 0)\{
+132     pingEndTime = OS\_GetUsTime();
+133     uint32\_t delta =  ((pingEndTime - pingStartTime) >> 1)*34300/1000000;
+134     \textcolor{keywordflow}{if}(pingEndTime > pingStartTime)\{
+135       \hyperlink{_lab6_esha_8c_a39dbfc1fca14892a7d8916d445fb4321}{Ping2Mail}.Send(delta);
+136     \}
+137   \}
+138 \}
+\end{DoxyCode}
+\hypertarget{_lab6_esha_8c_affe0a9a16718407e57b15b2eb77c4d8f}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R0@{I\-R0}}
+\index{I\-R0@{I\-R0}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R0}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R0 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_affe0a9a16718407e57b15b2eb77c4d8f}
+
+
+Definition at line 294 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+294               \{
+295     
+296   uint32\_t SendData;
+297   CanMessage\_t msg;
+298     uint8\_t byteMe[5];
+299   \hyperlink{_a_d_c_8c_ae7cef9ecd73d25c0931372d21e6be943}{ADC\_init\_channel}(0, 100);
+300     \textcolor{keywordflow}{while}(1)\{
+301         SendData = 0;
+302         OS\_Wait(&\hyperlink{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+303     \hyperlink{_a_d_c_8c_a9fdea7e06f4c4769ab22981dafb58477}{ADC\_Collect}(0, 100, \hyperlink{_lab6_esha_8c_a3ef9af88ef7960267baff71e003030e6}{Res\_buffer0}, 2*\hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}); \textcolor{comment}{//128, to bring down
+       sampling rate from 100 to 50}
+304     \textcolor{keywordflow}{while}(\hyperlink{_a_d_c_8c_ab991147608f978ac77baf774334e802b}{ADC\_Status}(0))\{\}
+305         OS\_Signal(&\hyperlink{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+306     
+307      \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE; i++)\{
+308       SendData += median\_filt(&\hyperlink{_lab6_esha_8c_a3ef9af88ef7960267baff71e003030e6}{Res\_buffer0}[i]);
+309     \}
+310     SendData = SendData/(\hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE);
+311     msg.mId = \hyperlink{_lab6_esha_8c_aa1f4dd702be8a41cbc308411ed021fd8}{IR\_0\_ID};
+312     msg.data = SendData;
+313         CanMessage2Buff(&msg, byteMe);
+314     CAN0\_SendData(byteMe);
+315         \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{LEDS} ^= \hyperlink{_lab6_esha_8c_acfbc006ea433ad708fdee3e82996e721}{GREEN};
+316   \}
+317   OS\_Kill();
+318 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab6_esha_8c_affe0a9a16718407e57b15b2eb77c4d8f_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_a93e4ea9d9ef2ee60af1459a12b6e6d4c}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R1@{I\-R1}}
+\index{I\-R1@{I\-R1}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R1}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R1 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a93e4ea9d9ef2ee60af1459a12b6e6d4c}
+
+
+Definition at line 321 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+321               \{
+322     
+323   uint32\_t SendData;
+324   CanMessage\_t msg;
+325     uint8\_t byteMe[5];
+326   \hyperlink{_a_d_c_8c_ae7cef9ecd73d25c0931372d21e6be943}{ADC\_init\_channel}(1, 100);
+327     \textcolor{keywordflow}{while}(1)\{
+328         SendData = 0;
+329         OS\_Wait(&\hyperlink{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+330     \hyperlink{_a_d_c_8c_a9fdea7e06f4c4769ab22981dafb58477}{ADC\_Collect}(1, 100, \hyperlink{_lab6_esha_8c_aec9aecee730bddbe611ffd11cfe09692}{Res\_buffer1}, 2*\hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}); \textcolor{comment}{//128, to bring down
+       sampling rate from 100 to 50}
+331     \textcolor{keywordflow}{while}(\hyperlink{_a_d_c_8c_ab991147608f978ac77baf774334e802b}{ADC\_Status}(1))\{\}
+332         OS\_Signal(&\hyperlink{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+333     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE; i++)\{
+334       SendData += median\_filt(&\hyperlink{_lab6_esha_8c_aec9aecee730bddbe611ffd11cfe09692}{Res\_buffer1}[i]);
+335     \}
+336     SendData = SendData/(\hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE);
+337     msg.mId = \hyperlink{_lab6_esha_8c_acbefcdc837243e39a82a94631f2b316e}{IR\_1\_ID};
+338     msg.data = SendData;
+339         CanMessage2Buff(&msg, byteMe);
+340     CAN0\_SendData(byteMe);
+341         \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{LEDS} ^= \hyperlink{_lab6_esha_8c_a8d23feea868a983c8c2b661e1e16972f}{RED};
+342   \}
+343   OS\_Kill();
+344 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab6_esha_8c_a93e4ea9d9ef2ee60af1459a12b6e6d4c_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_adc674087543a04e8700d2427322b8328}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R2@{I\-R2}}
+\index{I\-R2@{I\-R2}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R2}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R2 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_adc674087543a04e8700d2427322b8328}
+
+
+Definition at line 347 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+347               \{
+348         
+349   uint32\_t SendData;
+350   CanMessage\_t msg;
+351     uint8\_t byteMe[5];
+352   \hyperlink{_a_d_c_8c_ae7cef9ecd73d25c0931372d21e6be943}{ADC\_init\_channel}(2, 100);
+353     \textcolor{keywordflow}{while}(1)\{
+354         SendData = 0;
+355         OS\_Wait(&\hyperlink{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+356     \hyperlink{_a_d_c_8c_a9fdea7e06f4c4769ab22981dafb58477}{ADC\_Collect}(2, 100, \hyperlink{_lab6_esha_8c_a6a20659f3190002cee79b8ee18b012a7}{Res\_buffer2}, 2*\hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}); \textcolor{comment}{//128, to bring down
+       sampling rate from 100 to 50}
+357     \textcolor{keywordflow}{while}(\hyperlink{_a_d_c_8c_ab991147608f978ac77baf774334e802b}{ADC\_Status}(2))\{\}
+358     OS\_Signal(&\hyperlink{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+359         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE; i++)\{
+360       SendData += median\_filt(&\hyperlink{_lab6_esha_8c_a6a20659f3190002cee79b8ee18b012a7}{Res\_buffer2}[i]);
+361     \}
+362     SendData = SendData/(\hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE);
+363     msg.mId = \hyperlink{_lab6_esha_8c_a0d5d96d1cc5a801f9f28516b054b86b4}{IR\_2\_ID};
+364     msg.data = SendData;
+365         CanMessage2Buff(&msg, byteMe);
+366     CAN0\_SendData(byteMe);
+367         \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{LEDS} ^= \hyperlink{_lab6_esha_8c_a79d10e672abb49ad63eeaa8aaef57c38}{BLUE};
+368   \}
+369   OS\_Kill();
+370 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab6_esha_8c_adc674087543a04e8700d2427322b8328_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_a7c8ab9e9d2256a9f7ecee8fb0499cb91}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R3@{I\-R3}}
+\index{I\-R3@{I\-R3}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R3}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R3 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a7c8ab9e9d2256a9f7ecee8fb0499cb91}
+
+
+Definition at line 373 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+373               \{
+374   uint32\_t SendData;
+375   CanMessage\_t msg;
+376     uint8\_t byteMe[5];
+377   \hyperlink{_a_d_c_8c_ae7cef9ecd73d25c0931372d21e6be943}{ADC\_init\_channel}(4, 100);
+378     \textcolor{keywordflow}{while}(1)\{
+379         SendData = 0;
+380         OS\_Wait(&\hyperlink{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+381     \hyperlink{_a_d_c_8c_a9fdea7e06f4c4769ab22981dafb58477}{ADC\_Collect}(4, 100, \hyperlink{_lab6_esha_8c_ad382a86c210687cdebcb99093927c7d3}{Res\_buffer3}, 2*\hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}); \textcolor{comment}{//128, to bring down
+       sampling rate from 100 to 50}
+382     \textcolor{keywordflow}{while}(\hyperlink{_a_d_c_8c_ab991147608f978ac77baf774334e802b}{ADC\_Status}(3))\{\}
+383         OS\_Signal(&\hyperlink{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{ADC\_Collection});
+384     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE; i++)\{
+385       SendData += median\_filt(&\hyperlink{_lab6_esha_8c_ad382a86c210687cdebcb99093927c7d3}{Res\_buffer3}[i]);
+386     \}
+387     SendData = SendData/(\hyperlink{_lab6_esha_8c_ab414aa8e1ca870685c1cf52fb815c718}{buffSIZE}-MEDIAN\_FILTER\_SIZE);
+388     msg.mId = \hyperlink{_lab6_esha_8c_ad375e12584c5cfd298113fb8e6901482}{IR\_3\_ID};
+389     msg.data = SendData;
+390         CanMessage2Buff(&msg, byteMe);
+391     CAN0\_SendData(byteMe);
+392         \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{LEDS} ^= \hyperlink{_lab6_esha_8c_a87b537f5fa5c109d3c05c13d6b18f382}{WHITE};
+393   \}
+394   OS\_Kill();
+395 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_lab6_esha_8c_a7c8ab9e9d2256a9f7ecee8fb0499cb91_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_a840291bc02cba5474a4cb46a9b9566fe}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!main@{main}}
+\index{main@{main}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a840291bc02cba5474a4cb46a9b9566fe}
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}
+
+Definition at line 705 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+705               \{   \textcolor{comment}{// testmain1}
+706   OS\_Init();           \textcolor{comment}{// initialize, disable interrupts}
+707 \textcolor{comment}{//  PWM0Dual\_Period(40000);           // 12.50 Hz, 15 RPM}
+708   \hyperlink{_lab6_esha_8c_ae19ef8807dc64129635da5b3b781588a}{PortF\_Init}();
+709   CAN0\_Open();
+710 
+711 
+712     PWM0Dual\_Init(60000);            \textcolor{comment}{// initialize PWM1-0, 0.8333 Hz, 1 RPM}
+713   NumCreated = 0 ;
+714 \textcolor{comment}{// create initial foreground threads}
+715   NumCreated += OS\_AddThread(&\hyperlink{_lab6_esha_8c_a43617af71ca5f26b8d87c7460ee110f4}{CAN\_Listener}, 128, 2);
+716   NumCreated += OS\_AddThread(&\hyperlink{_lab6_esha_8c_a8df88b108bf75863b97b46c603310d3c}{Controller}, 128, 2);
+717   OS\_Launch(TIME\_1MS/4); \textcolor{comment}{// doesn't return, interrupts enabled in here}
+718   \textcolor{keywordflow}{return} 0;               \textcolor{comment}{// this never executes}
+719 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{_lab6_esha_8c_a840291bc02cba5474a4cb46a9b9566fe_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_a03c7899f3ff55164dfc955aed1b328f8}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Ping1@{Ping1}}
+\index{Ping1@{Ping1}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Ping1}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Ping1 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a03c7899f3ff55164dfc955aed1b328f8}
+
+
+Definition at line 180 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+180                     \{
+181     \textcolor{comment}{// uint32\_t pingStartTime; }
+182     \textcolor{comment}{// uint32\_t pingEndTime;}
+183     \textcolor{comment}{//Write GPIO\_Pin High}
+184     \textcolor{keywordtype}{long} sr = \hyperlink{_lab6_esha_8c_a6e7e2088607214bc15b17ac57b57df1b}{StartCritical}();
+185   \hyperlink{_lab6_esha_8c_ad55f1ce2962d3a43aeed74b5459214f6}{PA7} = 0x80;
+186     OS\_DelayUS(5);
+187     \textcolor{comment}{//Write GPIO Pin Low}
+188     \hyperlink{_lab6_esha_8c_ad55f1ce2962d3a43aeed74b5459214f6}{PA7} = 0x00;
+189     \textcolor{comment}{//Could move into a ISR}
+190     \textcolor{comment}{//while(gpio\_Pin\_Low)\{\}}
+191     \textcolor{comment}{// while(PA6 == 0)\{\}}
+192     \textcolor{comment}{// pingStartTime = OS\_GetUsTime();}
+193 
+194     \textcolor{comment}{// //while(gpio\_Pin\_High)\{\}}
+195     \textcolor{comment}{// while(PA6 != 0)\{\}}
+196 
+197     \textcolor{comment}{// pingEndTime = OS\_GetUsTime();}
+198     \textcolor{comment}{// OS\_DelayUS(200);}
+199     \textcolor{comment}{// //Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)}
+200     \textcolor{comment}{// //Then the ping time is c*dT/2}
+201         \hyperlink{_lab6_esha_8c_a670da3ff1aea0c7d54c40e9e40b5eeed}{EndCritical}(sr);
+202     \textcolor{comment}{// return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;}
+203 
+204   uint32\_t delta;
+205   \hyperlink{_lab6_esha_8c_a6b0304a7c2f611c97a1f4779a9bfb483}{Ping1Mail}.Receive(delta);
+206   \textcolor{keywordflow}{return} delta;
+207 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{_lab6_esha_8c_a03c7899f3ff55164dfc955aed1b328f8_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{_lab6_esha_8c_a03c7899f3ff55164dfc955aed1b328f8_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_a88c85cf0752512429969dbc0b75626d0}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Ping2@{Ping2}}
+\index{Ping2@{Ping2}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Ping2}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Ping2 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a88c85cf0752512429969dbc0b75626d0}
+
+
+Definition at line 210 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+210                     \{
+211   \textcolor{comment}{// uint32\_t pingStartTime; }
+212   \textcolor{comment}{// uint32\_t pingEndTime;}
+213   \textcolor{comment}{//Write GPIO\_Pin High}
+214     \textcolor{keywordtype}{long} sr = \hyperlink{_lab6_esha_8c_a6e7e2088607214bc15b17ac57b57df1b}{StartCritical}();
+215   \hyperlink{_lab6_esha_8c_a1194403dd24b90c5af73482c52ad1360}{PC7} = 0x80;
+216   OS\_DelayUS(5);
+217   \textcolor{comment}{//Write GPIO Pin Low}
+218   \hyperlink{_lab6_esha_8c_a1194403dd24b90c5af73482c52ad1360}{PC7} = 0x00;
+219   \textcolor{comment}{//Could move into a ISR}
+220   \textcolor{comment}{//while(gpio\_Pin\_Low)\{\}}
+221   \textcolor{comment}{// while(PC6 == 0)\{\}}
+222   \textcolor{comment}{// pingStartTime = OS\_GetUsTime();}
+223 
+224   \textcolor{comment}{// //while(gpio\_Pin\_High)\{\}}
+225   \textcolor{comment}{// while(PC6 != 0)\{\}}
+226 
+227     \hyperlink{_lab6_esha_8c_a670da3ff1aea0c7d54c40e9e40b5eeed}{EndCritical}(sr);
+228 
+229   \textcolor{comment}{// pingEndTime = OS\_GetUsTime();}
+230   \textcolor{comment}{// OS\_DelayUS(200);}
+231   \textcolor{comment}{// //Speed of sound in air is approx c = 343 m/s = 340 m/s * 1000m.0m/m * (1s/100000us)}
+232   \textcolor{comment}{// //Then the ping time is c*dT/2}
+233   \textcolor{comment}{// return ((pingEndTime - pingStartTime) /*>> 1*/)*34300/1000000;}
+234   uint32\_t delta;
+235   \hyperlink{_lab6_esha_8c_a39dbfc1fca14892a7d8916d445fb4321}{Ping2Mail}.Receive(delta);
+236   \textcolor{keywordflow}{return} delta;
+237 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{_lab6_esha_8c_a88c85cf0752512429969dbc0b75626d0_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=200pt]{_lab6_esha_8c_a88c85cf0752512429969dbc0b75626d0_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_acbb551322fcba7749c8c40006cd9ffd8}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Ping\-L@{Ping\-L}}
+\index{Ping\-L@{Ping\-L}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Ping\-L}]{\setlength{\rightskip}{0pt plus 5cm}void Ping\-L (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_acbb551322fcba7749c8c40006cd9ffd8}
+
+
+Definition at line 265 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+265                 \{
+266   
+267   uint32\_t distance;
+268   CanMessage\_t msg;
+269     uint8\_t byteMe[5];
+270 
+271   uint32\_t i = 0;
+272   \textcolor{keywordflow}{while}(1)\{
+273     distance = 0;
+274     \textcolor{keywordflow}{for}(i = 0; i < 4; i++)\{
+275       distance += \hyperlink{_lab6_esha_8c_a88c85cf0752512429969dbc0b75626d0}{Ping2}();
+276     \}
+277     distance = distance >> 2;
+278     \textcolor{comment}{//XmtData = (uint8\_t *) &distance;}
+279     msg.mId = \hyperlink{_lab6_esha_8c_a25b36259b474d6e7ff4c3eb00374f947}{PING\_L\_ID};
+280     msg.data = distance;
+281         CanMessage2Buff(&msg, byteMe);
+282 
+283     \textcolor{comment}{//CAN0\_SendData(CAST\_CAN\_2\_UINT8P(msg));}
+284         CAN0\_SendData(byteMe);
+285 
+286 
+287   \}
+288   OS\_Kill();
+289 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{_lab6_esha_8c_acbb551322fcba7749c8c40006cd9ffd8_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_abd66255c87de5710737f979da785c171}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Ping\-R@{Ping\-R}}
+\index{Ping\-R@{Ping\-R}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Ping\-R}]{\setlength{\rightskip}{0pt plus 5cm}void Ping\-R (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_abd66255c87de5710737f979da785c171}
+
+
+Definition at line 239 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+239                 \{
+240   
+241 
+242   uint32\_t distance;
+243   CanMessage\_t msg;
+244     uint8\_t byteMe[5];
+245 
+246   \textcolor{comment}{//uint32\_t distance\_buff[4];}
+247   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{id} = OS\_Id();
+248   uint32\_t i = 0;
+249   \textcolor{keywordflow}{while}(1)\{
+250     distance = 0;
+251     \textcolor{keywordflow}{for}(i = 0; i < 4; i++)\{
+252       distance += \hyperlink{_lab6_esha_8c_a03c7899f3ff55164dfc955aed1b328f8}{Ping1}();
+253     \}
+254     distance = distance >> 2;
+255     \textcolor{comment}{//XmtData = (uint8\_t *) &distance;}
+256     msg.mId = \hyperlink{_lab6_esha_8c_a0d2937f7ce6f0370010af0183f2cfb24}{PING\_R\_ID};
+257     msg.data = distance;
+258         CanMessage2Buff(&msg, byteMe);
+259     CAN0\_SendData(byteMe);
+260 
+261   \}
+262   OS\_Kill();
+263 \}
+\end{DoxyCode}
+
+
+Here is the call graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{_lab6_esha_8c_abd66255c87de5710737f979da785c171_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_ac079e51ee4b2d6294323419435982b5d}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init@{Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init}}
+\index{Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init@{Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init}]{\setlength{\rightskip}{0pt plus 5cm}void Port\-A\-\_\-\-Sensor\-Board\-\_\-\-Init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_ac079e51ee4b2d6294323419435982b5d}
+
+
+Definition at line 160 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+160                                  \{ \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keyword}{volatile} delay;
+161   \textcolor{comment}{//SYSCTL\_RCGC2\_R |= 0x10;       // activate port A}
+162   SYSCTL\_RCGCGPIO\_R |= 0x01;       
+163   delay = SYSCTL\_RCGC2\_R;        
+164   delay = SYSCTL\_RCGC2\_R;         
+165   GPIO\_PORTA\_DIR\_R |= 0xC0;    \textcolor{comment}{// make PA7 output}
+166   GPIO\_PORTA\_DIR\_R &= ~0x40;   \textcolor{comment}{//PA6 is echo}
+167   GPIO\_PORTA\_AFSEL\_R &= ~0xC0;   \textcolor{comment}{// disable alt funct on PA6-7}
+168   GPIO\_PORTA\_DEN\_R |= 0xC0;     \textcolor{comment}{// enable digital I/O on PA6-7}
+169 
+170   GPIO\_PORTA\_IS\_R &= ~(1 << 6);   \textcolor{comment}{// PA6 is edge-sensitive}
+171   GPIO\_PORTA\_IBE\_R |= (1 << 6);   \textcolor{comment}{// PA6 is sensitive to both edges}
+172   GPIO\_PORTA\_IEV\_R |= (1 << 6);   \textcolor{comment}{// PA6 rising edge event (Dont care)}
+173   GPIO\_PORTA\_ICR\_R = (1 << 6); \textcolor{comment}{//Clear the flag}
+174   GPIO\_PORTA\_IM\_R |= (1 << 6);    \textcolor{comment}{// enable interrupt on PA6}
+175 
+176   \textcolor{comment}{//Priority Level 3}
+177   NVIC\_PRI0\_R = (NVIC\_PRI0\_R&0xFFFFFFF00)| (3 << 5);
+178   NVIC\_EN0\_R = 1 << 0;
+179 \}
+\end{DoxyCode}
+\hypertarget{_lab6_esha_8c_a5a2a2db7e83737739f577faafdf8cce7}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init@{Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init}}
+\index{Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init@{Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init}]{\setlength{\rightskip}{0pt plus 5cm}void Port\-C\-\_\-\-Sensor\-Board\-\_\-\-Init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a5a2a2db7e83737739f577faafdf8cce7}
+
+
+Definition at line 139 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+139                                  \{ \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keyword}{volatile} delay;
+140   \textcolor{comment}{//SYSCTL\_RCGC2\_R |= 0x10;       // activate port c}
+141   SYSCTL\_RCGCGPIO\_R |= 0x04;       
+142   delay = SYSCTL\_RCGC2\_R;        
+143   delay = SYSCTL\_RCGC2\_R;         
+144   GPIO\_PORTC\_DIR\_R |= 0xC0;    \textcolor{comment}{// make PC7 output}
+145   GPIO\_PORTC\_DIR\_R &= ~0x40;   \textcolor{comment}{//PC6 is echo}
+146   GPIO\_PORTC\_AFSEL\_R &= ~0xC0;   \textcolor{comment}{// disable alt funct on PC6-7}
+147   GPIO\_PORTC\_DEN\_R |= 0xC0;     \textcolor{comment}{// enable digital I/O on PC6-7}
+148 
+149   GPIO\_PORTC\_IS\_R &= ~(1 << 6);   \textcolor{comment}{// PA6 is edge-sensitive}
+150   GPIO\_PORTC\_IBE\_R |= (1 << 6);   \textcolor{comment}{// PA6 is sensitive to both edges}
+151   GPIO\_PORTC\_IEV\_R |= (1 << 6);   \textcolor{comment}{// PA6 rising edge event (Dont care)}
+152   GPIO\_PORTC\_ICR\_R = (1 << 6); \textcolor{comment}{//Clear the flag}
+153   GPIO\_PORTC\_IM\_R |= (1 << 6);    \textcolor{comment}{// enable interrupt on PA6}
+154 
+155   \textcolor{comment}{//Priority Level 3}
+156   NVIC\_PRI0\_R = (NVIC\_PRI0\_R&0xFF00FFFFF)| (1 << 21);
+157   NVIC\_EN0\_R = 1 << 2;
+158 \}
+\end{DoxyCode}
+\hypertarget{_lab6_esha_8c_a04369a3281263e369b0cffb5658b24e3}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Port\-D\-\_\-\-Init@{Port\-D\-\_\-\-Init}}
+\index{Port\-D\-\_\-\-Init@{Port\-D\-\_\-\-Init}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Port\-D\-\_\-\-Init}]{\setlength{\rightskip}{0pt plus 5cm}void Port\-D\-\_\-\-Init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a04369a3281263e369b0cffb5658b24e3}
+
+
+Definition at line 86 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+86                      \{ \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keyword}{volatile} delay;
+87   \textcolor{comment}{//SYSCTL\_RCGC2\_R |= 0x10;       // activate port D}
+88   SYSCTL\_RCGCGPIO\_R |= 0x08;       
+89   delay = SYSCTL\_RCGC2\_R;        
+90   delay = SYSCTL\_RCGC2\_R;         
+91   GPIO\_PORTD\_DIR\_R |= 0xC0;    \textcolor{comment}{// make PD7 output}
+92     GPIO\_PORTD\_DIR\_R &= ~0x40;   \textcolor{comment}{//PD6 is echo}
+93   GPIO\_PORTD\_AFSEL\_R &= ~0xC0;   \textcolor{comment}{// disable alt funct on PD6-7}
+94   GPIO\_PORTD\_DEN\_R |= 0xC0;     \textcolor{comment}{// enable digital I/O on PD6-7}
+95   \textcolor{comment}{//GPIO\_PORTD\_PCTL\_R = ~0x0000FFFF;}
+96   \textcolor{comment}{//GPIO\_PORTD\_AMSEL\_R &= ~0x0F;;      // disable analog functionality on PF}
+97   GPIO\_PORTD\_IS\_R &= ~(1 << 6);   \textcolor{comment}{// PD6 is edge-sensitive}
+98   GPIO\_PORTD\_IBE\_R |= (1 << 6);   \textcolor{comment}{// PD6 is sensitive to both edges}
+99   GPIO\_PORTD\_IEV\_R |= (1 << 6);   \textcolor{comment}{// PD6 rising edge event (Dont care)}
+100   GPIO\_PORTD\_ICR\_R = (1 << 6); \textcolor{comment}{//Clear the flag}
+101   GPIO\_PORTD\_IM\_R |= (1 << 6);    \textcolor{comment}{// enable interrupt on PD6}
+102 
+103   \textcolor{comment}{//Priority Level 3}
+104   NVIC\_PRI0\_R = (NVIC\_PRI0\_R&0x00FFFFFF)| (0 << 29);
+105   NVIC\_EN0\_R = 1 << 3;
+106  
+107 \}
+\end{DoxyCode}
+\hypertarget{_lab6_esha_8c_ae19ef8807dc64129635da5b3b781588a}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Port\-F\-\_\-\-Init@{Port\-F\-\_\-\-Init}}
+\index{Port\-F\-\_\-\-Init@{Port\-F\-\_\-\-Init}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Port\-F\-\_\-\-Init}]{\setlength{\rightskip}{0pt plus 5cm}void Port\-F\-\_\-\-Init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_ae19ef8807dc64129635da5b3b781588a}
+
+
+Definition at line 402 of file Lab6\-Esha.\-c.
+
+
+\begin{DoxyCode}
+402                      \{
+403   SYSCTL\_RCGCGPIO\_R |= 0x20;       \textcolor{comment}{// activate port F}
+404   \textcolor{keywordflow}{while}((SYSCTL\_PRGPIO\_R&0x0020) == 0)\{\};\textcolor{comment}{// ready?}
+405   GPIO\_PORTF\_DIR\_R |= 0x0E;        \textcolor{comment}{// make PF3-1 output (PF3-1 built-in LEDs)}
+406   GPIO\_PORTF\_AFSEL\_R &= ~0x0E;     \textcolor{comment}{// disable alt funct on PF3-1}
+407   GPIO\_PORTF\_DEN\_R |= 0x0E;        \textcolor{comment}{// enable digital I/O on PF3-1}
+408                                    \textcolor{comment}{// configure PF3-1 as GPIO}
+409   GPIO\_PORTF\_PCTL\_R = (GPIO\_PORTF\_PCTL\_R&0xFFFF000F)+0x00000000;
+410   GPIO\_PORTF\_AMSEL\_R = 0;          \textcolor{comment}{// disable analog functionality on PF}
+411   \hyperlink{_lab6_esha_8c_a61686d33603491344883775b9b31e172}{LEDS} = 0;     \textcolor{comment}{// turn all LEDs off}
+412 \}
+\end{DoxyCode}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{_lab6_esha_8c_ae19ef8807dc64129635da5b3b781588a_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_a6e7e2088607214bc15b17ac57b57df1b}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Start\-Critical@{Start\-Critical}}
+\index{Start\-Critical@{Start\-Critical}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Start\-Critical}]{\setlength{\rightskip}{0pt plus 5cm}long Start\-Critical (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a6e7e2088607214bc15b17ac57b57df1b}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{_lab6_esha_8c_a6e7e2088607214bc15b17ac57b57df1b_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{_lab6_esha_8c_a80ae22f2f73496246542c428c4bec38f}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Wait\-For\-Interrupt@{Wait\-For\-Interrupt}}
+\index{Wait\-For\-Interrupt@{Wait\-For\-Interrupt}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Wait\-For\-Interrupt}]{\setlength{\rightskip}{0pt plus 5cm}void Wait\-For\-Interrupt (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_lab6_esha_8c_a80ae22f2f73496246542c428c4bec38f}
+
+
+\subsection{Variable Documentation}
+\hypertarget{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!A\-D\-C\-\_\-\-Collection@{A\-D\-C\-\_\-\-Collection}}
+\index{A\-D\-C\-\_\-\-Collection@{A\-D\-C\-\_\-\-Collection}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{A\-D\-C\-\_\-\-Collection}]{\setlength{\rightskip}{0pt plus 5cm}Sema4\-Type A\-D\-C\-\_\-\-Collection}}\label{_lab6_esha_8c_a0b7ebdb20b3f7f2953b0f661bc81b3d4}
+
+
+Definition at line 62 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a31dfb8bfd435dc08041263388c814c63}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!divider@{divider}}
+\index{divider@{divider}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{divider}]{\setlength{\rightskip}{0pt plus 5cm}int divider = 10}}\label{_lab6_esha_8c_a31dfb8bfd435dc08041263388c814c63}
+
+
+Definition at line 484 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a30c797b8083ee73d3949c090916748ca}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!F\-P\-W\-M\-Error@{F\-P\-W\-M\-Error}}
+\index{F\-P\-W\-M\-Error@{F\-P\-W\-M\-Error}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{F\-P\-W\-M\-Error}]{\setlength{\rightskip}{0pt plus 5cm}int F\-P\-W\-M\-Error = 0}}\label{_lab6_esha_8c_a30c797b8083ee73d3949c090916748ca}
+
+
+Definition at line 491 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a92b2ed7f50eea2b7a0ba4c1b46d31939}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!front\-Weight@{front\-Weight}}
+\index{front\-Weight@{front\-Weight}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{front\-Weight}]{\setlength{\rightskip}{0pt plus 5cm}float front\-Weight = 1/((4096 -\/ 1100 )$\ast${\bf divider})}}\label{_lab6_esha_8c_a92b2ed7f50eea2b7a0ba4c1b46d31939}
+
+
+Definition at line 487 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ae9a74104294340225e2bbc7c1fa561ff}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R0\-Val@{I\-R0\-Val}}
+\index{I\-R0\-Val@{I\-R0\-Val}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R0\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t I\-R0\-Val = 4096}}\label{_lab6_esha_8c_ae9a74104294340225e2bbc7c1fa561ff}
+
+
+Definition at line 422 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_adcea3401f53cc2d69e4f667b19e6c196}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R1\-Val@{I\-R1\-Val}}
+\index{I\-R1\-Val@{I\-R1\-Val}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R1\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t I\-R1\-Val = 4096}}\label{_lab6_esha_8c_adcea3401f53cc2d69e4f667b19e6c196}
+
+
+Definition at line 423 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a2b37f85b4e04e07d733d0925cafeea88}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R2\-Val@{I\-R2\-Val}}
+\index{I\-R2\-Val@{I\-R2\-Val}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R2\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t I\-R2\-Val = 4096}}\label{_lab6_esha_8c_a2b37f85b4e04e07d733d0925cafeea88}
+
+
+Definition at line 424 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a6af4ef6e3413367b368acb7b5ba47d17}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!I\-R3\-Val@{I\-R3\-Val}}
+\index{I\-R3\-Val@{I\-R3\-Val}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{I\-R3\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t I\-R3\-Val = 4096}}\label{_lab6_esha_8c_a6af4ef6e3413367b368acb7b5ba47d17}
+
+
+Definition at line 425 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a419d0a21926ce1fa3d158e1e565b7750}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!K\-I@{K\-I}}
+\index{K\-I@{K\-I}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{K\-I}]{\setlength{\rightskip}{0pt plus 5cm}int K\-I = 0}}\label{_lab6_esha_8c_a419d0a21926ce1fa3d158e1e565b7750}
+
+
+Definition at line 477 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!left\-Motor\-Speed@{left\-Motor\-Speed}}
+\index{left\-Motor\-Speed@{left\-Motor\-Speed}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{left\-Motor\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}int left\-Motor\-Speed = 0}}\label{_lab6_esha_8c_ace43f08f7bad6f10c2df24b2df25f6bb}
+
+
+Definition at line 478 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a638a80c3a00e093136cc33505e032da6}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!left\-Weight@{left\-Weight}}
+\index{left\-Weight@{left\-Weight}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{left\-Weight}]{\setlength{\rightskip}{0pt plus 5cm}float left\-Weight = 1/((4096 -\/ 550 )$\ast${\bf divider})}}\label{_lab6_esha_8c_a638a80c3a00e093136cc33505e032da6}
+
+
+Definition at line 486 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a037c18c2cf586612dbff36384c90bd7b}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!L\-I\-Correction@{L\-I\-Correction}}
+\index{L\-I\-Correction@{L\-I\-Correction}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{L\-I\-Correction}]{\setlength{\rightskip}{0pt plus 5cm}int L\-I\-Correction = 0}}\label{_lab6_esha_8c_a037c18c2cf586612dbff36384c90bd7b}
+
+
+Definition at line 493 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a0f786ce875afe076c3f1914e461753b6}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!L\-P\-W\-M\-Error@{L\-P\-W\-M\-Error}}
+\index{L\-P\-W\-M\-Error@{L\-P\-W\-M\-Error}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{L\-P\-W\-M\-Error}]{\setlength{\rightskip}{0pt plus 5cm}int L\-P\-W\-M\-Error = 0}}\label{_lab6_esha_8c_a0f786ce875afe076c3f1914e461753b6}
+
+
+Definition at line 490 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a6b0304a7c2f611c97a1f4779a9bfb483}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Ping1\-Mail@{Ping1\-Mail}}
+\index{Ping1\-Mail@{Ping1\-Mail}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Ping1\-Mail}]{\setlength{\rightskip}{0pt plus 5cm}B\-G\-Mailbox$<$uint32\-\_\-t$>$ Ping1\-Mail}}\label{_lab6_esha_8c_a6b0304a7c2f611c97a1f4779a9bfb483}
+
+
+Definition at line 83 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a39dbfc1fca14892a7d8916d445fb4321}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Ping2\-Mail@{Ping2\-Mail}}
+\index{Ping2\-Mail@{Ping2\-Mail}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Ping2\-Mail}]{\setlength{\rightskip}{0pt plus 5cm}B\-G\-Mailbox$<$uint32\-\_\-t$>$ Ping2\-Mail}}\label{_lab6_esha_8c_a39dbfc1fca14892a7d8916d445fb4321}
+
+
+Definition at line 84 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_adfdf2447659006d4a3062e8e27f1f533}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Ping\-L\-Val@{Ping\-L\-Val}}
+\index{Ping\-L\-Val@{Ping\-L\-Val}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Ping\-L\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Ping\-L\-Val}}\label{_lab6_esha_8c_adfdf2447659006d4a3062e8e27f1f533}
+
+
+Definition at line 421 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_af14aa8ade47f8475f91855e0dff8ecc7}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Ping\-R\-Val@{Ping\-R\-Val}}
+\index{Ping\-R\-Val@{Ping\-R\-Val}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Ping\-R\-Val}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Ping\-R\-Val}}\label{_lab6_esha_8c_af14aa8ade47f8475f91855e0dff8ecc7}
+
+
+Definition at line 420 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a844dbda1145dc770c5f3166773e5ac15}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Rcv\-Count@{Rcv\-Count}}
+\index{Rcv\-Count@{Rcv\-Count}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Rcv\-Count}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Rcv\-Count =0}}\label{_lab6_esha_8c_a844dbda1145dc770c5f3166773e5ac15}
+C\-A\-N Receiver Code 
+
+Definition at line 418 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_aae5700ac6107cc795ae5a50da455a690}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!red\-\_\-counter@{red\-\_\-counter}}
+\index{red\-\_\-counter@{red\-\_\-counter}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{red\-\_\-counter}]{\setlength{\rightskip}{0pt plus 5cm}int red\-\_\-counter = 0}}\label{_lab6_esha_8c_aae5700ac6107cc795ae5a50da455a690}
+
+
+Definition at line 502 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a3ef9af88ef7960267baff71e003030e6}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Res\-\_\-buffer0@{Res\-\_\-buffer0}}
+\index{Res\-\_\-buffer0@{Res\-\_\-buffer0}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Res\-\_\-buffer0}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t Res\-\_\-buffer0\mbox{[}8\mbox{]}}}\label{_lab6_esha_8c_a3ef9af88ef7960267baff71e003030e6}
+
+
+Definition at line 293 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_aec9aecee730bddbe611ffd11cfe09692}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Res\-\_\-buffer1@{Res\-\_\-buffer1}}
+\index{Res\-\_\-buffer1@{Res\-\_\-buffer1}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Res\-\_\-buffer1}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t Res\-\_\-buffer1\mbox{[}64\mbox{]}}}\label{_lab6_esha_8c_aec9aecee730bddbe611ffd11cfe09692}
+
+
+Definition at line 320 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a6a20659f3190002cee79b8ee18b012a7}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Res\-\_\-buffer2@{Res\-\_\-buffer2}}
+\index{Res\-\_\-buffer2@{Res\-\_\-buffer2}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Res\-\_\-buffer2}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t Res\-\_\-buffer2\mbox{[}64\mbox{]}}}\label{_lab6_esha_8c_a6a20659f3190002cee79b8ee18b012a7}
+
+
+Definition at line 346 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ad382a86c210687cdebcb99093927c7d3}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Res\-\_\-buffer3@{Res\-\_\-buffer3}}
+\index{Res\-\_\-buffer3@{Res\-\_\-buffer3}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Res\-\_\-buffer3}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t Res\-\_\-buffer3\mbox{[}64\mbox{]}}}\label{_lab6_esha_8c_ad382a86c210687cdebcb99093927c7d3}
+
+
+Definition at line 372 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a60b16f8bc83b23cc11fb0ecd124c60ae}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!R\-I\-Correction@{R\-I\-Correction}}
+\index{R\-I\-Correction@{R\-I\-Correction}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{R\-I\-Correction}]{\setlength{\rightskip}{0pt plus 5cm}int R\-I\-Correction = 0}}\label{_lab6_esha_8c_a60b16f8bc83b23cc11fb0ecd124c60ae}
+
+
+Definition at line 492 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!right\-Motor\-Speed@{right\-Motor\-Speed}}
+\index{right\-Motor\-Speed@{right\-Motor\-Speed}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{right\-Motor\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}int right\-Motor\-Speed = 0}}\label{_lab6_esha_8c_ac2c5dad90c7edb32a33bf01d49ddfddb}
+
+
+Definition at line 479 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_adf1658fde4c0fce1c9f6c2ae4f1ae6b4}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!right\-Weight@{right\-Weight}}
+\index{right\-Weight@{right\-Weight}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{right\-Weight}]{\setlength{\rightskip}{0pt plus 5cm}float right\-Weight = 1/((4096 -\/ 550 )$\ast${\bf divider})}}\label{_lab6_esha_8c_adf1658fde4c0fce1c9f6c2ae4f1ae6b4}
+
+
+Definition at line 485 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_adeb354b6e7b636d3428ddd90428611d9}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!R\-P\-W\-M\-Error@{R\-P\-W\-M\-Error}}
+\index{R\-P\-W\-M\-Error@{R\-P\-W\-M\-Error}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{R\-P\-W\-M\-Error}]{\setlength{\rightskip}{0pt plus 5cm}int R\-P\-W\-M\-Error = 0}}\label{_lab6_esha_8c_adeb354b6e7b636d3428ddd90428611d9}
+
+
+Definition at line 489 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a1e26c569f8ea4c8145952219697f181f}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Running@{Running}}
+\index{Running@{Running}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Running}]{\setlength{\rightskip}{0pt plus 5cm}int Running}}\label{_lab6_esha_8c_a1e26c569f8ea4c8145952219697f181f}
+
+
+Definition at line 30 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_ac3df666236b2a1eb5090dd3c71e9c82b}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!turning\-Mode@{turning\-Mode}}
+\index{turning\-Mode@{turning\-Mode}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{turning\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}int turning\-Mode = 0}}\label{_lab6_esha_8c_ac3df666236b2a1eb5090dd3c71e9c82b}
+
+
+Definition at line 468 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_a76415045fcd9ad9ec248427e80572f9a}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Wobble\-L@{Wobble\-L}}
+\index{Wobble\-L@{Wobble\-L}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Wobble\-L}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wobble\-L\mbox{[}$\,$\mbox{]} = \{200, 195, 200, 205\}}}\label{_lab6_esha_8c_a76415045fcd9ad9ec248427e80572f9a}
+
+
+Definition at line 474 of file Lab6\-Esha.\-c.
+
+\hypertarget{_lab6_esha_8c_aeccbe31b89cf90e9c9ee1a1fafefc5ff}{\index{Lab6\-Esha.\-c@{Lab6\-Esha.\-c}!Wobble\-R@{Wobble\-R}}
+\index{Wobble\-R@{Wobble\-R}!Lab6Esha.c@{Lab6\-Esha.\-c}}
+\subsubsection[{Wobble\-R}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wobble\-R\mbox{[}$\,$\mbox{]} = \{200, 205, 200, 195\}}}\label{_lab6_esha_8c_aeccbe31b89cf90e9c9ee1a1fafefc5ff}
+
+
+Definition at line 473 of file Lab6\-Esha.\-c.
+
