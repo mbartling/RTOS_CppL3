@@ -44,7 +44,7 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\</OutputDirectory>
+          <OutputDirectory>.\build\</OutputDirectory>
           <OutputName>Lab2</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
@@ -476,16 +476,6 @@
               <FilePath>.\Retarget.c</FilePath>
             </File>
             <File>
-              <FileName>ADC.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ADC.c</FilePath>
-            </File>
-            <File>
-              <FileName>cr4_fft_64_stm32.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\cr4_fft_64_stm32.s</FilePath>
-            </File>
-            <File>
               <FileName>ST7735.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\graphics\ST7735.c</FilePath>
@@ -541,14 +531,19 @@
               <FilePath>.\helper\priority.c</FilePath>
             </File>
             <File>
-              <FileName>median.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\algorithms\median.c</FilePath>
-            </File>
-            <File>
               <FileName>Lab6M.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Lab6M.c</FilePath>
+            </File>
+            <File>
+              <FileName>mFS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\file_system\mFS.c</FilePath>
+            </File>
+            <File>
+              <FileName>edisk.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\file_system\edisk.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -584,26 +579,6 @@
               <FileName>uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\driverlib\uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>can0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\can\can0.c</FilePath>
-            </File>
-            <File>
-              <FileName>can.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\driverlib\can.c</FilePath>
-            </File>
-            <File>
-              <FileName>PWMDual.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\hardware\PWMDual.c</FilePath>
-            </File>
-            <File>
-              <FileName>UART1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\hardware\UART1.c</FilePath>
             </File>
           </Files>
         </Group>
