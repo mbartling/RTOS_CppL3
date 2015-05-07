@@ -3,11 +3,11 @@
 
 #include <stdint.h>
 
-#define MAXNUMTHREADS 10  /** Maximum number of threads*/
+#define MAXNUMTHREADS 4  /** Maximum number of threads*/
 #define STACKSIZE 100 /** number of 32bit words in stack */
 
 //#define NUM_PRIORITIES 7
-#define NUMPRIORITIES 7
+#define NUMPRIORITIES 4
 
 /*Note: use 16 words per context switch*/
 
