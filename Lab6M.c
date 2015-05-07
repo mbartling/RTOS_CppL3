@@ -14,11 +14,11 @@
 #include "inc/tm4c123gh6pm.h"
 #include "Perf.h"
 #include "mFS.h"
-
+#include "edisk.h"
 void mThread(void){
 	//mFS_initialize();
 	myFS_init();
-	format_FS();
+//	format_FS();
 	create_file("byteMe.txt");
 	Fid_t fp = open("byteMe.txt");
 	char c = 'A';
@@ -36,6 +36,8 @@ int main(void){   // testmain1
   OS_Init();           // initialize, disable interrupts
 
   NumCreated = 0 ;
+	OS_AddPeriodicThread(&disk_timerproc,10*TIME_1MS,0);   // time out routines for disk
+
 // create initial foreground threads
   NumCreated += OS_AddThread(&mThread, 128, 1);
   OS_Launch(10*TIME_1MS); // doesn't return, interrupts enabled in here
