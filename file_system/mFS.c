@@ -120,6 +120,37 @@ Fid_t open(char* fname){
         }
         bID = get_effin_clusterID(entry[j].LBid, &entry[j]);
         LBA = getLBAfromEffinCID(bID);
+        fileId.currentCluster = fileId.entry.LBid;
+
+        eDisk_Read(0, (BYTE *)&resident_mem[1][0], LBA, M_BLOCKS_PER_CLUSTER);
+        return fileId;
+      }//End if
+    }
+  }    
+}
+Fid_t openR(char* fname){
+  LUT_Entry_t* entry;
+  for(int i = 0; i < M_LUT_SIZE_CLUSTERS; i++ )
+  {
+    eDisk_Read(0, (BYTE *)&resident_mem[0][0], i*M_BLOCKS_PER_CLUSTER, M_BLOCKS_PER_CLUSTER);
+    entry = (LUT_Entry_t *)&resident_mem[0][0];
+    for(int j = 0; j < M_BLOCKS_PER_CLUSTER*M_BLOCK_SIZE/sizeof(LUT_Entry_t) ; j++)
+    {
+      uint32_t bID = get_effin_clusterID(entry[j].firstCluster, &entry[j]);
+      uint32_t LBA = getLBAfromEffinCID(bID);
+      eDisk_ReadBlock((BYTE *)&resident_mem[1][0], LBA);
+
+      if(strcmp((char *)&resident_mem[1][8] , fname) == 0){
+        bID = get_effin_clusterID(entry[j].LBid, &entry[j]);
+        LBA = getLBAfromEffinCID(bID);
+        //eDisk_Read(0, (BYTE *)&resident_mem[1][0], LBA, M_BLOCKS_PER_CLUSTER);
+        Fid_t fileId;
+        fileId.file_size = (*(uint32_t *)&resident_mem[1][4]);
+        memcpy(&fileId.entry, &entry[j], sizeof(LUT_Entry_t));
+        fileId.currentCluster = fileId.entry.firstCluster;
+          fileId.cursor = &resident_mem[1][M_BLOCK_SIZE];
+        bID = get_effin_clusterID(entry[j].firstCluster, &entry[j]);
+        LBA = getLBAfromEffinCID(bID);
         eDisk_Read(0, (BYTE *)&resident_mem[1][0], LBA, M_BLOCKS_PER_CLUSTER);
         return fileId;
       }//End if
@@ -127,6 +158,25 @@ Fid_t open(char* fname){
   }    
 }
 
+char read(Fid_t* fid){
+  char c;
+  //Need to check against file size
+  if(fid->cursor == &resident_mem[1][M_BLOCKS_PER_CLUSTER*M_BLOCK_SIZE]){
+    uint32_t LBA = getLBAfromEffinCID(get_effin_clusterID(fid->entry.LBid, &(fid->entry)));
+
+    eDisk_Write(0, (BYTE *)&resident_mem[1][0], LBA, M_BLOCKS_PER_CLUSTER);
+
+    fid->currentCluster++;
+    fid->entry.LBid++;
+    LBA = getLBAfromEffinCID(get_effin_clusterID(fid->entry.LBid, &(fid->entry)));
+    fid->cursor = &resident_mem[1][0];
+    eDisk_Read(0, (BYTE *)&resident_mem[1][0], LBA, M_BLOCKS_PER_CLUSTER);
+  }
+  (uint8_t) c = *(fid->cursor);
+  fid->cursor++;
+  
+  return c;
+}
 void write(Fid_t* fid, char c){
   if(fid->cursor == &resident_mem[1][M_BLOCKS_PER_CLUSTER*M_BLOCK_SIZE]){
     uint32_t LBA = getLBAfromEffinCID(get_effin_clusterID(fid->entry.LBid, &(fid->entry)));
